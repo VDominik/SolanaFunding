@@ -35,7 +35,7 @@ const App = () => {
           setWalletAddress(response.publicKey.toString());
         }
         else{
-          alert("Solana not found");
+          console.log("Solana not found");
         }
       }
     }catch(error){
@@ -141,12 +141,12 @@ const App = () => {
     <button onClick={getCampaigns}>Get a list of campaigns</button>
     <br />
     {campaigns.map(campaign => (<>
-    <p>Campaign ID: {campaign.pubkey.toString()}</p>
-    <p>Balance: {" "} {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}</p>
+    <p><b>Campaign ID: </b> {campaign.pubkey.toString()}</p>
+    <p><b>Balance: {" "} </b> {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}</p>
     {campaign.name}
     {campaign.description}
-    <button onClick={() => donate(campaign.pubkey)}>Click to DONATE!</button>
-    <button onClick={() => withdraw(campaign.pubkey)}>Click to WITHDRAW!</button>
+    <button className='donate' onClick={() => donate(campaign.pubkey)}>Click to DONATE!</button>
+    <button className='withdraw' onClick={() => withdraw(campaign.pubkey)}>Click to WITHDRAW!</button>
     <br />
     </>
     ))}
