@@ -143,8 +143,9 @@ const App = () => {
     {campaigns.map(campaign => (<>
     <p><b>Campaign ID: </b> {campaign.pubkey.toString()}</p>
     <p><b>Balance: {" "} </b> {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}</p>
-    {campaign.name}
-    {campaign.description}
+    <p><b>{campaign.name}</b></p>
+    <p>{campaign.description}</p>
+
     <button className='donate' onClick={() => donate(campaign.pubkey)}>Click to DONATE!</button>
     <button className='withdraw' onClick={() => withdraw(campaign.pubkey)}>Click to WITHDRAW!</button>
     <br />
@@ -152,6 +153,10 @@ const App = () => {
     ))}
     </>
   );
+
+  const redirectToHome = () => (
+    window.location.replace("/")
+  )
 
   useEffect(() => {
     const onLoad = async() =>{
@@ -164,6 +169,7 @@ const App = () => {
   return <div className='App'>
     {!walletAddress && renderNotConnectedContainer()}
     {walletAddress && renderConnectedContainer()}
+    <button onClick={redirectToHome}>Go to Home Page</button>
   </div>
 };
 
