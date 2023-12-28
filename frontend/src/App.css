@@ -36,3 +36,58 @@
     transform: rotate(360deg);
   }
 }
+
+button {
+  display: inline-block;
+  outline: 0;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 4px;
+  font-size: 13px;
+  height: 30px;
+  background-color: #9147ff;
+  color: white;
+  padding: 0 20px;
+  margin: 10px;
+}
+
+button:hover {
+  background-color: #772ce8;
+}
+
+.donate {
+  display: inline-block;
+  border: 2px solid green;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 4px;
+  font-size: 13px;
+  height: 30px;
+  background-color: white;
+  color: black;
+  padding: 0 20px;
+  margin: 10px;
+}
+
+.donate:hover {
+  background-color: aquamarine;
+}
+
+.withdraw {
+  display: inline-block;
+  border: 2px solid red;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 4px;
+  font-size: 13px;
+  height: 30px;
+  background-color: #ffdfd3;
+  color: black;
+  padding: 0 20px;
+  margin: 10px;
+}
+
+.withdraw:hover {
+  background-color: #fdb5b5;
+}

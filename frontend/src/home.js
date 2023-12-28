@@ -1,4 +1,6 @@
+import './home.css';
 import { useEffect, useState } from 'react';
+
 const Home = () => {
   const [walletAddress, setWalletAddress] = useState(null);
 
@@ -53,7 +55,6 @@ const Home = () => {
 
   return (
     <>
-      Hello
       {!walletAddress && renderNotConnectedContainer()}
       <button onClick={redirectToApp}>Go to App</button>
     </>
