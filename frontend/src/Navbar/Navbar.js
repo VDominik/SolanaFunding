@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import './Navbar.css'
-import Logo from './Logo_mini.png'
+import Logo from './text.png'
 
 const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(false)
@@ -14,7 +14,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="container">
         <div className="logo">
-          <img src={Logo} alt="Logo" className='logo' />
+          <a href='/'><img src={Logo} alt="Logo" className='logo' /></a>
         </div>
         <div className="menu-icon" onClick={handleShowNavbar}>
           Hamburger

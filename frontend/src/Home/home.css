@@ -1,0 +1,12 @@
+body {
+    text-align: center;
+}
+
+.pageWrapper {
+    display: flex;
+    justify-content: center;
+}
+.connectButton {
+    margin-top: 320px;
+}
+

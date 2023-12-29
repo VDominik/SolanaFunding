@@ -154,9 +154,9 @@ const App = () => {
     </>
   );
 
-  const redirectToHome = () => (
-    window.location.replace("/")
-  )
+  // const redirectToHome = () => (
+  //   window.location.replace("/")
+  // )
 
   useEffect(() => {
     const onLoad = async() =>{
@@ -169,7 +169,7 @@ const App = () => {
   return <div className='App'>
     {!walletAddress && renderNotConnectedContainer()}
     {walletAddress && renderConnectedContainer()}
-    <button onClick={redirectToHome}>Go to Home Page</button>
+    {/* <button onClick={redirectToHome}>Go to Home Page</button> */}
   </div>
 };
 
