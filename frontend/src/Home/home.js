@@ -38,7 +38,7 @@ const Home = () => {
   };
 
   const renderNotConnectedContainer = () => (
-    <button onClick={connectWallet}>Connect to Wallet</button>
+    <button className='connectButton' onClick={connectWallet}>Connect to Wallet</button>
   );
   
   const redirectToApp = () => (
@@ -55,8 +55,13 @@ const Home = () => {
 
   return (
     <>
-      {!walletAddress && renderNotConnectedContainer()}
-      <button onClick={redirectToApp}>Go to App</button>
+ <div className='pageWrapper'>
+    {walletAddress ? (
+      <button className='connectButton' onClick={redirectToApp}>Go to App</button>
+    ) : (
+      renderNotConnectedContainer()
+    )}
+  </div>
     </>
   );
 };
