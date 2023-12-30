@@ -56,6 +56,17 @@ button:hover {
   background-color: #772ce8;
 }
 
+.card-wrapper{
+  display: flex;
+  padding: 8px;
+}
+
+.card {
+  width: 500px;
+  border: 1px solid black;
+  padding: 8px;
+}
+
 .donate {
   display: inline-block;
   border: 2px solid green;

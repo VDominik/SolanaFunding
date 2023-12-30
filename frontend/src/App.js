@@ -140,8 +140,12 @@ const App = () => {
     <button onClick={createCampaign}>Create a campaign</button>
     <button onClick={getCampaigns}>Get a list of campaigns</button>
     <br />
+    <div className="card-wrapper">
     {campaigns.map(campaign => (<>
-    <p><b>Campaign ID: </b> {campaign.pubkey.toString()}</p>
+
+    <div key={campaign.pubkey} className="card">
+    <p><b>Campaign ID: </b></p>
+    {campaign.pubkey.toString()}
     <p><b>Balance: {" "} </b> {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}</p>
     <p><b>{campaign.name}</b></p>
     <p>{campaign.description}</p>
@@ -149,8 +153,11 @@ const App = () => {
     <button className='donate' onClick={() => donate(campaign.pubkey)}>Click to DONATE!</button>
     <button className='withdraw' onClick={() => withdraw(campaign.pubkey)}>Click to WITHDRAW!</button>
     <br />
+    </div>
+
     </>
     ))}
+        </div>
     </>
   );
 

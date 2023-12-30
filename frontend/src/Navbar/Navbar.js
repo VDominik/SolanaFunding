@@ -33,8 +33,8 @@ const Navbar = () => {
             <li>
               <NavLink to="/about">About</NavLink>
             </li>
-            <li>
-              <NavLink to="/contact">Contact</NavLink>
+            <li className='campaign-button'>
+              <NavLink to="/contact">Create a Campaign</NavLink>
             </li>
           </ul>
         </div>
