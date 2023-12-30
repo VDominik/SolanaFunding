@@ -15,12 +15,13 @@ body {
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  background-color: #14F195;
+  border-radius: 50px;
 }
 
 .navbar {
   height: 60px;
-  background-color: #14F195;
-  position: relative;
+  margin: 16px;
 }
 
 .logo {
@@ -34,10 +35,15 @@ body {
 .nav-elements {
 }
 
+.nav-elements li {
+  text-align: center;
+}
+
 .nav-elements ul {
   display: flex;
   justify-content: space-between;
   list-style-type: none;
+  align-items: center;
 }
 
 .nav-elements ul li:not(:last-child) {
@@ -46,18 +52,32 @@ body {
 
 .nav-elements ul a {
   font-size: 16px;
-  font-weight: 500;
   color: #2f234f;
   text-decoration: none;
+  box-sizing: border-box;
+  border: 2px solid transparent; /* Set a transparent border initially */
+  padding: 4px; /* Add padding to create space for the border */
+  border-radius: 50px;
 }
 
 .nav-elements ul a.active {
+  border-color: #9945FF; /* Change only the border color */
   color: #2f234f;
-  font-weight: 600;
-  position: relative;
+  font-weight: 500;
 }
 
-.nav-elements ul a.active::after {
+.campaign-button {
+  border: 2px solid black;
+  border-radius: 50px;
+  padding: 4px;
+}
+
+.campaign-button a {
+  text-decoration: none;
+  color: black;
+}
+
+/* .nav-elements ul a.active::after {
   content: '';
   position: absolute;
   bottom: -4px;
@@ -65,7 +85,7 @@ body {
   width: 100%;
   height: 2px;
   background-color: #9945FF;
-}
+} */
 
 @media (max-width: 768px) {
   .nav-elements ul li:not(:last-child) {
