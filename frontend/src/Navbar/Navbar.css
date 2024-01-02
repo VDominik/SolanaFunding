@@ -62,21 +62,31 @@ body {
   border-radius: 50px;
 }
 
-.nav-elements ul a.active {
+.nav-elements ul a.active{
   border-color: #9945FF; /* Change only the border color */
   color: #2f234f;
   font-weight: 500;
 }
 
 .campaign-button {
+  background-color: #9945FF;
   border: 2px solid black;
   border-radius: 50px;
   padding: 4px;
 }
 
-.campaign-button a {
+.campaign-button a.create {
   text-decoration: none;
-  color: black;
+  color: white;
+}
+
+.campaign-button a.create.active {
+  border: 2px solid transparent;
+  border: transparent;
+  box-sizing: border-box;
+  color: white;
+  padding: 6px;
+  font-weight: 400;
 }
 
 /* .nav-elements ul a.active::after {
