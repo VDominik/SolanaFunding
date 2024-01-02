@@ -4,6 +4,8 @@ import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import App from "./App";
 import Home from "./Home/home.js";
+import Hero from "./HeroSection/heroSection.js";
+import Create from "./Create/Create.js";
 import Navbar from "./Navbar/Navbar.js";
 import reportWebVitals from "./reportWebVitals";
 
@@ -15,6 +17,7 @@ root.render(
       <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/app" element={<App />} />
+      <Route path="/create" element={<Create />} />
       </Routes>
     </Router>
   </React.StrictMode>

@@ -4,7 +4,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background-color: #fcfcfc;
+  background-color: #57e4ec;
 }
 
 .container {
@@ -17,6 +17,8 @@ body {
   height: 100%;
   background-color: #14F195;
   border-radius: 50px;
+  border: 2px solid black;
+  
 }
 
 .navbar {

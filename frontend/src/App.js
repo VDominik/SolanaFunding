@@ -15,6 +15,11 @@ const App = () => {
 
   const [walletAddress, setWalletAddress] = useState(null);
   const [campaigns, setCampaigns] = useState([])
+  const [donationAmount, setDonationAmount] = useState(0.1); // Default donation amount
+
+  const handleAmountChange = (event) => {
+    setDonationAmount(parseFloat(event.target.value) || 0);
+  };
 
   const getProvider = () => {
     const connection = new Connection(network, opts.preflightCommitment);
@@ -99,14 +104,14 @@ const App = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider)
 
-      await program.rpc.donate(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
+      await program.rpc.donate(new BN(donationAmount  * web3.LAMPORTS_PER_SOL), {
         accounts: {
           campaign: publicKey,
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId
         },
       });
-      console.log("Donated money to: ", publicKey.toString());
+      console.log(`Donated ${donationAmount} SOL to: `, publicKey.toString());
       getCampaigns();
     }catch(error){
 
@@ -161,10 +166,6 @@ const App = () => {
     </>
   );
 
-  // const redirectToHome = () => (
-  //   window.location.replace("/")
-  // )
-
   useEffect(() => {
     const onLoad = async() =>{
       await checkIfWalletConnected();
@@ -176,7 +177,14 @@ const App = () => {
   return <div className='App'>
     {!walletAddress && renderNotConnectedContainer()}
     {walletAddress && renderConnectedContainer()}
-    {/* <button onClick={redirectToHome}>Go to Home Page</button> */}
+    <input type='text' name='name' placeholder='name'></input>
+    <input
+        type='text'
+        name='amount'
+        placeholder='amount'
+        value={donationAmount}
+        onChange={handleAmountChange}
+      ></input>
   </div>
 };
 
