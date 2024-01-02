@@ -6,7 +6,18 @@ body {
     display: flex;
     justify-content: center;
 }
+
+.hero-section {
+    width: 100%;
+}
+
+.image {
+    background-image: url("herotest.png");
+    height: 100%;
+}
+
 .connectButton {
     margin-top: 320px;
+    margin-bottom: 60px;
 }
 

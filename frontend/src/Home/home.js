@@ -56,11 +56,15 @@ const Home = () => {
   return (
     <>
  <div className='pageWrapper'>
+ <div className='hero-section'>
+  <div className='image'>
     {walletAddress ? (
       <button className='connectButton' onClick={redirectToApp}>Go to App</button>
     ) : (
       renderNotConnectedContainer()
     )}
+    </div>
+    </div>
   </div>
     </>
   );
