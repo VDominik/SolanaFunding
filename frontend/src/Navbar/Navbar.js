@@ -34,7 +34,7 @@ const Navbar = () => {
               <NavLink to="/about">About</NavLink>
             </li>
             <li className='campaign-button'>
-              <NavLink to="/create">Create a Campaign</NavLink>
+              <NavLink className={"create"} to="/create">Create a Campaign</NavLink>
             </li>
           </ul>
         </div>
