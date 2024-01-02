@@ -12,8 +12,9 @@ body {
 }
 
 .image {
-    background-image: url("herotest.png");
+    background-image: url("heeeero.png");
     height: 100%;
+    object-fit: fill;
 }
 
 .connectButton {
