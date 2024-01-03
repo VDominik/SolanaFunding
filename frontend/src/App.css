@@ -58,6 +58,7 @@ button:hover {
 
 .card-wrapper{
   display: flex;
+  flex-wrap: wrap;
   padding: 8px;
 }
 
@@ -65,6 +66,7 @@ button:hover {
   width: 500px;
   border: 1px solid black;
   padding: 8px;
+  margin: 4px;
 }
 
 .donate {

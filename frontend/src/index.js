@@ -4,9 +4,9 @@ import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import App from "./App";
 import Home from "./Home/home.js";
-import Hero from "./HeroSection/heroSection.js";
 import Create from "./Create/Create.js";
 import Navbar from "./Navbar/Navbar.js";
+import CampaignPage from './CampaignPage/campaignpage.js';
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -18,6 +18,7 @@ root.render(
       <Route path="/" element={<Home />} />
       <Route path="/app" element={<App />} />
       <Route path="/create" element={<Create />} />
+      <Route path="/campaigns/:campaignId" element={<CampaignPage />} />
       </Routes>
     </Router>
   </React.StrictMode>
