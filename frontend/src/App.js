@@ -6,6 +6,8 @@ import {useEffect, useState} from 'react';
 import {Buffer} from 'buffer';
 window.Buffer = Buffer;
 
+const { Link } = require('react-router-dom'); // Import Link from react-router-dom
+
 const programID = new PublicKey(idl.metadata.address);
 const network = clusterApiUrl("devnet");
 const opts = {preflightCommitment: "processed"};
@@ -140,35 +142,52 @@ const App = () => {
     <button onClick={connectWallet}>Connect to Wallet</button>
   );
 
-  const renderConnectedContainer = () => (
+  const renderConnectedContainer = () => {
+     
+    return(
     <>
-    <button onClick={createCampaign}>Create a campaign</button>
-    <button onClick={getCampaigns}>Get a list of campaigns</button>
-    <br />
-    <div className="card-wrapper">
-    {campaigns.map(campaign => (<>
+      <button onClick={createCampaign}>Create a campaign</button>
+      <button onClick={getCampaigns}>Get a list of campaigns</button>
+      <br />
+      <div className="card-wrapper">
+        {campaigns.map((campaign) => {
+          const dataToPass = { name: campaign.name, description: campaign.description, pubkey: campaign.pubkey.toString() };
 
-    <div key={campaign.pubkey} className="card">
-    <p><b>Campaign ID: </b></p>
-    {campaign.pubkey.toString()}
-    <p><b>Balance: {" "} </b> {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}</p>
-    <p><b>{campaign.name}</b></p>
-    <p>{campaign.description}</p>
+          return (
+          <div key={campaign.pubkey} className="card">
+            <p>
+              <b>Campaign ID: </b>
+            </p>
+            {campaign.pubkey.toString()}
+            <p>
+              <b>Balance: {" "} </b> {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}
+            </p>
+            <p>
+              <b>{campaign.name}</b>
+            </p>
+            <p>{campaign.description}</p>
+            
+            { /* Use Link to navigate to the campaign page */}
+            <Link to={`/campaigns/${campaign.pubkey}`} state={dataToPass}>
+  <button className='view'>View Campaign</button>
+</Link>
 
-    <button className='donate' onClick={() => donate(campaign.pubkey)}>Click to DONATE!</button>
-    <button className='withdraw' onClick={() => withdraw(campaign.pubkey)}>Click to WITHDRAW!</button>
-    <br />
-    </div>
-
+            <button className='donate' onClick={() => donate(campaign.pubkey)}>Click to DONATE!</button>
+            <button className='withdraw' onClick={() => withdraw(campaign.pubkey)}>Click to WITHDRAW!</button>
+            <br />
+          </div>
+        )})}
+      </div>
     </>
-    ))}
-        </div>
-    </>
-  );
+    )
+  };
+
+
 
   useEffect(() => {
     const onLoad = async() =>{
       await checkIfWalletConnected();
+      console.log("hello");
     }
     window.addEventListener('load', onLoad);
     return() => window.removeEventListener('load', onLoad);
