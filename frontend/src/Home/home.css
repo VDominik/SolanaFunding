@@ -4,6 +4,7 @@ body {
 
 .pageWrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
@@ -12,13 +13,32 @@ body {
 }
 
 .image {
-    background-image: url("heeeero.png");
-    height: 100%;
-    object-fit: fill;
+    background-image: url("heroo.png");
+    margin-top: -120px;
+    background-size: cover;
 }
 
 .connectButton {
     margin-top: 320px;
-    margin-bottom: 60px;
+    margin-bottom: 300px;
+}
+
+.recommended {
+    padding: 16px;
+}
+
+.cards-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 32px;
+}
+
+.card {
+    background-color: #f8f9ea;
+    border-radius: 25px;
+}
+.card-number {
+    padding: 48px;
+    font-size: 64px
 }
 

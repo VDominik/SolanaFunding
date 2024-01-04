@@ -1,0 +1,22 @@
+.footer {
+    border-top: 1px solid black;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-logo-wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.footer-logo {
+    padding: 16px;
+    color: black;
+    height: 48px;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+}

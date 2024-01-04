@@ -1,5 +1,6 @@
 // SimplePage.js
 import React from 'react';
+import './campaignpage.css'
 import { useLocation } from 'react-router-dom';
 
 const SimplePage = () => {
@@ -7,8 +8,12 @@ const SimplePage = () => {
   const passedData = location.state;
 
   return (
-    
     <div>
+    <div className='page-wrapper'>
+      <div className='campaign-image'>
+        Hello
+      </div>
+      <div className='data-passed'>
         {passedData ? (
                     <>
       <h1>{passedData.pubkey}</h1>
@@ -21,8 +26,12 @@ const SimplePage = () => {
       ) : (
         <p>No data passed.</p>
       )}
+      </div>
+    </div>
     </div>
   );
+
+  
 };
 
 export default SimplePage;
