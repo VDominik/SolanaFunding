@@ -1,0 +1,25 @@
+body {
+background-color: #f0f8ff;
+}
+
+.page-wrapper {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f8f9ea;
+    height: 100vh;
+    margin: 16px;
+    border-radius: 50px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.campaign-image {
+border: 1px solid black;
+height: 50vh;
+width: 50vh;
+margin: 16px;
+border-radius: 50px 5px 5px 5px;
+}
+
+.data-passed {
+margin: 16px;
+}

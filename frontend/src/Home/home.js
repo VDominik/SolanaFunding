@@ -65,6 +65,35 @@ const Home = () => {
     )}
     </div>
     </div>
+
+      <div className='recommended'>
+        <h2>Recommended for you</h2>
+      </div>
+
+      <div className='cards-wrapper'>
+      <div className='card'>
+          <h1>Total</h1>
+          <h2>Money Donated:</h2> 
+          <div className='card-number'>
+            $0
+          </div>
+        </div>
+        <div className='card'>
+          <h1>Today</h1>
+          <h2>Today Money Donated:</h2>
+          <div className='card-number'>
+            $0
+          </div>
+        </div>
+        <div className='card'>
+          <h1>Total</h1>
+          <h2>Money Withdrawn:</h2>
+          <div className='card-number'>
+            $0
+          </div>
+        </div>
+      </div>
+
   </div>
     </>
   );
