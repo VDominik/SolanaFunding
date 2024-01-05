@@ -55,44 +55,89 @@ const Home = () => {
 
   return (
     <>
- <div className='pageWrapper'>
- <div className='hero-section'>
-  <div className='image'>
-    {walletAddress ? (
-      <button className='connectButton' onClick={redirectToApp}>Go to App</button>
-    ) : (
-      renderNotConnectedContainer()
-    )}
-    </div>
+  <div className='pageWrapper'>
+
+    <div className='hero-section'>
+      <div className='image'>
+        {walletAddress ? (
+          <button className='connectButton' onClick={redirectToApp}>Go to App</button>
+          ) : (
+            renderNotConnectedContainer()
+          )}
+      </div>
     </div>
 
-      <div className='recommended'>
-        <h2>Recommended for you</h2>
+    <div className='recommended'>
+      <h1>Recommended for you</h1>
+    </div>
+
+    <div className='recommended-cards-wrapper'>
+
+      <div className='recommended-card-main-wrapper'>
+        <div className='recommended-card-main'>
+          <div className='recommended-card-main-image'></div>
+          <div className='recommended-card-main-name'>
+            Main
+          </div>
+        </div>
       </div>
 
-      <div className='cards-wrapper'>
+      <div className='recommended-card-secondary-wrapper'>
+        <div className='recommended-card-secondary-wrapper-first-row'>
+          <div className='recommended-card-secondary'>
+            <div className='recommended-card-secondary-image'></div>
+            <div className='recommended-card-secondary-name'>
+              Sec
+            </div>
+          </div>
+          <div className='recommended-card-secondary'>
+            <div className='recommended-card-secondary-image'></div>
+            <div className='recommended-card-secondary-name'>
+              Sec
+            </div>
+          </div>
+          </div>
+          <div className='recommended-card-secondary-wrapper-second-row'>
+          <div className='recommended-card-secondary'>
+            <div className='recommended-card-secondary-image'></div>
+            <div className='recommended-card-secondary-name'>
+              Sec
+            </div>
+          </div>
+          <div className='recommended-card-secondary'>
+            <div className='recommended-card-secondary-image'></div> 
+            <div className='recommended-card-secondary-name'>
+              Sec
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>  
+
+    <div className='cards-wrapper'>
       <div className='card'>
-          <h1>Total</h1>
-          <h2>Money Donated:</h2> 
-          <div className='card-number'>
-            $0
-          </div>
-        </div>
-        <div className='card'>
-          <h1>Today</h1>
-          <h2>Today Money Donated:</h2>
-          <div className='card-number'>
-            $0
-          </div>
-        </div>
-        <div className='card'>
-          <h1>Total</h1>
-          <h2>Money Withdrawn:</h2>
-          <div className='card-number'>
-            $0
-          </div>
+        <h1>Total</h1>
+        <h2>Money Donated:</h2> 
+        <div className='card-number'>
+          $709,321
         </div>
       </div>
+      <div className='card'>
+        <h1>Today</h1>
+        <h2>Today Money Donated:</h2>
+        <div className='card-number'>
+          $32,980
+        </div>
+      </div>
+      <div className='card'>
+        <h1>Total</h1>
+        <h2>Project Funded:</h2>
+        <div className='card-number'>
+          521
+        </div>
+      </div>
+    </div>
 
   </div>
     </>

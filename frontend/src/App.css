@@ -56,17 +56,53 @@ button:hover {
   background-color: #772ce8;
 }
 
+.cards-header {
+  padding-left: 32px;
+  text-align: left;
+}
+
 .card-wrapper{
   display: flex;
   flex-wrap: wrap;
   padding: 8px;
+  justify-content: space-evenly;
 }
 
-.card {
+.card-wrapper a {
+  text-decoration: none;
+}
+
+.campaign-card {
   width: 500px;
+  height: 500px;
   border: 1px solid black;
-  padding: 8px;
   margin: 4px;
+  overflow-y: scroll;
+  text-decoration: none;
+  color: black;
+  background-color: #FAF9F6;
+  border-radius: 25px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  margin: 16px;
+  transition: transform .2s;
+}
+
+.campaign-card:hover {
+  -ms-transform: scale(1.05); /* IE 9 */
+  -webkit-transform: scale(1.05); /* Safari 3-8 */
+  transform: scale(1.05); 
+}
+
+.card-description {
+  word-wrap: break-word;
+}
+
+
+.card-image{
+
+  border-radius: 24px;
+  height: 50%;
+  background-image: url("./Home/hero51.png");
 }
 
 .donate {

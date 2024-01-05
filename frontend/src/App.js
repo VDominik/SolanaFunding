@@ -141,41 +141,51 @@ const App = () => {
   const renderNotConnectedContainer = () => (
     <button onClick={connectWallet}>Connect to Wallet</button>
   );
-
+  let allDonations = 0
   const renderConnectedContainer = () => {
-     
+ 
     return(
     <>
       <button onClick={createCampaign}>Create a campaign</button>
       <button onClick={getCampaigns}>Get a list of campaigns</button>
       <br />
+      <h1 className='cards-header'>Browse all campaigns</h1>
       <div className="card-wrapper">
         {campaigns.map((campaign) => {
           const dataToPass = { name: campaign.name, description: campaign.description, pubkey: campaign.pubkey.toString() };
-
+          allDonations += campaign.amountDonated / web3.LAMPORTS_PER_SOL;
+          console.log(allDonations)
           return (
-          <div key={campaign.pubkey} className="card">
-            <p>
+            <Link to={`/campaigns/${campaign.pubkey}`} state={dataToPass}>
+          <div key={campaign.pubkey} className="campaign-card">
+            <div className='card-image'>
+
+            </div>
+            {/* <p>
               <b>Campaign ID: </b>
             </p>
-            {campaign.pubkey.toString()}
+            {campaign.pubkey.toString()} */}
+
+            <p>
+              <h2>{campaign.name}</h2>
+            </p>
+            <p className='card-description'>{campaign.description}</p>
+
             <p>
               <b>Balance: {" "} </b> {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}
             </p>
-            <p>
-              <b>{campaign.name}</b>
-            </p>
-            <p>{campaign.description}</p>
             
             { /* Use Link to navigate to the campaign page */}
-            <Link to={`/campaigns/${campaign.pubkey}`} state={dataToPass}>
-  <button className='view'>View Campaign</button>
-</Link>
+            
+            {/* <button className='view'>View Campaign</button> */}
+            
 
-            <button className='donate' onClick={() => donate(campaign.pubkey)}>Click to DONATE!</button>
-            <button className='withdraw' onClick={() => withdraw(campaign.pubkey)}>Click to WITHDRAW!</button>
+            {/* <button className='donate' onClick={() => donate(campaign.pubkey)}>Click to DONATE!</button>
+            <button className='withdraw' onClick={() => withdraw(campaign.pubkey)}>Click to WITHDRAW!</button> */}
             <br />
           </div>
+          </Link>
+
         )})}
       </div>
     </>

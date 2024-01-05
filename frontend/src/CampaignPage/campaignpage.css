@@ -1,12 +1,10 @@
-body {
-background-color: #f0f8ff;
-}
+
 
 .page-wrapper {
     display: flex;
     justify-content: space-between;
     background-color: #f8f9ea;
-    height: 100vh;
+    height: 100%;
     margin: 16px;
     border-radius: 50px;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
@@ -16,7 +14,7 @@ background-color: #f0f8ff;
 border: 1px solid black;
 height: 50vh;
 width: 50vh;
-margin: 16px;
+margin: 16px 16px 32px 16px;
 border-radius: 50px 5px 5px 5px;
 }
 
