@@ -1,23 +1,105 @@
-
-
 .page-wrapper {
-    display: flex;
-    justify-content: space-between;
-    background-color: #f8f9ea;
-    height: 100%;
-    margin: 16px;
-    border-radius: 50px;
-    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  margin: 64px 16px 16px 16px;
+  display: flex;
+  background-color: #f8f9ea;
+  height: 100%;
+  border-radius: 50px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .campaign-image {
-border: 1px solid black;
-height: 50vh;
-width: 50vh;
-margin: 16px 16px 32px 16px;
-border-radius: 50px 5px 5px 5px;
+  border: 1px solid black;
+  height: 50vh;
+  width: 50vh;
+  margin: 16px 16px 32px 16px;
+  border-radius: 50px 5px 5px 5px;
 }
 
 .data-passed {
-margin: 16px;
+  margin: 16px;
+  text-align: left;
+}
+
+.info-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 16px;
+}
+
+.amount-input {
+  color: black;
+  font-size: 1.25rem;
+  line-height: 1;
+  border-style: none;
+  outline: none;
+  padding: 4px;
+  border: 3px solid black;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border-radius: 40px;
+  width: 220px;
+}
+
+.buttons-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.donate {
+  width: 270px;
+  height: 80px;
+  border: none;
+  outline: none;
+  background: grey;
+  transition: 0.2s;
+  color: #fff;
+  font-size: 22px;
+  border-radius: 40px;
+  text-align: center;
+  box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: 3px solid #14f195;
+  margin: 12px;
+}
+
+.donate:hover {
+  background-color: #2f2f2f;
+}
+
+.withdraw {
+  width: 270px;
+  height: 80px;
+  border: none;
+  outline: none;
+  background: grey;
+  color: #fff;
+  font-size: 22px;
+  border-radius: 40px;
+  text-align: center;
+  box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: 3px solid red;
+  margin: 12px;
+  transition: 0.2s;
+}
+
+.withdraw:hover {
+    background-color: #2f2f2f;
 }
