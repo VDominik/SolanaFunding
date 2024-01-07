@@ -101,55 +101,21 @@ const App = () => {
     }
   }
 
-  const donate = async publicKey => {
-    try{
-      const provider = getProvider();
-      const program = new Program(idl, programID, provider)
-
-      await program.rpc.donate(new BN(donationAmount  * web3.LAMPORTS_PER_SOL), {
-        accounts: {
-          campaign: publicKey,
-          user: provider.wallet.publicKey,
-          systemProgram: SystemProgram.programId
-        },
-      });
-      console.log(`Donated ${donationAmount} SOL to: `, publicKey.toString());
-      getCampaigns();
-    }catch(error){
-
-    }
-  }
-
-  const withdraw = async (publicKey) =>{
-    try {
-      const provider = getProvider();
-      const program = new Program(idl, programID, provider)
-
-      await program.rpc.withdraw(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
-        accounts: {
-          campaign: publicKey,
-          user: provider.wallet.publicKey,
-        },
-      });
-      console.log("Withdrew money from: ", publicKey.toString());
-      getCampaigns();
-    }catch(error){
-      console.log("Error with withdrawal:", error);
-    }
-  }
-
   const renderNotConnectedContainer = () => (
-    <button onClick={connectWallet}>Connect to Wallet</button>
+    <button className='button' onClick={connectWallet}>Connect to Wallet</button>
   );
   let allDonations = 0
   const renderConnectedContainer = () => {
  
     return(
     <>
-      <button onClick={createCampaign}>Create a campaign</button>
-      <button onClick={getCampaigns}>Get a list of campaigns</button>
+      {/* <button onClick={createCampaign}>Create a campaign</button> */}
+      {/* <button onClick={getCampaigns}>Get a list of campaigns</button> */}
       <br />
+      <div className='browse-header'>
       <h1 className='cards-header'>Browse all campaigns</h1>
+      <h2>Browse trough all of the campaigns created on Solario</h2>
+      </div>
       <div className="card-wrapper">
         {campaigns.map((campaign) => {
           const dataToPass = { name: campaign.name, description: campaign.description, pubkey: campaign.pubkey.toString() };
@@ -166,9 +132,9 @@ const App = () => {
             </p>
             {campaign.pubkey.toString()} */}
 
-            <p>
+            <div>
               <h2>{campaign.name}</h2>
-            </p>
+            </div>
             <p className='card-description'>{campaign.description}</p>
 
             <p>
@@ -197,23 +163,16 @@ const App = () => {
   useEffect(() => {
     const onLoad = async() =>{
       await checkIfWalletConnected();
-      console.log("hello");
+     
     }
     window.addEventListener('load', onLoad);
+    getCampaigns()
     return() => window.removeEventListener('load', onLoad);
   }, []);
 
   return <div className='App'>
     {!walletAddress && renderNotConnectedContainer()}
     {walletAddress && renderConnectedContainer()}
-    <input type='text' name='name' placeholder='name'></input>
-    <input
-        type='text'
-        name='amount'
-        placeholder='amount'
-        value={donationAmount}
-        onChange={handleAmountChange}
-      ></input>
   </div>
 };
 
