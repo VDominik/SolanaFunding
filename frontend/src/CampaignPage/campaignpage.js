@@ -18,10 +18,11 @@ const network = clusterApiUrl("devnet");
 const opts = { preflightCommitment: "processed" };
 const { SystemProgram } = web3;
 
+
 const SimplePage = () => {
   const [walletAddress, setWalletAddress] = useState(null);
   const [campaigns, setCampaigns] = useState([]);
-  const [donationAmount, setDonationAmount] = useState(0.1); // Default donation amount
+  const [amount, setamount] = useState(0.1); // Default donation amount
 
   const handleAmountChange = (event) => {
     const inputValue = event.target.value;
@@ -30,7 +31,7 @@ const SimplePage = () => {
     const formattedValue = inputValue.replace(/,/g, ".");
 
     // Update the state with the formatted value
-    setDonationAmount(formattedValue);
+    setamount(formattedValue);
   };
 
   const location = useLocation();
@@ -46,39 +47,26 @@ const SimplePage = () => {
     return provider;
   };
 
-  const getAdminAddress = async () => {
-    const connection = new Connection(network, opts.preflightCommitment);
-    const provider = getProvider();
-    const program = new Program(idl, programID, provider);
-    console.log("admin");
-    const adminAddress = await program.rpc.getAdmin({
-      accounts: {
-        campaign: passedData.pubkey,
-      },
-    });
-  
-    console.log("Admin Address:", adminAddress.toString());
-    // Set the admin address to your state or use it as needed in your component
-  };
-
-  const checkIfWalletConnected = async() => {
-    try{
-      const {solana} = window;
+  const checkIfWalletConnected = async () => {
+    try {
+      const { solana } = window;
       if (solana) {
-        if (solana.isPhantom){
+        if (solana.isPhantom) {
           console.log("Phantom wallet is installed!");
           const response = await solana.connect({
-            onlyIfTrusted: true, 
+            onlyIfTrusted: true,
           });
-          console.log("Connected with pub key: ", response.publicKey.toString());
+          console.log(
+            "Connected with pub key: ",
+            response.publicKey.toString()
+          );
           setWalletAddress(response.publicKey.toString());
-        }
-        else{
+        } else {
           console.log("Solana not found");
         }
       }
-    }catch(error){
-      console.error(error)
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -101,14 +89,14 @@ const SimplePage = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
 
-      await program.rpc.donate(new BN(donationAmount * web3.LAMPORTS_PER_SOL), {
+      await program.rpc.donate(new BN(amount * web3.LAMPORTS_PER_SOL), {
         accounts: {
           campaign: publicKey,
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId,
         },
       });
-      console.log(`Donated ${donationAmount} SOL to: `, publicKey.toString());
+      console.log(`Donated ${amount} SOL to: `, publicKey.toString());
       getCampaigns();
     } catch (error) {}
   };
@@ -118,7 +106,7 @@ const SimplePage = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
 
-      await program.rpc.withdraw(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
+      await program.rpc.withdraw(new BN(amount * web3.LAMPORTS_PER_SOL), {
         accounts: {
           campaign: publicKey,
           user: provider.wallet.publicKey,
@@ -131,15 +119,54 @@ const SimplePage = () => {
     }
   };
 
+  const renderDonateButton = () => {
+    return (
+      <button
+        className="donate"
+        onClick={() => donate(passedData.pubkey)}
+      >
+        Click to DONATE!
+      </button>
+    );
+  };
+
+  const renderAmountInput = () => {
+    return (
+
+  <div className="input-wrapper">
+  <input
+    className="amount-input"
+    type="number"
+    name="amount"
+    placeholder="amount"
+    step={0.01}
+    value={amount}
+    onChange={handleAmountChange}
+    min="0"
+  ></input>
+</div>
+    )
+  };
+  
+  const renderWithdrawButton = () => {
+    return (
+      <button
+        className="withdraw"
+        onClick={() => withdraw(passedData.pubkey)}
+      >
+        Click to WITHDRAW!
+      </button>
+    );
+  };
+
   useEffect(() => {
-    const onLoad = async() =>{
+    const onLoad = async () => {
       await checkIfWalletConnected();
-      getAdminAddress();
-     
-    }
-    window.addEventListener('load', onLoad);
-    getCampaigns()
-    return() => window.removeEventListener('load', onLoad);
+    };
+    window.addEventListener("load", onLoad);
+    getCampaigns();
+    checkIfWalletConnected();
+    return () => window.removeEventListener("load", onLoad);
   }, []);
 
   return (
@@ -163,36 +190,34 @@ const SimplePage = () => {
           </div>
         </div>
 
-        {passedData.pubkey === "GZQZJ7BzvvEdEJFBQ4oBiKFSHGh7H5jXqjVoPYCL2PK1" && (
-    console.log("YES")
-  
-)}
+              {/* Fixing the syntax issue and wrapping the conditional blocks */}
+      <div>
+        {walletAddress === passedData.admin && (
+          <>
+            {console.log("walletAddress is equal to passedData.admin")}
+            <div>
+              {walletAddress} is equal to {passedData.admin}
+            </div>
+          </>
+        )}
+
+        {walletAddress !== passedData.admin && (
+          <>
+            {console.log("walletAddress is not equal to passedData.admin")}
+            <div>
+              {walletAddress} noooo {passedData.admin}
+            </div>
+          </>
+        )}
+      </div>
         <div className="">
-          <div className="input-wrapper">
-            <input
-              className="amount-input"
-              type="number"
-              name="amount"
-              placeholder="amount"
-              step={0.01}
-              value={donationAmount}
-              onChange={handleAmountChange}
-              min="0"
-            ></input>
-          </div>
+        {renderAmountInput()}
           <div className="buttons-wrapper">
-            <button
-              className="donate"
-              onClick={() => donate(passedData.pubkey)}
-            >
-              Click to DONATE!
-            </button>
-            <button
-              className="withdraw"
-              onClick={() => withdraw(passedData.pubkey)}
-            >
-              Click to WITHDRAW!
-            </button>
+          <>
+    {walletAddress === passedData.admin && renderWithdrawButton()}
+    {walletAddress !== passedData.admin && renderDonateButton()}
+  </>
+
           </div>
         </div>
       </div>
