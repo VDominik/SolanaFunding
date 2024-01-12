@@ -5,19 +5,12 @@ import "./campaignpage.css";
 import { useLocation } from "react-router-dom";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { useEffect, useState } from "react";
-import {
-  Program,
-  AnchorProvider,
-  web3,
-  utils,
-  BN,
-} from "@project-serum/anchor";
+import { Program, AnchorProvider, web3, BN } from "@project-serum/anchor";
 
 const programID = new PublicKey(idl.metadata.address);
 const network = clusterApiUrl("devnet");
 const opts = { preflightCommitment: "processed" };
 const { SystemProgram } = web3;
-
 
 const SimplePage = () => {
   const [walletAddress, setWalletAddress] = useState(null);
@@ -121,10 +114,7 @@ const SimplePage = () => {
 
   const renderDonateButton = () => {
     return (
-      <button
-        className="donate"
-        onClick={() => donate(passedData.pubkey)}
-      >
+      <button className="donate" onClick={() => donate(passedData.pubkey)}>
         Click to DONATE!
       </button>
     );
@@ -132,28 +122,24 @@ const SimplePage = () => {
 
   const renderAmountInput = () => {
     return (
-
-  <div className="input-wrapper">
-  <input
-    className="amount-input"
-    type="number"
-    name="amount"
-    placeholder="amount"
-    step={0.01}
-    value={amount}
-    onChange={handleAmountChange}
-    min="0"
-  ></input>
-</div>
-    )
+      <div className="input-wrapper">
+        <input
+          className="amount-input"
+          type="number"
+          name="amount"
+          placeholder="amount"
+          step={0.01}
+          value={amount}
+          onChange={handleAmountChange}
+          min="0"
+        ></input>
+      </div>
+    );
   };
-  
+
   const renderWithdrawButton = () => {
     return (
-      <button
-        className="withdraw"
-        onClick={() => withdraw(passedData.pubkey)}
-      >
+      <button className="withdraw" onClick={() => withdraw(passedData.pubkey)}>
         Click to WITHDRAW!
       </button>
     );
@@ -172,7 +158,9 @@ const SimplePage = () => {
   return (
     <div className="page-wrapper">
       <div className="campaign-image-wrapper">
-        <div className="campaign-image">Hello</div>
+        <div className="campaign-image">
+          <div className="image-upload"></div>
+        </div>
       </div>
 
       <div className="info-wrapper">
@@ -190,34 +178,33 @@ const SimplePage = () => {
           </div>
         </div>
 
-              {/* Fixing the syntax issue and wrapping the conditional blocks */}
-      <div>
-        {walletAddress === passedData.admin && (
-          <>
-            {console.log("walletAddress is equal to passedData.admin")}
-            <div>
-              {walletAddress} is equal to {passedData.admin}
-            </div>
-          </>
-        )}
+        {/* Fixing the syntax issue and wrapping the conditional blocks */}
+        <div>
+          {walletAddress === passedData.admin && (
+            <>
+              {console.log("walletAddress is equal to passedData.admin")}
+              <div>
+                {walletAddress} is equal to {passedData.admin}
+              </div>
+            </>
+          )}
 
-        {walletAddress !== passedData.admin && (
-          <>
-            {console.log("walletAddress is not equal to passedData.admin")}
-            <div>
-              {walletAddress} noooo {passedData.admin}
-            </div>
-          </>
-        )}
-      </div>
+          {walletAddress !== passedData.admin && (
+            <>
+              {console.log("walletAddress is not equal to passedData.admin")}
+              <div>
+                {walletAddress} noooo {passedData.admin}
+              </div>
+            </>
+          )}
+        </div>
         <div className="">
-        {renderAmountInput()}
+          {renderAmountInput()}
           <div className="buttons-wrapper">
-          <>
-    {walletAddress === passedData.admin && renderWithdrawButton()}
-    {walletAddress !== passedData.admin && renderDonateButton()}
-  </>
-
+            <>
+              {walletAddress === passedData.admin && renderWithdrawButton()}
+              {walletAddress !== passedData.admin && renderDonateButton()}
+            </>
           </div>
         </div>
       </div>
