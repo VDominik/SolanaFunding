@@ -105,7 +105,11 @@ const Home = () => {
             </div>
           </div>
           <div className='recommended-card-secondary'>
-            <div className='recommended-card-secondary-image'></div> 
+            <div className='recommended-card-secondary-image'>
+            <img src='https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public/imagesForCampaigns/images/test500.jpeg'
+                   alt=""
+                   />
+                   </div>
             <div className='recommended-card-secondary-name'>
               Sec
             </div>

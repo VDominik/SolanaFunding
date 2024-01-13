@@ -1,0 +1,31 @@
+.heading2 {
+  margin: 64px 16px 16px 16px;
+}
+.page-wrapper {
+  margin: 64px 16px 16px 16px;
+  display: flex;
+  background-color: #f8f9ea;
+  height: 100%;
+  border-radius: 50px;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.campaign-image {
+  border: 1px solid black;
+  height: 50vh;
+  width: 50vh;
+  margin: 16px 16px 32px 16px;
+  border-radius: 50px 5px 5px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.createButtonWrapper {
+    display: flex;
+    justify-content: end;
+}
+
+.image-upload {
+    width: 100%;
+}
