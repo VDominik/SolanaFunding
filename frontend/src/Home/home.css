@@ -114,8 +114,13 @@ body {
 
 .recommended-card-secondary-image {
     height: 75%;
-    background-image: url("./newHero.png");
-    border-radius: 24px 24px 0 0;
+    
+}
+
+.recommended-card-secondary-image img {
+height: 100%;
+width: 100%;
+border-radius: 24px 24px 0 0;
 }
 
 .recommended-card-secondary-name {
