@@ -59,19 +59,19 @@
 .browse-header {
   padding-left: 48px;
   text-align: left;
-
 }
 
 .cards-header {
   /* padding-left: 32px; */
 }
 
-.card-wrapper{
+.card-wrapper {
   display: flex;
   flex-wrap: wrap;
   padding: 8px;
   justify-content: space-evenly;
-  background-color: #FAF9F6;
+  background-color: #faf9f6;
+  min-height: 500px;
 }
 
 .card-wrapper a {
@@ -86,29 +86,71 @@
   overflow-y: scroll;
   text-decoration: none;
   color: black;
-  background-color: #FAF9F6;
+  background-color: #faf9f6;
   border-radius: 25px;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   margin: 16px;
-  transition: transform .2s;
+  transition: transform 0.2s;
 }
 
 .campaign-card:hover {
   -ms-transform: scale(1.05); /* IE 9 */
   -webkit-transform: scale(1.05); /* Safari 3-8 */
-  transform: scale(1.05); 
+  transform: scale(1.05);
 }
 
 .card-description {
   word-wrap: break-word;
 }
 
-
-.card-image{
-
+.card-image {
   border-radius: 24px;
   height: 50%;
-  background-image: url("./Home/hero51.png");
 }
 
+.card-image img {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
 
+.searchbar-wrapper {
+  display: inline-block;
+}
+
+.searchbar-input-wrapper {
+  display: flex;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: white;
+  width: fit-content;
+}
+
+.searchbar-input {
+  border-radius: 24px;
+  border: none;
+  font-size: large;
+}
+
+.searchbar-input:focus-visible {
+  outline: none;
+}
+
+.search-results {
+  visibility: hidden;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li a {
+  text-decoration: none;
+  color: black;
+}
+
+li a:hover {
+  font-weight: 500;
+}

@@ -6,6 +6,9 @@ import { useLocation } from "react-router-dom";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { useEffect, useState } from "react";
 import { Program, AnchorProvider, web3, BN } from "@project-serum/anchor";
+import { useParams } from 'react-router-dom';
+const { Link } = require("react-router-dom"); // Import Link from react-router-dom
+
 
 const programID = new PublicKey(idl.metadata.address);
 const network = clusterApiUrl("devnet");
@@ -16,6 +19,14 @@ const SimplePage = () => {
   const [walletAddress, setWalletAddress] = useState(null);
   const [campaigns, setCampaigns] = useState([]);
   const [amount, setamount] = useState(0.1); // Default donation amount
+  const params = useParams();
+  const campaignId = params.campaignId;
+  const [campaignInfo, setCampaignInfo] = useState({
+    admin: null,
+    campaignName: null,
+    campaignDescription: null,
+  });
+  const [loading, setLoading] = useState(true);
 
   const handleAmountChange = (event) => {
     const inputValue = event.target.value;
@@ -29,6 +40,7 @@ const SimplePage = () => {
 
   const location = useLocation();
   const passedData = location.state;
+  
 
   const getProvider = () => {
     const connection = new Connection(network, opts.preflightCommitment);
@@ -63,18 +75,21 @@ const SimplePage = () => {
     }
   };
 
-  const getCampaigns = async () => {
-    const connection = new Connection(network, opts.preflightCommitment);
+  const getCampaignById = async (campaignId) => {
     const provider = getProvider();
     const program = new Program(idl, programID, provider);
-    Promise.all(
-      (await connection.getProgramAccounts(programID)).map(
-        async (campaign) => ({
-          ...(await program.account.campaign.fetch(campaign.pubkey)),
-          pubkey: campaign.pubkey,
-        })
-      )
-    ).then((campaigns) => setCampaigns(campaigns));
+  
+    const campaignAccount = await program.account.campaign.fetch(new PublicKey(campaignId));
+    const admin = campaignAccount.admin.toString();
+    const campaignName = campaignAccount.name;
+    const campaignDescription = campaignAccount.description;
+    var outputElement = document.getElementById('testid');
+    var htmlString = '<h1>Hello, World!</h1><p>This is some rendered HTML.</p>';
+    outputElement.innerHTML = campaignDescription;
+  
+    // console.log("Admin inside getCampaignById:", admin);
+  
+    return { admin, campaignName, campaignDescription };
   };
 
   const donate = async (publicKey) => {
@@ -90,7 +105,7 @@ const SimplePage = () => {
         },
       });
       console.log(`Donated ${amount} SOL to: `, publicKey.toString());
-      getCampaigns();
+      getCampaignById(campaignId);
     } catch (error) {}
   };
 
@@ -106,7 +121,7 @@ const SimplePage = () => {
         },
       });
       console.log("Withdrew money from: ", publicKey.toString());
-      getCampaigns();
+      getCampaignById(campaignId);
     } catch (error) {
       console.log("Error with withdrawal:", error);
     }
@@ -114,7 +129,7 @@ const SimplePage = () => {
 
   const renderDonateButton = () => {
     return (
-      <button className="donate" onClick={() => donate(passedData.pubkey)}>
+      <button className="donate" onClick={() => donate(campaignId)}>
         Click to DONATE!
       </button>
     );
@@ -139,7 +154,7 @@ const SimplePage = () => {
 
   const renderWithdrawButton = () => {
     return (
-      <button className="withdraw" onClick={() => withdraw(passedData.pubkey)}>
+      <button className="withdraw" onClick={() => withdraw(campaignId)}>
         Click to WITHDRAW!
       </button>
     );
@@ -148,52 +163,75 @@ const SimplePage = () => {
   useEffect(() => {
     const onLoad = async () => {
       await checkIfWalletConnected();
+      if (campaignId) {
+        const { admin, campaignName, campaignDescription } = await getCampaignById(campaignId);
+        // console.log("Admin inside useEffect:", admin);
+        setLoading(false);
+        setCampaignInfo({ admin, campaignName, campaignDescription });
+        // Now you can use admin, campaignName, campaignDescription as needed
+      }
     };
+    onLoad();
     window.addEventListener("load", onLoad);
-    getCampaigns();
-    checkIfWalletConnected();
     return () => window.removeEventListener("load", onLoad);
-  }, []);
+  }, [campaignId]);
+  
+
+
 
   return (
+    <>
+    <div className="breadcrumbs">
+    <Link to={`/App`}>
+      <span>&lt;&lt; Back</span>
+    </Link>
+    </div>
     <div className="page-wrapper">
       <div className="campaign-image-wrapper">
         <div className="campaign-image">
-          <div className="image-upload"></div>
+        <img src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaignId}`} 
+                alt=""/>
         </div>
       </div>
 
       <div className="info-wrapper">
         <div className="data-passed-wrapper">
-          <div className="data-passed">
-            {passedData ? (
-              <>
-                <h1>Name: {passedData.name}</h1>
-                <p>Public key: {passedData.pubkey}</p>
-                <p>Description: {passedData.description}</p>
-              </>
-            ) : (
-              <p>No data passed.</p>
-            )}
-          </div>
+        <div className="data-passed">
+        {loading ? (
+      <p>Loading...</p>
+      ) : (
+        <>
+          {campaignInfo.admin && (
+            <>
+              <h1>Name: {campaignInfo.campaignName}</h1>
+              <p>Public key: {campaignId}</p>
+              <p>Description:</p>
+            </>
+            
+          )}
+  
+        </>
+      )}
+      <div id="testid">Description: {campaignInfo.campaignDescription}</div>
+      </div>
         </div>
 
         {/* Fixing the syntax issue and wrapping the conditional blocks */}
         <div>
-          {walletAddress === passedData.admin && (
+          {walletAddress === campaignInfo.admin && (
             <>
               {console.log("walletAddress is equal to passedData.admin")}
               <div>
-                {walletAddress} is equal to {passedData.admin}
+                {walletAddress} is equal to {campaignInfo.admin}
               </div>
             </>
           )}
 
-          {walletAddress !== passedData.admin && (
+          {walletAddress !== campaignInfo.admin && (
             <>
-              {console.log("walletAddress is not equal to passedData.admin")}
+              {/* {console.log("walletAddress is not equal to passedData.admin")} */}
               <div>
-                {walletAddress} noooo {passedData.admin}
+                {/* {walletAddress} noooo {campaignInfo.admin} */}
               </div>
             </>
           )}
@@ -202,13 +240,14 @@ const SimplePage = () => {
           {renderAmountInput()}
           <div className="buttons-wrapper">
             <>
-              {walletAddress === passedData.admin && renderWithdrawButton()}
-              {walletAddress !== passedData.admin && renderDonateButton()}
+              {walletAddress === campaignInfo.admin && renderWithdrawButton()}
+              {walletAddress !== campaignInfo.admin && renderDonateButton()}
             </>
           </div>
         </div>
       </div>
     </div>
+    </>
   );
 };
 
