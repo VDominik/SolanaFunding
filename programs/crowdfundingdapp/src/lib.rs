@@ -47,18 +47,6 @@ pub mod crowdfundingdapp {
         (&mut ctx.accounts.campaign).amount_donated += amount;
         Ok(())
     }
-
-    impl<'a, 'b, 'c, 'info> Campaign {
-        pub fn get_admin(&self) -> Pubkey {
-            self.admin
-        }
-    }
-}
-
-#[derive(Accounts)]
-pub struct GetAdmin<'info> {
-    #[account(mut)]
-    pub campaign: Account<'info, Campaign>,
 }
 
 #[derive(Accounts)]
@@ -96,4 +84,9 @@ pub struct Campaign {
     pub name: String,
     pub description: String,
     pub amount_donated: u64
+}
+
+#[account]
+pub struct: Developer {
+    pub wallet: Pubkey
 }
