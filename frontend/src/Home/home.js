@@ -60,7 +60,7 @@ const Home = () => {
     <div className='hero-section'>
       <div className='image'>
         {walletAddress ? (
-          <button className='connectButton' onClick={redirectToApp}>Go to App</button>
+          <button className='connectButton' onClick={redirectToApp}>Continue to App</button>
           ) : (
             renderNotConnectedContainer()
           )}
@@ -106,7 +106,7 @@ const Home = () => {
           </div>
           <div className='recommended-card-secondary'>
             <div className='recommended-card-secondary-image'>
-            <img src='https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public/imagesForCampaigns/images/test500.jpeg'
+            <img src=''
                    alt=""
                    />
                    </div>

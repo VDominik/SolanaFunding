@@ -23,6 +23,8 @@ const App = () => {
   const [walletAddress, setWalletAddress] = useState(null);
   const [campaigns, setCampaigns] = useState([]);
   const [amount, setamount] = useState(0.1); // Default donation amount
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const handleAmountChange = (event) => {
     setamount(parseFloat(event.target.value) || 0);
@@ -81,37 +83,40 @@ const App = () => {
           pubkey: campaign.pubkey,
         })
       )
-    ).then((campaigns) => setCampaigns(campaigns));
+    ).then((campaigns) => {
+      console.log("Campaigns:", campaigns); // Log campaigns to console
+      setCampaigns(campaigns);
+    });
   };
 
-  const createCampaign = async () => {
-    try {
-      const provider = getProvider();
-      const program = new Program(idl, programID, provider);
-      const [campaign] = await PublicKey.findProgramAddressSync(
-        [
-          utils.bytes.utf8.encode("CAMPAIGN_DEMO"),
-          provider.wallet.publicKey.toBuffer(),
-        ],
-        program.programId,
-        console.log("Program ID:", programID.toString())
-      );
-      await program.rpc.create(
-        utils.bytes.utf8.encode("campaign name"),
-        utils.bytes.utf8.encode("campaign description"),
-        {
-          accounts: {
-            campaign,
-            user: provider.wallet.publicKey,
-            systemProgram: SystemProgram.programId,
-          },
-        }
-      );
-      console.log("Created a new campaign with address: ", campaign.toString());
-    } catch (error) {
-      console.error("Eror creating campaign", error);
-    }
-  };
+  // const createCampaign = async () => {
+  //   try {
+  //     const provider = getProvider();
+  //     const program = new Program(idl, programID, provider);
+  //     const [campaign] = await PublicKey.findProgramAddressSync(
+  //       [
+  //         utils.bytes.utf8.encode("CAMPAIGN_DEMO"),
+  //         provider.wallet.publicKey.toBuffer(),
+  //       ],
+  //       program.programId,
+  //       console.log("Program ID:", programID.toString())
+  //     );
+  //     await program.rpc.create(
+  //       utils.bytes.utf8.encode("campaign name"),
+  //       utils.bytes.utf8.encode("campaign description"),
+  //       {
+  //         accounts: {
+  //           campaign,
+  //           user: provider.wallet.publicKey,
+  //           systemProgram: SystemProgram.programId,
+  //         },
+  //       }
+  //     );
+  //     console.log("Created a new campaign with address: ", campaign.toString());
+  //   } catch (error) {
+  //     console.error("Eror creating campaign", error);
+  //   }
+  // };
 
   const renderNotConnectedContainer = () => (
     <button className="button" onClick={connectWallet}>
@@ -131,18 +136,23 @@ const App = () => {
         </div>
         <div className="card-wrapper">
           {campaigns.map((campaign) => {
-            const dataToPass = {
-              name: campaign.name,
-              description: campaign.description,
-              admin: campaign.admin.toString(),
-              pubkey: campaign.pubkey.toString(),
-            };
+            // const dataToPass = {
+            //   name: campaign.name,
+            //   description: campaign.description,
+            //   admin: campaign.admin.toString(),
+            //   pubkey: campaign.pubkey.toString(),
+            // };
             allDonations += campaign.amountDonated / web3.LAMPORTS_PER_SOL;
-            console.log(allDonations);
+            // console.log(allDonations);
             return (
-              <Link to={`/campaigns/${campaign.pubkey}`} state={dataToPass}>
+              <Link to={`/campaigns/${campaign.pubkey}`}>
                 <div key={campaign.pubkey} className="campaign-card">
-                  <div className="card-image"></div>
+                  <div className="card-image">
+                    <img
+                      src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaign.pubkey}`}
+                      alt=""
+                    />
+                  </div>
                   {/* <p>
               <b>Campaign ID: </b>
             </p>
@@ -154,8 +164,7 @@ const App = () => {
                   <p className="card-description">{campaign.description}</p>
 
                   <p>
-                    <b>Balance: </b>{" "}
-                    {campaign.admin.toString()}
+                    <b>Balance: </b> {campaign.admin.toString()}
                     {(
                       campaign.amountDonated / web3.LAMPORTS_PER_SOL
                     ).toString()}
@@ -181,17 +190,88 @@ const App = () => {
     const onLoad = async () => {
       await checkIfWalletConnected();
     };
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        await onLoad();
+        await getCampaigns();
+      } catch (error) {
+        // Handle errors if needed
+        console.error("Error fetching campaigns:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     window.addEventListener("load", onLoad);
-    getCampaigns();
+    fetchData();
     return () => window.removeEventListener("load", onLoad);
   }, []);
 
+  const handleSearch = (event) => {
+    const { value } = event.target;
+    setSearchTerm(value.toLowerCase());
+  };
+
+  const filteredCampaigns = campaigns.filter((campaign) => {
+    // Customize the conditions based on your search requirements
+    return (
+      campaign.name.toLowerCase().includes(searchTerm) ||
+      campaign.description.toLowerCase().includes(searchTerm)
+    );
+  });
+
   return (
     <div className="App">
-      {!walletAddress && renderNotConnectedContainer()}
-      {walletAddress && renderConnectedContainer()}
+      <div className="searchbar-wrapper">
+        <div className="searchbar-input-wrapper">
+          <input className="searchbar-input" type="text" placeholder="Search campaigns" onChange={handleSearch} />🔍
+        </div>
+
+      </div>
+  
+      {searchTerm ? (
+        // Render search results
+        <div className="card-wrapper">
+          {filteredCampaigns.map((campaign) => (
+            <Link to={`/campaigns/${campaign.pubkey}`} key={campaign.pubkey}>
+              <div className="campaign-card">
+                <div className="card-image">
+                  <img src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaign.pubkey}`} alt="" />
+                </div>
+                <div>
+                  <h2>{campaign.name}</h2>
+                </div>
+                <p className="card-description">{campaign.description}</p>
+                <p>
+                  <b>Balance: </b>{" "}
+                  {campaign.admin.toString()}
+                  {(
+                    campaign.amountDonated / web3.LAMPORTS_PER_SOL
+                  ).toString()}
+                </p>
+                <br />
+              </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        // Render all campaigns
+        <>
+          {!walletAddress && renderNotConnectedContainer()}
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              {walletAddress && renderConnectedContainer()}
+            </>
+          )}
+        </>
+      )}
     </div>
   );
+  
 };
 
 export default App;
