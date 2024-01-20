@@ -9,6 +9,7 @@ import Navbar from "./Navbar/Navbar.js";
 import CampaignPage from './CampaignPage/campaignpage.js';
 import Footer from "./Footer/footer.js";
 import reportWebVitals from "./reportWebVitals";
+import About from "./About/about.js";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -21,6 +22,7 @@ root.render(
       <Route path="/app" element={<App />} />
       <Route path="/create" element={<Create />} />
       <Route path="/campaigns/:campaignId" element={<CampaignPage />} />
+      <Route path="/about" element={<About />} />
       </Routes>
       <Footer />
     </Router>

@@ -14,6 +14,9 @@ const Footer = () => {
         </div>
         <div className="footer-container">
 
+          <div>Social media links</div>
+
+          <div>
               <NavLink to="/">Home</NavLink>
 
               <NavLink to="/blog">Blog</NavLink>
@@ -21,7 +24,13 @@ const Footer = () => {
               <NavLink to="/app">Projects</NavLink>
 
               <NavLink to="/about">About</NavLink>
-    
+              
+              <NavLink to="/faq">FAQ</NavLink>
+              
+              <NavLink to="/creatorterms">Terms for Creators</NavLink>
+
+              <NavLink to="/feedback">Feedback</NavLink>
+          </div>
       </div>
     </div>
   )
