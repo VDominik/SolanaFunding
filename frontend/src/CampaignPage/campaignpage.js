@@ -7,8 +7,8 @@ import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { useEffect, useState } from "react";
 import { Program, AnchorProvider, web3, BN } from "@project-serum/anchor";
 import { useParams } from "react-router-dom";
-import Editor from "../richTextEditor/RichTextEditor";
 import { createClient } from "@supabase/supabase-js";
+import Popup from "../Popup/popup";
 
 
 const { Link } = require("react-router-dom"); // Import Link from react-router-dom
@@ -38,6 +38,9 @@ const SimplePage = () => {
   const [loading, setLoading] = useState(true);
   const [previewMode, setPreviewMode] = useState(false);
   const [campaignDescription, setCampaignDescription] = useState("");
+  const [isPopupVisible, setPopupVisibility] = useState(false);
+
+
 
   const handleAmountChange = (event) => {
     const inputValue = event.target.value;
@@ -116,6 +119,7 @@ const SimplePage = () => {
       console.log(`Donated ${amount} SOL to: `, publicKey.toString());
       getCampaignById(campaignId);
     } catch (error) {}
+    setPopupVisibility(true);
   };
 
   const withdraw = async (publicKey) => {
@@ -134,6 +138,7 @@ const SimplePage = () => {
     } catch (error) {
       console.log("Error with withdrawal:", error);
     }
+    setPopupVisibility(true);
   };
 
   const renderDonateButton = () => {
@@ -191,12 +196,6 @@ const SimplePage = () => {
     }
   }
   
-  // Call the function and log the result
-
-
-  const handleTogglePreview = () => {
-    setPreviewMode(!previewMode);
-  };
 
   useEffect(() => {
     const onLoad = async () => {
@@ -211,17 +210,29 @@ const SimplePage = () => {
         // Now you can use admin, campaignName, campaignDescription as needed
       }
     };
+    const showPopupParam = new URLSearchParams(location.search).get('showPopup');
+    
+    // Check if the showPopup parameter is present and has a truthy value
+    if (showPopupParam && showPopupParam.toLowerCase() === 'true') {
+      setPopupVisibility(true);
+    }
 
     onLoad();
     window.addEventListener("load", onLoad);
     return () => window.removeEventListener("load", onLoad);
-  }, [campaignId]);
-  const handleContentChange = (content) => {
-    setCampaignDescription(content);
+  }, [campaignId, location.search]);
+
+  const handleClosePopup = () => {
+    // Close the pop-up
+    setPopupVisibility(false);
   };
+
 
   return (
     <>
+    {isPopupVisible && (
+      <Popup message="Transaction Confirmed!" onClose={handleClosePopup} />
+    )}
       <div className="breadcrumbs">
         <Link to={`/App`}>
           <span>&lt;&lt; Back</span>
@@ -248,6 +259,7 @@ const SimplePage = () => {
                     <>
                       <h1>Name: {campaignInfo.campaignName}</h1>
                       <p>Public key: {campaignId}</p>
+
                     <div
                       dangerouslySetInnerHTML={{ __html: campaignDescription }}
                       
@@ -288,6 +300,7 @@ const SimplePage = () => {
               <>
                 {walletAddress === campaignInfo.admin && renderWithdrawButton()}
                 {walletAddress !== campaignInfo.admin && renderDonateButton()}
+                
               </>
             </div>
           </div>

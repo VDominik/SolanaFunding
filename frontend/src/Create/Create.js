@@ -12,6 +12,9 @@ import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { Buffer } from "buffer";
 import Editor from "../richTextEditor/RichTextEditor";
+import { useNavigate } from "react-router-dom";
+
+
 
 window.Buffer = Buffer;
 
@@ -24,13 +27,15 @@ const network = clusterApiUrl("devnet");
 const opts = { preflightCommitment: "processed" };
 const { SystemProgram } = web3;
 
+
 const Create = () => {
   const [walletAddress, setWalletAddress] = useState(null);
-  const [campaigns, setCampaigns] = useState([]);
   const [campaignName, setCampaignName] = useState("");
+  const [amountWanted, setAmountWanted] = useState("");
   const [campaignDescription, setCampaignDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [previewMode, setPreviewMode] = useState(false);
+  let navigate = useNavigate(); 
+
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -41,8 +46,8 @@ const Create = () => {
     setCampaignName(event.target.value);
   };
 
-  const handleCampaignDescriptionChange = (event) => {
-    setCampaignDescription(event.target.value);
+  const handleAmountWantedChange = (event) => {
+    setAmountWanted(event.target.value);
   };
 
   const getProvider = () => {
@@ -116,12 +121,14 @@ const Create = () => {
         ],
         program.programId,
         console.log("Program ID:", programID.toString()),
+        console.log(amountWanted)
       );
       
       // TODO: Do it somehow without the description. For now its okay
       await program.rpc.create(
         utils.bytes.utf8.encode(campaignName),
-         utils.bytes.utf8.encode("desc"),
+         utils.bytes.utf8.encode(""),
+         utils.bytes.utf8.encode(amountWanted),
         {
           accounts: {
             campaign,
@@ -136,6 +143,7 @@ const Create = () => {
       await storeCampaignInDatabase(campaign.toString(), imageUrl, campaignDescription);
       console.log("Image URL:", imageUrl);
       console.log("Created a new campaign with address: ", campaign.toString());
+      navigate(`/campaigns/${campaign.toString()}?showPopup=true`);
     } catch (error) {
       console.error("Eror creating campaign", error);
     }
@@ -173,9 +181,6 @@ const Create = () => {
     console.log(campaignDescription)
   };
 
-  const handleTogglePreview = () => {
-    setPreviewMode(!previewMode);
-  };
 
   useEffect(() => {
     const onLoad = async () => {
@@ -210,13 +215,23 @@ const Create = () => {
           <div className="info-wrapper">
             <div className="data-passed-wrapper">
               <div className="data-passed">
-                <label>
+              <label>
                   Campaign Name:
                   <input
                     type="text"
                     name="campaignName"
                     value={campaignName}
                     onChange={handleCampaignNameChange}
+                  />
+                </label>
+                <br />
+                <label>
+                  Amount Wanted:
+                  <input
+                    type="text"
+                    name="amountWanted"
+                    value={amountWanted}
+                    onChange={handleAmountWantedChange}
                   />
                 </label>
                 <br />

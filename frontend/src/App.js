@@ -161,13 +161,10 @@ const App = () => {
                   <div>
                     <h2>{campaign.name}</h2>
                   </div>
-                  <p className="card-description">{campaign.description}</p>
+                  <p className="card-description"><b> Raised: </b> <br /> {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()} / {campaign.amountWanted}</p>
 
                   <p>
-                    <b>Balance: </b> {campaign.admin.toString()}
-                    {(
-                      campaign.amountDonated / web3.LAMPORTS_PER_SOL
-                    ).toString()}
+                    <b>Creator: </b> {campaign.admin.toString()}
                   </p>
 
                   {/* Use Link to navigate to the campaign page */}
