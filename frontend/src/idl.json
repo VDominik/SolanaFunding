@@ -1,30 +1,102 @@
 {
-    "version": "0.1.0",
-    "name": "crowdfundingdapp",
-    "instructions": [
-      {
-        "name": "create",
-        "accounts": [
+  "version": "0.1.0",
+  "name": "crowdfundingdapp",
+  "instructions": [
+    {
+      "name": "create",
+      "accounts": [
+        {
+          "name": "campaign",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "The system program provides a way to transfer SOL from one account to another."
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "amountWanted",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "withdraw",
+      "accounts": [
+        {
+          "name": "campaign",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "donate",
+      "accounts": [
+        {
+          "name": "campaign",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Campaign",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            "name": "campaign",
-            "isMut": true,
-            "isSigner": false
+            "name": "admin",
+            "type": "publicKey"
           },
-          {
-            "name": "user",
-            "isMut": true,
-            "isSigner": true
-          },
-          {
-            "name": "systemProgram",
-            "isMut": false,
-            "isSigner": false,
-            "docs": [
-              "The system program provides a way to transfer SOL from one account to another."
-            ]
-          }
-        ],
-        "args": [
           {
             "name": "name",
             "type": "string"
@@ -32,84 +104,20 @@
           {
             "name": "description",
             "type": "string"
-          }
-        ]
-      },
-      {
-        "name": "withdraw",
-        "accounts": [
-          {
-            "name": "campaign",
-            "isMut": true,
-            "isSigner": false
           },
           {
-            "name": "user",
-            "isMut": true,
-            "isSigner": true
-          }
-        ],
-        "args": [
-          {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      },
-      {
-        "name": "donate",
-        "accounts": [
-          {
-            "name": "campaign",
-            "isMut": true,
-            "isSigner": false
+            "name": "amountWanted",
+            "type": "string"
           },
           {
-            "name": "user",
-            "isMut": true,
-            "isSigner": true
-          },
-          {
-            "name": "systemProgram",
-            "isMut": false,
-            "isSigner": false
-          }
-        ],
-        "args": [
-          {
-            "name": "amount",
+            "name": "amountDonated",
             "type": "u64"
           }
         ]
       }
-    ],
-    "accounts": [
-      {
-        "name": "Campaign",
-        "type": {
-          "kind": "struct",
-          "fields": [
-            {
-              "name": "admin",
-              "type": "publicKey"
-            },
-            {
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "name": "description",
-              "type": "string"
-            },
-            {
-              "name": "amountDonated",
-              "type": "u64"
-            }
-          ]
-        }
-      }
-    ],
-    "metadata": {
-      "address": "7KQp5Q9brpL96J6Li6FZGCL8SmHXVwzEba4i47B2r9yd"
     }
+  ],
+  "metadata": {
+    "address": "2BePaJPAPUih3FWZXR9ZfjawxkWnKQtYp2jpQn7Sxk3h"
   }
+}
