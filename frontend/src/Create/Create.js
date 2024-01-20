@@ -11,6 +11,11 @@ import {
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { Buffer } from "buffer";
+import Editor from "../richTextEditor/RichTextEditor";
+import { useNavigate } from "react-router-dom";
+
+
+
 window.Buffer = Buffer;
 
 const supabase = createClient(
@@ -22,12 +27,15 @@ const network = clusterApiUrl("devnet");
 const opts = { preflightCommitment: "processed" };
 const { SystemProgram } = web3;
 
+
 const Create = () => {
   const [walletAddress, setWalletAddress] = useState(null);
-  const [campaigns, setCampaigns] = useState([]);
   const [campaignName, setCampaignName] = useState("");
+  const [amountWanted, setAmountWanted] = useState("");
   const [campaignDescription, setCampaignDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  let navigate = useNavigate(); 
+
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -38,8 +46,8 @@ const Create = () => {
     setCampaignName(event.target.value);
   };
 
-  const handleCampaignDescriptionChange = (event) => {
-    setCampaignDescription(event.target.value);
+  const handleAmountWantedChange = (event) => {
+    setAmountWanted(event.target.value);
   };
 
   const getProvider = () => {
@@ -75,14 +83,14 @@ const Create = () => {
     }
   };
 
-  const uploadImageToSupabase = async () => {
+  const uploadImageToSupabase = async (filename) => {
     try {
       if (imageFile) {
-        console.log("Uploading image with file name:", imageFile.name);
+        console.log("Uploading image with file name:", filename);
 
         const { data, error } = await supabase.storage
           .from("imagesForCampaigns") // Replace with your actual storage bucket name
-          .upload(`images/${imageFile.name}`, imageFile);
+          .upload(`images/${filename}`, imageFile);
 
         if (error) {
           console.error("Error uploading image to Supabase:", error);
@@ -106,53 +114,58 @@ const Create = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
       const [campaign] = await PublicKey.findProgramAddressSync(
+
         [
           utils.bytes.utf8.encode("CAMPAIGN_DEMO"),
           provider.wallet.publicKey.toBuffer(),
         ],
         program.programId,
-        console.log("Program ID:", programID.toString())
+        console.log("Program ID:", programID.toString()),
+        console.log(amountWanted)
       );
-
-      const imageUrl = await uploadImageToSupabase();
-
+      
+      // TODO: Do it somehow without the description. For now its okay
       await program.rpc.create(
         utils.bytes.utf8.encode(campaignName),
-        utils.bytes.utf8.encode(campaignDescription),
+         utils.bytes.utf8.encode(""),
+         utils.bytes.utf8.encode(amountWanted),
         {
           accounts: {
             campaign,
             user: provider.wallet.publicKey,
             systemProgram: SystemProgram.programId,
           },
+          
         }
       );
-
-      await storeCampaignInDatabase(campaign.toString(), imageUrl);
-      console.log("Created a new campaign with address: ", campaign.toString());
+      const customName = campaign.toString();
+      const imageUrl = await uploadImageToSupabase(customName);
+      await storeCampaignInDatabase(campaign.toString(), imageUrl, campaignDescription);
       console.log("Image URL:", imageUrl);
-
-
       console.log("Created a new campaign with address: ", campaign.toString());
-
+      navigate(`/campaigns/${campaign.toString()}?showPopup=true`);
     } catch (error) {
       console.error("Eror creating campaign", error);
     }
   };
+  
 
-  const storeCampaignInDatabase = async (campaignAddress, imageUrl) => {
+  const storeCampaignInDatabase = async (campaignAddress, imageUrl, description) => {
     try {
       // Use Supabase client to store campaign information in your database
       const { data, error } = await supabase
-        .from('addressImages') // Replace with your database table name
+        .from("addressImages") // Replace with your database table name
         .insert([
           {
             programAddress: campaignAddress,
-            imageURL: "https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public/"+imageUrl,
+            imageURL:
+              "https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public/" +
+              imageUrl,
+              description: description,
             // Other campaign data fields...
-          }
+          },
         ]);
-  
+
       if (error) {
         console.error("Error storing campaign in database", error);
       } else {
@@ -162,6 +175,12 @@ const Create = () => {
       console.error("Error storing campaign in database", error);
     }
   };
+
+  const handleContentChange = (content) => {
+    setCampaignDescription(content);
+    console.log(campaignDescription)
+  };
+
 
   useEffect(() => {
     const onLoad = async () => {
@@ -196,7 +215,7 @@ const Create = () => {
           <div className="info-wrapper">
             <div className="data-passed-wrapper">
               <div className="data-passed">
-                <label>
+              <label>
                   Campaign Name:
                   <input
                     type="text"
@@ -207,20 +226,34 @@ const Create = () => {
                 </label>
                 <br />
                 <label>
+                  Amount Wanted:
+                  <input
+                    type="text"
+                    name="amountWanted"
+                    value={amountWanted}
+                    onChange={handleAmountWantedChange}
+                  />
+                </label>
+                <br />
+                <label>
                   Campaign Description:
-                  <textarea
+                  {/* <textarea
                     name="campaignDescription"
                     value={campaignDescription}
                     onChange={handleCampaignDescriptionChange}
-                  />
+                  /> */}
                 </label>
+                <Editor onContentChange={handleContentChange} />
+
+
               </div>
             </div>
+            
           </div>
           <div className="createButtonWrapper">
-          <button className="donate" onClick={createCampaign}>
-            Create Campaign
-          </button>
+            <button className="donate" onClick={createCampaign}>
+              Create Campaign
+            </button>
           </div>
         </div>
       </div>

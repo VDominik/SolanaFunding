@@ -1,16 +1,17 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::entrypoint::ProgramResult;
 
-declare_id!("7KQp5Q9brpL96J6Li6FZGCL8SmHXVwzEba4i47B2r9yd");
+declare_id!("2BePaJPAPUih3FWZXR9ZfjawxkWnKQtYp2jpQn7Sxk3h");
 
 #[program]
 pub mod crowdfundingdapp {
     use super::*;
 
-    pub fn create(ctx: Context<Create>, name: String, description: String) -> ProgramResult {
+    pub fn create(ctx: Context<Create>, name: String, description: String, amount_wanted: String) -> ProgramResult {
         let campaign = &mut ctx.accounts.campaign;
         campaign.name = name;
         campaign.description = description;
+        campaign.amount_wanted = amount_wanted;
         campaign.amount_donated = 0;
         campaign.admin = *ctx.accounts.user.key;
         Ok(())
@@ -83,10 +84,6 @@ pub struct Campaign {
     pub admin: Pubkey,
     pub name: String,
     pub description: String,
+    pub amount_wanted: String,
     pub amount_donated: u64
-}
-
-#[account]
-pub struct: Developer {
-    pub wallet: Pubkey
 }
