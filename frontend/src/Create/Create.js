@@ -11,6 +11,8 @@ import {
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { Buffer } from "buffer";
+import Editor from "../richTextEditor/RichTextEditor";
+
 window.Buffer = Buffer;
 
 const supabase = createClient(
@@ -28,6 +30,7 @@ const Create = () => {
   const [campaignName, setCampaignName] = useState("");
   const [campaignDescription, setCampaignDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [previewMode, setPreviewMode] = useState(false);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -75,14 +78,14 @@ const Create = () => {
     }
   };
 
-  const uploadImageToSupabase = async () => {
+  const uploadImageToSupabase = async (filename) => {
     try {
       if (imageFile) {
-        console.log("Uploading image with file name:", imageFile.name);
+        console.log("Uploading image with file name:", filename);
 
         const { data, error } = await supabase.storage
           .from("imagesForCampaigns") // Replace with your actual storage bucket name
-          .upload(`images/${imageFile.name}`, imageFile);
+          .upload(`images/${filename}`, imageFile);
 
         if (error) {
           console.error("Error uploading image to Supabase:", error);
@@ -106,53 +109,55 @@ const Create = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
       const [campaign] = await PublicKey.findProgramAddressSync(
+
         [
           utils.bytes.utf8.encode("CAMPAIGN_DEMO"),
           provider.wallet.publicKey.toBuffer(),
         ],
         program.programId,
-        console.log("Program ID:", programID.toString())
+        console.log("Program ID:", programID.toString()),
       );
-
-      const imageUrl = await uploadImageToSupabase();
-
+      
+      // TODO: Do it somehow without the description. For now its okay
       await program.rpc.create(
         utils.bytes.utf8.encode(campaignName),
-        utils.bytes.utf8.encode(campaignDescription),
+         utils.bytes.utf8.encode("desc"),
         {
           accounts: {
             campaign,
             user: provider.wallet.publicKey,
             systemProgram: SystemProgram.programId,
           },
+          
         }
       );
-
-      await storeCampaignInDatabase(campaign.toString(), imageUrl);
-      console.log("Created a new campaign with address: ", campaign.toString());
+      const customName = campaign.toString();
+      const imageUrl = await uploadImageToSupabase(customName);
+      await storeCampaignInDatabase(campaign.toString(), imageUrl, campaignDescription);
       console.log("Image URL:", imageUrl);
-
-
       console.log("Created a new campaign with address: ", campaign.toString());
-
     } catch (error) {
       console.error("Eror creating campaign", error);
     }
   };
+  
 
-  const storeCampaignInDatabase = async (campaignAddress, imageUrl) => {
+  const storeCampaignInDatabase = async (campaignAddress, imageUrl, description) => {
     try {
       // Use Supabase client to store campaign information in your database
       const { data, error } = await supabase
-        .from('addressImages') // Replace with your database table name
+        .from("addressImages") // Replace with your database table name
         .insert([
           {
             programAddress: campaignAddress,
-            imageURL: "https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public/"+imageUrl,
+            imageURL:
+              "https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public/" +
+              imageUrl,
+              description: description,
             // Other campaign data fields...
-          }
+          },
         ]);
-  
+
       if (error) {
         console.error("Error storing campaign in database", error);
       } else {
@@ -161,6 +166,15 @@ const Create = () => {
     } catch (error) {
       console.error("Error storing campaign in database", error);
     }
+  };
+
+  const handleContentChange = (content) => {
+    setCampaignDescription(content);
+    console.log(campaignDescription)
+  };
+
+  const handleTogglePreview = () => {
+    setPreviewMode(!previewMode);
   };
 
   useEffect(() => {
@@ -208,19 +222,23 @@ const Create = () => {
                 <br />
                 <label>
                   Campaign Description:
-                  <textarea
+                  {/* <textarea
                     name="campaignDescription"
                     value={campaignDescription}
                     onChange={handleCampaignDescriptionChange}
-                  />
+                  /> */}
                 </label>
+                <Editor onContentChange={handleContentChange} />
+
+
               </div>
             </div>
+            
           </div>
           <div className="createButtonWrapper">
-          <button className="donate" onClick={createCampaign}>
-            Create Campaign
-          </button>
+            <button className="donate" onClick={createCampaign}>
+              Create Campaign
+            </button>
           </div>
         </div>
       </div>

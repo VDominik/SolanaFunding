@@ -85,8 +85,3 @@ pub struct Campaign {
     pub description: String,
     pub amount_donated: u64
 }
-
-#[account]
-pub struct: Developer {
-    pub wallet: Pubkey
-}
