@@ -118,6 +118,9 @@ const App = () => {
   //   }
   // };
 
+  
+
+
   const renderNotConnectedContainer = () => (
     <button className="button" onClick={connectWallet}>
       Connect to Wallet
@@ -136,6 +139,7 @@ const App = () => {
         </div>
         <div className="card-wrapper">
           {campaigns.map((campaign) => {
+            const progress = ((campaign.amountDonated/ web3.LAMPORTS_PER_SOL) / campaign.amountWanted) * 100;
             // const dataToPass = {
             //   name: campaign.name,
             //   description: campaign.description,
@@ -161,6 +165,7 @@ const App = () => {
                   <div>
                     <h2>{campaign.name}</h2>
                   </div>
+                  <progress className="progressbar" value={progress} max="100"></progress>
                   <p className="card-description"><b> Raised: </b> <br /> {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()} / {campaign.amountWanted}</p>
 
                   <p>
