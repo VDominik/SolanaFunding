@@ -19,15 +19,18 @@ const Navbar = () => {
           </a>
         </div>
         <div className="menu-icon" onClick={handleShowNavbar}>
-          Hamburger
+          Hamburger 
         </div>
         <div className={`nav-elements  ${showNavbar && "active"}`}>
           <ul>
             <li>
               <NavLink to="/">Home</NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink to="/blog">Blog</NavLink>
+            </li> */}
+            <li>
+              <NavLink to="/profile">Profile</NavLink>
             </li>
             <li>
               <NavLink to="/app">Projects</NavLink>
