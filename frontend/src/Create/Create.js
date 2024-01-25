@@ -14,8 +14,6 @@ import { Buffer } from "buffer";
 import Editor from "../richTextEditor/RichTextEditor";
 import { useNavigate } from "react-router-dom";
 
-
-
 window.Buffer = Buffer;
 
 const supabase = createClient(
@@ -27,15 +25,14 @@ const network = clusterApiUrl("devnet");
 const opts = { preflightCommitment: "processed" };
 const { SystemProgram } = web3;
 
-
 const Create = () => {
   const [walletAddress, setWalletAddress] = useState(null);
   const [campaignName, setCampaignName] = useState("");
   const [amountWanted, setAmountWanted] = useState("");
   const [campaignDescription, setCampaignDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  let navigate = useNavigate(); 
-
+  const [counter, setCounter] = useState(0);
+  let navigate = useNavigate();
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -109,48 +106,80 @@ const Create = () => {
     }
   };
 
+  const fetchDataFromDatabase = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("addressImages")
+        .select('id');
+  
+      if (error) {
+        console.error('Error fetching data:', error.message);
+      } else {
+        // Check if data is not empty and has at least one item
+        if (data && data.length > 0) {
+          let lastCampaignId = data[data.length-1].id;
+          lastCampaignId++;
+          // Set the counter to the ID of the last created campaign
+          setCounter(lastCampaignId);
+          return lastCampaignId; // You can return the ID if needed
+        } else {
+          console.log('No data found');
+        }
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  }
+
   const createCampaign = async () => {
+    const counterBuffer = Buffer.alloc(4);
+    counterBuffer.writeUint32LE(counter);
+    console.log(counter);
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      const [campaign] = await PublicKey.findProgramAddressSync(
+      const [campaign] = web3.PublicKey.findProgramAddressSync(
+        [provider.wallet.publicKey.toBuffer(), counterBuffer],
+        program.programId
+      );
 
-        [
-          utils.bytes.utf8.encode("CAMPAIGN_DEMO"),
-          provider.wallet.publicKey.toBuffer(),
-        ],
-        program.programId,
-        console.log("Program ID:", programID.toString()),
-        console.log(amountWanted)
-      );
-      
       // TODO: Do it somehow without the description. For now its okay
-      await program.rpc.create(
-        utils.bytes.utf8.encode(campaignName),
-         utils.bytes.utf8.encode(""),
-         utils.bytes.utf8.encode(amountWanted),
-        {
-          accounts: {
-            campaign,
-            user: provider.wallet.publicKey,
-            systemProgram: SystemProgram.programId,
-          },
-          
-        }
-      );
+      await program.methods
+        .create(
+          utils.bytes.utf8.encode(campaignName),
+          utils.bytes.utf8.encode(""),
+          utils.bytes.utf8.encode(amountWanted),
+          counter
+        )
+        .accounts({
+          campaign,
+          user: provider.wallet.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+
+
       const customName = campaign.toString();
       const imageUrl = await uploadImageToSupabase(customName);
-      await storeCampaignInDatabase(campaign.toString(), imageUrl, campaignDescription);
+      await storeCampaignInDatabase(
+        campaign.toString(),
+        imageUrl,
+        campaignDescription
+      );
       console.log("Image URL:", imageUrl);
       console.log("Created a new campaign with address: ", campaign.toString());
+
       navigate(`/campaigns/${campaign.toString()}?showPopup=true`);
     } catch (error) {
       console.error("Eror creating campaign", error);
     }
   };
-  
 
-  const storeCampaignInDatabase = async (campaignAddress, imageUrl, description) => {
+  const storeCampaignInDatabase = async (
+    campaignAddress,
+    imageUrl,
+    description
+  ) => {
     try {
       // Use Supabase client to store campaign information in your database
       const { data, error } = await supabase
@@ -161,7 +190,7 @@ const Create = () => {
             imageURL:
               "https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public/" +
               imageUrl,
-              description: description,
+            description: description,
             // Other campaign data fields...
           },
         ]);
@@ -178,15 +207,16 @@ const Create = () => {
 
   const handleContentChange = (content) => {
     setCampaignDescription(content);
-    console.log(campaignDescription)
+    console.log(campaignDescription);
   };
-
 
   useEffect(() => {
     const onLoad = async () => {
       await checkIfWalletConnected();
+      
     };
     window.addEventListener("load", onLoad);
+    fetchDataFromDatabase()
     return () => window.removeEventListener("load", onLoad);
   }, []);
 
@@ -215,7 +245,7 @@ const Create = () => {
           <div className="info-wrapper">
             <div className="data-passed-wrapper">
               <div className="data-passed">
-              <label>
+                <label>
                   Campaign Name:
                   <input
                     type="text"
@@ -244,11 +274,8 @@ const Create = () => {
                   /> */}
                 </label>
                 <Editor onContentChange={handleContentChange} />
-
-
               </div>
             </div>
-            
           </div>
           <div className="createButtonWrapper">
             <button className="donate" onClick={createCampaign}>
