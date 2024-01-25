@@ -7,7 +7,7 @@ declare_id!("2BePaJPAPUih3FWZXR9ZfjawxkWnKQtYp2jpQn7Sxk3h");
 pub mod crowdfundingdapp {
     use super::*;
 
-    pub fn create(ctx: Context<Create>, name: String, description: String, amount_wanted: String) -> ProgramResult {
+    pub fn create(ctx: Context<Create>, name: String, description: String, amount_wanted: String, counter: u32) -> ProgramResult {
         let campaign = &mut ctx.accounts.campaign;
         campaign.name = name;
         campaign.description = description;
@@ -15,6 +15,7 @@ pub mod crowdfundingdapp {
         campaign.amount_donated = 0;
         campaign.admin = *ctx.accounts.user.key;
         Ok(())
+        
     }
 
     pub fn withdraw(ctx: Context<Withdraw>, amount: u64) -> ProgramResult {
@@ -51,15 +52,16 @@ pub mod crowdfundingdapp {
 }
 
 #[derive(Accounts)]
+#[instruction(name: String, description: String, amount_wanted: String, counter: u32)]
 pub struct Create <'info> {
-
-    #[account(init, payer = user, space = 9000, seeds = [b"CAMPAIGN_DEMO".as_ref(), user.key().as_ref()], bump)]
+    
+    #[account(init, payer = user, space = 9000, seeds = [user.key().as_ref(), &counter.to_le_bytes()], bump)]
     pub campaign: Account<'info, Campaign>,
 
     #[account(mut)]
     pub user: Signer<'info>,
     /// The system program provides a way to transfer SOL from one account to another.
-    pub system_program: Program<'info, System>
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
@@ -85,5 +87,6 @@ pub struct Campaign {
     pub name: String,
     pub description: String,
     pub amount_wanted: String,
-    pub amount_donated: u64
+    pub amount_donated: u64,
+    pub counter: u32,
 }

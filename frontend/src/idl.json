@@ -36,6 +36,10 @@
         {
           "name": "amountWanted",
           "type": "string"
+        },
+        {
+          "name": "counter",
+          "type": "u32"
         }
       ]
     },
@@ -112,6 +116,10 @@
           {
             "name": "amountDonated",
             "type": "u64"
+          },
+          {
+            "name": "counter",
+            "type": "u32"
           }
         ]
       }
