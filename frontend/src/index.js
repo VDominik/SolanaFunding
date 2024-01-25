@@ -10,6 +10,7 @@ import CampaignPage from './CampaignPage/campaignpage.js';
 import Footer from "./Footer/footer.js";
 import reportWebVitals from "./reportWebVitals";
 import About from "./About/about.js";
+import Profile from "./Profile/profile.js"
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -23,6 +24,7 @@ root.render(
       <Route path="/create" element={<Create />} />
       <Route path="/campaigns/:campaignId" element={<CampaignPage />} />
       <Route path="/about" element={<About />} />
+      <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
     </Router>
