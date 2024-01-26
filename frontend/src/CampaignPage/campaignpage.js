@@ -10,14 +10,13 @@ import { useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import Popup from "../Popup/popup";
 
-
 const { Link } = require("react-router-dom"); // Import Link from react-router-dom
 
 const supabase = createClient(
   "https://tjolslegyojdnkpvtodo.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqb2xzbGVneW9qZG5rcHZ0b2RvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ4OTQ1OTQsImV4cCI6MjAyMDQ3MDU5NH0.yYfp8jRC-X7W6kn3oSEFHNMys57GwnlAwo_z9fs9rO8"
 );
-const tableName = 'addressImages';
+const tableName = "addressImages";
 
 const programID = new PublicKey(idl.metadata.address);
 const network = clusterApiUrl("devnet");
@@ -39,8 +38,6 @@ const SimplePage = () => {
   const [previewMode, setPreviewMode] = useState(false);
   const [campaignDescription, setCampaignDescription] = useState("");
   const [isPopupVisible, setPopupVisibility] = useState(false);
-
-
 
   const handleAmountChange = (event) => {
     const inputValue = event.target.value;
@@ -88,15 +85,24 @@ const SimplePage = () => {
     }
   };
 
+  let getAvailableBalance = async() => {
+    const provider = getProvider();
+    const balance = await provider.connection.getBalance(new PublicKey(campaignId));
+    const balanceInSol = balance / web3.LAMPORTS_PER_SOL;
+    const availableBalance = Math.floor(balanceInSol * 10) / 10; // Rounds down to the nearest 0.1 SOL
+    console.log(`The balance of ${campaignId} is ${availableBalance} SOL`);
+    return availableBalance;
+  }
+
   const getCampaignById = async (campaignId) => {
     const provider = getProvider();
     const program = new Program(idl, programID, provider);
-
     const campaignAccount = await program.account.campaign.fetch(
       new PublicKey(campaignId)
     );
     const admin = campaignAccount.admin.toString();
     const campaignName = campaignAccount.name;
+
     // const campaignDescription = campaignAccount.description;
 
     // console.log("Admin inside getCampaignById:", admin);
@@ -143,77 +149,104 @@ const SimplePage = () => {
 
   const renderDonateButton = () => {
     return (
+      <>
+      <div className="input-wrapper">
+      <input
+        className="amount-input"
+        type="number"
+        name="amount"
+        placeholder="amount"
+        step={0.01}
+        value={amount}
+        onChange={handleAmountChange}
+        min="0"
+      ></input>
+    </div>
+    <div className="buttons-wrapper">
       <button className="donate" onClick={() => donate(campaignId)}>
         Click to DONATE!
       </button>
-    );
-  };
-
-  const renderAmountInput = () => {
-    return (
-      <div className="input-wrapper">
-        <input
-          className="amount-input"
-          type="number"
-          name="amount"
-          placeholder="amount"
-          step={0.01}
-          value={amount}
-          onChange={handleAmountChange}
-          min="0"
-        ></input>
       </div>
+      </>
     );
   };
 
-  const renderWithdrawButton = () => {
+
+  const handleMaxClick = async () => {
+    let availableBalance = await getAvailableBalance();
+    setamount(availableBalance);
+  };
+
+  const renderWithdrawButton =() => {
+// Add this function to your component
+
     return (
+      <>
+      <div className="input-wrapper">
+      <input
+        className="amount-input"
+        type="number"
+        name="amount"
+        placeholder="amount"
+        step={0.01}
+        value={amount}
+        onChange={handleAmountChange}
+        min="0"
+      ></input>
+      {{handleMaxClick} && <button onClick={handleMaxClick}>MAX</button>}
+    </div>
+    <div className="buttons-wrapper">
       <button className="withdraw" onClick={() => withdraw(campaignId)}>
         Click to WITHDRAW!
       </button>
+    </div>
+      </>
     );
   };
 
   const fetchDataFromDatabase = async () => {
     try {
-      const { data, error } = await supabase.from(tableName).select('description').eq('programAddress', campaignId);
-  
+      const { data, error } = await supabase
+        .from(tableName)
+        .select("description")
+        .eq("programAddress", campaignId);
+
       if (error) {
-        console.error('Error fetching data:', error.message);
+        console.error("Error fetching data:", error.message);
       } else {
         // Check if data is not empty and has at least one item
         if (data && data.length > 0) {
           const campaignDescription = data[0].description;
-          setCampaignDescription(campaignDescription)
+          setCampaignDescription(campaignDescription);
           console.log(campaignDescription);
           return campaignDescription; // You can return the description text if needed
         } else {
-          console.log('No data found');
+          console.log("No data found");
         }
       }
     } catch (error) {
-      console.error('Error:', error.message);
+      console.error("Error:", error.message);
     }
-  }
-  
+  };
 
   useEffect(() => {
     const onLoad = async () => {
       await checkIfWalletConnected();
       if (campaignId) {
-        const { admin, campaignName } =
-          await getCampaignById(campaignId);
+        const { admin, campaignName } = await getCampaignById(campaignId);
         // console.log("Admin inside useEffect:", admin);
         setLoading(false);
-        fetchDataFromDatabase()
+        fetchDataFromDatabase();
         setCampaignInfo({ admin, campaignName });
         // Now you can use admin, campaignName, campaignDescription as needed
       }
     };
-    const showPopupParam = new URLSearchParams(location.search).get('showPopup');
-    
+    const showPopupParam = new URLSearchParams(location.search).get(
+      "showPopup"
+    );
+
     // Check if the showPopup parameter is present and has a truthy value
-    if (showPopupParam && showPopupParam.toLowerCase() === 'true') {
+    if (showPopupParam && showPopupParam.toLowerCase() === "true") {
       setPopupVisibility(true);
     }
 
@@ -227,12 +260,11 @@ const SimplePage = () => {
     setPopupVisibility(false);
   };
 
-
   return (
     <>
-    {isPopupVisible && (
-      <Popup message="Transaction Confirmed!" onClose={handleClosePopup} />
-    )}
+      {isPopupVisible && (
+        <Popup message="Transaction Confirmed!" onClose={handleClosePopup} />
+      )}
       <div className="breadcrumbs">
         <Link to={`/App`}>
           <span>&lt;&lt; Back</span>
@@ -259,24 +291,17 @@ const SimplePage = () => {
                     <>
                       <h1>Name: {campaignInfo.campaignName}</h1>
                       <p>Public key: {campaignId}</p>
-
-                    <div
-                      dangerouslySetInnerHTML={{ __html: campaignDescription }}
-                      
-                    />
-  
-
-
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: campaignDescription,
+                        }}
+                      />
                     </>
                   )}
                 </>
               )}
-
-
             </div>
           </div>
-
-          {/* Fixing the syntax issue and wrapping the conditional blocks */}
           <div>
             {walletAddress === campaignInfo.admin && (
               <>
@@ -286,23 +311,12 @@ const SimplePage = () => {
                 </div>
               </>
             )}
-
-            {walletAddress !== campaignInfo.admin && (
-              <>
-                {/* {console.log("walletAddress is not equal to passedData.admin")} */}
-                <div>{/* {walletAddress} noooo {campaignInfo.admin} */}</div>
-              </>
-            )}
           </div>
           <div className="">
-            {renderAmountInput()}
-            <div className="buttons-wrapper">
               <>
                 {walletAddress === campaignInfo.admin && renderWithdrawButton()}
                 {walletAddress !== campaignInfo.admin && renderDonateButton()}
-                
               </>
-            </div>
           </div>
         </div>
       </div>
