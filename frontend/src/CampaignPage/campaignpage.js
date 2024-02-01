@@ -33,9 +33,10 @@ const SimplePage = () => {
     admin: null,
     campaignName: null,
     campaignDescription: null,
+    amoutDonated: null,
+    list_of_donors: null,
   });
   const [loading, setLoading] = useState(true);
-  const [previewMode, setPreviewMode] = useState(false);
   const [campaignDescription, setCampaignDescription] = useState("");
   const [isPopupVisible, setPopupVisibility] = useState(false);
 
@@ -85,14 +86,16 @@ const SimplePage = () => {
     }
   };
 
-  let getAvailableBalance = async() => {
+  let getAvailableBalance = async () => {
     const provider = getProvider();
-    const balance = await provider.connection.getBalance(new PublicKey(campaignId));
+    const balance = await provider.connection.getBalance(
+      new PublicKey(campaignId)
+    );
     const balanceInSol = balance / web3.LAMPORTS_PER_SOL;
     const availableBalance = Math.floor(balanceInSol * 10) / 10; // Rounds down to the nearest 0.1 SOL
     console.log(`The balance of ${campaignId} is ${availableBalance} SOL`);
     return availableBalance;
-  }
+  };
 
   const getCampaignById = async (campaignId) => {
     const provider = getProvider();
@@ -102,24 +105,47 @@ const SimplePage = () => {
     );
     const admin = campaignAccount.admin.toString();
     const campaignName = campaignAccount.name;
+    const amoutDonated = (
+      campaignAccount.amountDonated / web3.LAMPORTS_PER_SOL
+    ).toFixed(2);
+    const list_of_donors_full = campaignAccount.listOfDonors.toString();
+    const list_of_donors = list_of_donors_full.split(",");
+    console.log("list_of_donors:", list_of_donors);
 
     // const campaignDescription = campaignAccount.description;
 
     // console.log("Admin inside getCampaignById:", admin);
 
-    return { admin, campaignName, campaignDescription };
+    return {
+      admin,
+      campaignName,
+      campaignDescription,
+      amoutDonated,
+      list_of_donors,
+    };
   };
 
   const donate = async (publicKey) => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
+      console.log(
+        "pub: ",
+        publicKey,
+        "prov:",
+        provider.wallet.publicKey,
+        "sys: ",
+        SystemProgram.programId
+      );
 
       await program.rpc.donate(new BN(amount * web3.LAMPORTS_PER_SOL), {
         accounts: {
           campaign: publicKey,
           user: provider.wallet.publicKey,
           systemProgram: SystemProgram.programId,
+          developer: new PublicKey(
+            "AZh3i2QBZkpe8HdgoW3uWabwWAZqeVgfpkEVD9ja7GN"
+          ),
         },
       });
       console.log(`Donated ${amount} SOL to: `, publicKey.toString());
@@ -150,56 +176,55 @@ const SimplePage = () => {
   const renderDonateButton = () => {
     return (
       <>
-      <div className="input-wrapper">
-      <input
-        className="amount-input"
-        type="number"
-        name="amount"
-        placeholder="amount"
-        step={0.01}
-        value={amount}
-        onChange={handleAmountChange}
-        min="0"
-      ></input>
-    </div>
-    <div className="buttons-wrapper">
-      <button className="donate" onClick={() => donate(campaignId)}>
-        Click to DONATE!
-      </button>
-      </div>
+        <div className="input-wrapper">
+          <input
+            className="amount-input"
+            type="number"
+            name="amount"
+            placeholder="amount"
+            step={0.01}
+            value={amount}
+            onChange={handleAmountChange}
+            min="0"
+          ></input>
+        </div>
+        <div className="buttons-wrapper">
+          <button className="donate" onClick={() => donate(campaignId)}>
+            Click to DONATE!
+          </button>
+        </div>
       </>
     );
   };
-
 
   const handleMaxClick = async () => {
     let availableBalance = await getAvailableBalance();
     setamount(availableBalance);
   };
 
-  const renderWithdrawButton =() => {
-// Add this function to your component
+  const renderWithdrawButton = () => {
+    // Add this function to your component
 
     return (
       <>
-      <div className="input-wrapper">
-      <input
-        className="amount-input"
-        type="number"
-        name="amount"
-        placeholder="amount"
-        step={0.01}
-        value={amount}
-        onChange={handleAmountChange}
-        min="0"
-      ></input>
-      {{handleMaxClick} && <button onClick={handleMaxClick}>MAX</button>}
-    </div>
-    <div className="buttons-wrapper">
-      <button className="withdraw" onClick={() => withdraw(campaignId)}>
-        Click to WITHDRAW!
-      </button>
-    </div>
+        <div className="input-wrapper">
+          <input
+            className="amount-input"
+            type="number"
+            name="amount"
+            placeholder="amount"
+            step={0.01}
+            value={amount}
+            onChange={handleAmountChange}
+            min="0"
+          ></input>
+          {{ handleMaxClick } && <button onClick={handleMaxClick}>MAX</button>}
+        </div>
+        <div className="buttons-wrapper">
+          <button className="withdraw" onClick={() => withdraw(campaignId)}>
+            Click to WITHDRAW!
+          </button>
+        </div>
       </>
     );
   };
@@ -233,14 +258,18 @@ const SimplePage = () => {
     const onLoad = async () => {
       await checkIfWalletConnected();
       if (campaignId) {
-        const { admin, campaignName } = await getCampaignById(campaignId);
+        const { admin, campaignName, amoutDonated, list_of_donors } =
+          await getCampaignById(campaignId);
+        console.log("Admin inside useEffect:", list_of_donors.toString());
         // console.log("Admin inside useEffect:", admin);
         setLoading(false);
         fetchDataFromDatabase();
-        setCampaignInfo({ admin, campaignName });
+        setCampaignInfo({ admin, campaignName, amoutDonated, list_of_donors });
+        getAvailableBalance();
         // Now you can use admin, campaignName, campaignDescription as needed
       }
     };
+
     const showPopupParam = new URLSearchParams(location.search).get(
       "showPopup"
     );
@@ -278,6 +307,23 @@ const SimplePage = () => {
               alt=""
             />
           </div>
+          <div>
+            <p>
+              <b>Public key:</b>
+            </p>
+            <p> {campaignId}</p>
+            <p>
+              <b>Amount Donated:</b>
+            </p>
+            <p> {campaignInfo.amoutDonated} SOL </p>
+            <p>
+              <b>Last Donations:</b>
+            </p>
+
+            {campaignInfo.list_of_donors ? (
+              <p>{campaignInfo.list_of_donors.join(" ")}</p>
+            ) : null}
+          </div>
         </div>
 
         <div className="info-wrapper">
@@ -290,7 +336,6 @@ const SimplePage = () => {
                   {campaignInfo.admin && (
                     <>
                       <h1>Name: {campaignInfo.campaignName}</h1>
-                      <p>Public key: {campaignId}</p>
                       <div
                         dangerouslySetInnerHTML={{
                           __html: campaignDescription,
@@ -302,21 +347,11 @@ const SimplePage = () => {
               )}
             </div>
           </div>
-          <div>
-            {walletAddress === campaignInfo.admin && (
-              <>
-                {console.log("walletAddress is equal to passedData.admin")}
-                <div>
-                  {walletAddress} is equal to {campaignInfo.admin}
-                </div>
-              </>
-            )}
-          </div>
           <div className="">
-              <>
-                {walletAddress === campaignInfo.admin && renderWithdrawButton()}
-                {walletAddress !== campaignInfo.admin && renderDonateButton()}
-              </>
+            <>
+              {walletAddress === campaignInfo.admin && renderWithdrawButton()}
+              {walletAddress !== campaignInfo.admin && renderDonateButton()}
+            </>
           </div>
         </div>
       </div>
