@@ -22,13 +22,8 @@ const { SystemProgram } = web3;
 const App = () => {
   const [walletAddress, setWalletAddress] = useState(null);
   const [campaigns, setCampaigns] = useState([]);
-  const [amount, setamount] = useState(0.1); // Default donation amount
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
-
-  const handleAmountChange = (event) => {
-    setamount(parseFloat(event.target.value) || 0);
-  };
 
   const getProvider = () => {
     const connection = new Connection(network, opts.preflightCommitment);
@@ -89,38 +84,6 @@ const App = () => {
     });
   };
 
-  // const createCampaign = async () => {
-  //   try {
-  //     const provider = getProvider();
-  //     const program = new Program(idl, programID, provider);
-  //     const [campaign] = await PublicKey.findProgramAddressSync(
-  //       [
-  //         utils.bytes.utf8.encode("CAMPAIGN_DEMO"),
-  //         provider.wallet.publicKey.toBuffer(),
-  //       ],
-  //       program.programId,
-  //       console.log("Program ID:", programID.toString())
-  //     );
-  //     await program.rpc.create(
-  //       utils.bytes.utf8.encode("campaign name"),
-  //       utils.bytes.utf8.encode("campaign description"),
-  //       {
-  //         accounts: {
-  //           campaign,
-  //           user: provider.wallet.publicKey,
-  //           systemProgram: SystemProgram.programId,
-  //         },
-  //       }
-  //     );
-  //     console.log("Created a new campaign with address: ", campaign.toString());
-  //   } catch (error) {
-  //     console.error("Eror creating campaign", error);
-  //   }
-  // };
-
-  
-
-
   const renderNotConnectedContainer = () => (
     <button className="button" onClick={connectWallet}>
       Connect to Wallet
@@ -139,7 +102,11 @@ const App = () => {
         </div>
         <div className="card-wrapper">
           {campaigns.map((campaign) => {
-            const progress = ((campaign.amountDonated/ web3.LAMPORTS_PER_SOL) / campaign.amountWanted) * 100;
+            const progress =
+              (campaign.amountDonated /
+                web3.LAMPORTS_PER_SOL /
+                campaign.amountWanted) *
+              100;
             // const dataToPass = {
             //   name: campaign.name,
             //   description: campaign.description,
@@ -157,27 +124,25 @@ const App = () => {
                       alt=""
                     />
                   </div>
-                  {/* <p>
-              <b>Campaign ID: </b>
-            </p>
-            {campaign.pubkey.toString()} */}
-
                   <div>
                     <h2>{campaign.name}</h2>
                   </div>
-                  <progress className="progressbar" value={progress} max="100"></progress>
-                  <p className="card-description"><b> Raised: </b> <br /> {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()} / {campaign.amountWanted}</p>
+                  <progress
+                    className="progressbar"
+                    value={progress}
+                    max="100"
+                  ></progress>
+                  <p className="card-description">
+                    <b> Raised: </b> <br />
+                    {(
+                      campaign.amountDonated / web3.LAMPORTS_PER_SOL
+                    ).toString()}{" "}
+                    / {campaign.amountWanted}
+                  </p>
 
                   <p>
                     <b>Creator: </b> {campaign.admin.toString()}
                   </p>
-
-                  {/* Use Link to navigate to the campaign page */}
-
-                  {/* <button className='view'>View Campaign</button> */}
-
-                  {/* <button className='donate' onClick={() => donate(campaign.pubkey)}>Click to DONATE!</button>
-            <button className='withdraw' onClick={() => withdraw(campaign.pubkey)}>Click to WITHDRAW!</button> */}
                   <br />
                 </div>
               </Link>
@@ -228,11 +193,16 @@ const App = () => {
     <div className="App">
       <div className="searchbar-wrapper">
         <div className="searchbar-input-wrapper">
-          <input className="searchbar-input" type="text" placeholder="Search campaigns" onChange={handleSearch} />🔍
+          <input
+            className="searchbar-input"
+            type="text"
+            placeholder="Search campaigns"
+            onChange={handleSearch}
+          />
+          🔍
         </div>
-
       </div>
-  
+
       {searchTerm ? (
         // Render search results
         <div className="card-wrapper">
@@ -240,18 +210,19 @@ const App = () => {
             <Link to={`/campaigns/${campaign.pubkey}`} key={campaign.pubkey}>
               <div className="campaign-card">
                 <div className="card-image">
-                  <img src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaign.pubkey}`} alt="" />
+                  <img
+                    src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaign.pubkey}`}
+                    alt=""
+                  />
                 </div>
                 <div>
                   <h2>{campaign.name}</h2>
                 </div>
                 <p className="card-description">{campaign.description}</p>
                 <p>
-                  <b>Balance: </b>{" "}
+                  <b>Creator: </b>
                   {campaign.admin.toString()}
-                  {(
-                    campaign.amountDonated / web3.LAMPORTS_PER_SOL
-                  ).toString()}
+                  {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}
                 </p>
                 <br />
               </div>
@@ -265,15 +236,12 @@ const App = () => {
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <>
-              {walletAddress && renderConnectedContainer()}
-            </>
+            <>{walletAddress && renderConnectedContainer()}</>
           )}
         </>
       )}
     </div>
   );
-  
 };
 
 export default App;
