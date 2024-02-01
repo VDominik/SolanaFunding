@@ -30,13 +30,13 @@ const Navbar = () => {
               <NavLink to="/blog">Blog</NavLink>
             </li> */}
             <li>
-              <NavLink to="/profile">Profile</NavLink>
-            </li>
-            <li>
               <NavLink to="/app">Projects</NavLink>
             </li>
             <li>
               <NavLink to="/about">About</NavLink>
+            </li>
+            <li>
+              <NavLink to="/profile">Profile</NavLink>
             </li>
             <li className="campaign-button">
               <NavLink className={"create"} to="/create">
