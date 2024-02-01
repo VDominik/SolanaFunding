@@ -1,5 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::entrypoint::ProgramResult;
+use anchor_lang::solana_program::pubkey::Pubkey;
+use std::str::FromStr;
 
 declare_id!("2BePaJPAPUih3FWZXR9ZfjawxkWnKQtYp2jpQn7Sxk3h");
 
@@ -34,10 +36,16 @@ pub mod crowdfundingdapp {
     }
 
     pub fn donate(ctx: Context<Donate>, amount: u64) -> ProgramResult {
+        let campaign = &mut ctx.accounts.campaign;
+        let user = &mut ctx.accounts.user;
+        let developer_fee = amount / 20; // Calculate 5% of the donation
+        let net_donation = amount - developer_fee; // Subtract the developer fee from the donation
+        campaign.list_of_donors.push(user.key());
+
         let ix = anchor_lang::solana_program::system_instruction::transfer(
             &ctx.accounts.user.key(),
             &ctx.accounts.campaign.key(),
-            amount
+            net_donation,
         );
         anchor_lang::solana_program::program::invoke(
             &ix,
@@ -46,7 +54,22 @@ pub mod crowdfundingdapp {
                 ctx.accounts.campaign.to_account_info()
             ]
         );
-        (&mut ctx.accounts.campaign).amount_donated += amount;
+
+        //My attempt at a solution
+        let ixf = anchor_lang::solana_program::system_instruction::transfer(
+            &ctx.accounts.user.key(),
+            &ctx.accounts.developer.key(),
+            developer_fee,
+        );
+        anchor_lang::solana_program::program::invoke(
+            &ixf,
+            &[
+                ctx.accounts.user.to_account_info(),
+                ctx.accounts.developer.to_account_info()
+            ]
+        );
+        
+        (&mut ctx.accounts.campaign).amount_donated += net_donation;
         Ok(())
     }
 }
@@ -78,7 +101,10 @@ pub struct Donate<'info> {
     pub campaign: Account<'info, Campaign>,
     #[account(mut)]
     pub user: Signer<'info>,
-    pub system_program: Program<'info, System>
+    /// CHECK: The developer field is marked as unsafe because...
+    #[account(mut, constraint = developer.key() == Pubkey::from_str("AZh3i2QBZkpe8HdgoW3uWabwWAZqeVgfpkEVD9ja7GN").unwrap())]
+    pub developer: AccountInfo<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[account]
@@ -89,4 +115,5 @@ pub struct Campaign {
     pub amount_wanted: String,
     pub amount_donated: u64,
     pub counter: u32,
+    pub list_of_donors: Vec<Pubkey>,
 }

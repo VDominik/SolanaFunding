@@ -78,6 +78,11 @@
           "isSigner": true
         },
         {
+          "name": "developer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -120,6 +125,12 @@
           {
             "name": "counter",
             "type": "u32"
+          },
+          {
+            "name": "listOfDonors",
+            "type": {
+              "vec": "publicKey"
+            }
           }
         ]
       }
