@@ -311,7 +311,7 @@ const SimplePage = () => {
             <p>
               <b>Public key:</b>
             </p>
-            <p> {campaignId}</p>
+            <p> {campaignId.slice(0,5)}...{campaignId.slice(campaignId.length-5,campaignId.length)}</p>
             <p>
               <b>Amount Donated:</b>
             </p>
@@ -319,10 +319,14 @@ const SimplePage = () => {
             <p>
               <b>Last Donations:</b>
             </p>
-
             {campaignInfo.list_of_donors ? (
-              <p>{campaignInfo.list_of_donors.join(" ")}</p>
-            ) : null}
+  campaignInfo.list_of_donors
+    .map((donor, index) => (
+      <p key={index}>
+        {donor.slice(0, 5)}...{donor.slice(-5)},
+      </p>
+    ))
+) : null}
           </div>
         </div>
 
