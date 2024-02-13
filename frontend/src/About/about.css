@@ -1,0 +1,8 @@
+.about-page-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.about-page {
+width: 80%;
+}

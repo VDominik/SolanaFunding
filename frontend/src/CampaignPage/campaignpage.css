@@ -1,18 +1,32 @@
-.page-wrapper {
-  margin: 8px 16px 16px 16px;
+.campaign-page-wrapper {
+  display: flex;  
+  flex-direction: column;
+  align-items: center;
+}
+
+.campaign-content-wrapper {
+  width: 80%;
   display: flex;
-  background-color: #f8f9ea;
+  flex-direction: column;
   height: 100%;
-  border-radius: 50px;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+background-color: white;
+}
+
+.campaign-info {
+  display: flex;
+}
+
+.campaign-info-name {
+  text-align: left;
+  padding-left: 16px;
 }
 
 .campaign-image {
-  border: 1px solid black;
+  border: 1px solid whitesmoke;
   height: 50vh;
   width: 50vh;
   margin: 16px 16px 32px 16px;
-  border-radius: 50px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
 }
 
 .campaign-image img {
@@ -20,6 +34,11 @@
   width: 100%;
   border-radius: 49px 4px 4px 4px;
 }
+
+/* .campaign-image-wrapper {
+  display: flex;
+  justify-content: space-between;
+} */
 
 .data-passed {
   margin: 16px;
@@ -60,8 +79,8 @@ input::-webkit-inner-spin-button {
 }
 
 .buttons-wrapper {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .donate {
@@ -107,7 +126,7 @@ input::-webkit-inner-spin-button {
 }
 
 .withdraw:hover {
-    background-color: #2f2f2f;
+  background-color: #2f2f2f;
 }
 
 .breadcrumbs a {
@@ -122,8 +141,7 @@ input::-webkit-inner-spin-button {
 }
 
 @media only screen and (max-width: 600px) {
-
-  .page-wrapper{
+  .page-wrapper {
     flex-direction: column;
   }
 
@@ -132,6 +150,12 @@ input::-webkit-inner-spin-button {
     width: 100%;
     border-radius: 50px 5px 5px 5px;
     margin: 0;
+  }
+
+  .campaign-image-wrapper {
+    overflow-wrap: break-word;
+    display: flex;
+    background-color: red;
   }
 
   .campaign-image img {

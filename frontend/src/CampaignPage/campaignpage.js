@@ -25,7 +25,6 @@ const { SystemProgram } = web3;
 
 const SimplePage = () => {
   const [walletAddress, setWalletAddress] = useState(null);
-  const [campaigns, setCampaigns] = useState([]);
   const [amount, setamount] = useState(0.1); // Default donation amount
   const params = useParams();
   const campaignId = params.campaignId;
@@ -38,7 +37,8 @@ const SimplePage = () => {
   });
   const [loading, setLoading] = useState(true);
   const [campaignDescription, setCampaignDescription] = useState("");
-  const [isPopupVisible, setPopupVisibility] = useState(false);
+  const [isConfirmPopupVisible, setConfirmPopupVisibility] = useState(false);
+  const [isErrorPopupVisible, setErrorPopupVisibility] = useState(false);
 
   const handleAmountChange = (event) => {
     const inputValue = event.target.value;
@@ -51,7 +51,6 @@ const SimplePage = () => {
   };
 
   const location = useLocation();
-  const passedData = location.state;
 
   const getProvider = () => {
     const connection = new Connection(network, opts.preflightCommitment);
@@ -150,8 +149,11 @@ const SimplePage = () => {
       });
       console.log(`Donated ${amount} SOL to: `, publicKey.toString());
       getCampaignById(campaignId);
-    } catch (error) {}
-    setPopupVisibility(true);
+      setConfirmPopupVisibility(true);
+    } catch (error) {
+      console.log("Error donating: ", error.message);
+      setErrorPopupVisibility(true);
+    }
   };
 
   const withdraw = async (publicKey) => {
@@ -167,10 +169,10 @@ const SimplePage = () => {
       });
       console.log("Withdrew money from: ", publicKey.toString());
       getCampaignById(campaignId);
+      setConfirmPopupVisibility(true);
     } catch (error) {
-      console.log("Error with withdrawal:", error);
+      setErrorPopupVisibility(true);
     }
-    setPopupVisibility(true);
   };
 
   const renderDonateButton = () => {
@@ -276,61 +278,94 @@ const SimplePage = () => {
 
     // Check if the showPopup parameter is present and has a truthy value
     if (showPopupParam && showPopupParam.toLowerCase() === "true") {
-      setPopupVisibility(true);
+      setConfirmPopupVisibility(true);
     }
 
     onLoad();
     window.addEventListener("load", onLoad);
     return () => window.removeEventListener("load", onLoad);
-  }, [campaignId, location.search]);
+  }, [campaignId]);
 
-  const handleClosePopup = () => {
+  const handleCloseConfirmPopup = () => {
     // Close the pop-up
-    setPopupVisibility(false);
+    setConfirmPopupVisibility(false);
+  };
+
+  const handleCloseErrorPopup = () => {
+    // Close the pop-up
+    setErrorPopupVisibility(false);
   };
 
   return (
     <>
-      {isPopupVisible && (
-        <Popup message="Transaction Confirmed!" onClose={handleClosePopup} />
+      {isConfirmPopupVisible && (
+        <Popup
+          message="Transaction Confirmed!"
+          onClose={handleCloseConfirmPopup}
+        />
       )}
-      <div className="breadcrumbs">
-        <Link to={`/App`}>
-          <span>&lt;&lt; Back</span>
-        </Link>
-      </div>
-      <div className="page-wrapper">
-        <div className="campaign-image-wrapper">
-          <div className="campaign-image">
-            <img
-              src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaignId}`}
-              alt=""
-            />
+      {isErrorPopupVisible && (
+        <Popup message="Transaction Failed!" onClose={handleCloseErrorPopup} />
+      )}
+
+      <div className="campaign-page-wrapper">
+        <div className="campaign-content-wrapper">
+          <div className="breadcrumbs">
+            <Link to={`/App`}>
+              <span>&lt;&lt; Back</span>
+            </Link>
+          </div>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              {campaignInfo.admin && (
+                <>
+                  <h1 className="campaign-info-name">
+                    {campaignInfo.campaignName}
+                  </h1>
+                </>
+              )}
+            </>
+          )}
+          <div className="campaign-info">
+            <div className="campaign-image-wrapper">
+              <div className="campaign-image">
+                <img
+                  src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaignId}`}
+                  alt=""
+                />
+              </div>
+              <div>
+                <p>
+                  <b>Public key:</b>
+                </p>
+                <p> {campaignId}</p>
+                <p>
+                  <b>Amount Donated:</b>
+                </p>
+                <p> {campaignInfo.amoutDonated} SOL </p>
+                <p>
+                  <b>Last Donations:</b>
+                </p>
+                {campaignInfo.list_of_donors
+                  ? campaignInfo.list_of_donors.map((donor, index) => (
+                      <p key={index}>
+                        {donor.slice(0, 5)}...{donor.slice(-5)}
+                      </p>
+                    ))
+                  : null}
+                            <div className="">
+            <>
+              {walletAddress === campaignInfo.admin && renderWithdrawButton()}
+              {walletAddress !== campaignInfo.admin && renderDonateButton()}
+            </>
+          </div>
+              </div>
+            </div>
           </div>
           <div>
-            <p>
-              <b>Public key:</b>
-            </p>
-            <p> {campaignId.slice(0,5)}...{campaignId.slice(campaignId.length-5,campaignId.length)}</p>
-            <p>
-              <b>Amount Donated:</b>
-            </p>
-            <p> {campaignInfo.amoutDonated} SOL </p>
-            <p>
-              <b>Last Donations:</b>
-            </p>
-            {campaignInfo.list_of_donors ? (
-  campaignInfo.list_of_donors
-    .map((donor, index) => (
-      <p key={index}>
-        {donor.slice(0, 5)}...{donor.slice(-5)},
-      </p>
-    ))
-) : null}
-          </div>
-        </div>
-
-        <div className="info-wrapper">
+          <div className="info-wrapper">
           <div className="data-passed-wrapper">
             <div className="data-passed">
               {loading ? (
@@ -339,7 +374,6 @@ const SimplePage = () => {
                 <>
                   {campaignInfo.admin && (
                     <>
-                      <h1>Name: {campaignInfo.campaignName}</h1>
                       <div
                         dangerouslySetInnerHTML={{
                           __html: campaignDescription,
@@ -351,11 +385,8 @@ const SimplePage = () => {
               )}
             </div>
           </div>
-          <div className="">
-            <>
-              {walletAddress === campaignInfo.admin && renderWithdrawButton()}
-              {walletAddress !== campaignInfo.admin && renderDonateButton()}
-            </>
+
+        </div>
           </div>
         </div>
       </div>

@@ -1,39 +1,64 @@
 body {
-  text-align: center;
+  display: flex;
+  justify-content: center;
   margin: 0;
   padding: 0;
   font-family: "Poppins", sans-serif;
   background-color: white;
+  text-align: center;
 }
 
 .pageWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  width: 80%;
+  background-color: white;
+  margin-top: 32px;
+  /* border-radius: 25px 25px 0 0; */
 }
 
 .hero-section {
-  width: 100%;
+  margin-top: 32px;
+  width: 80%;
+  height: 100%;
 }
 
 .image {
-  background-image: url("heroo.png");
-  margin-top: -120px;
+  background-image: url("garden.png");
   background-size: cover;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   border-radius: 25px;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.hero-section h2 {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 30px;
+  color: white;
+  padding-top: 128px;
+  margin-bottom: 0;
 }
 
 .connectButton {
-  margin-top: 320px;
+  margin-top: 64px;
   margin-bottom: 300px;
-  background-color: #9945ff;
-  border: 2px solid black;
+  background-color: white;
   border-radius: 25px;
   padding: 12px;
-  color: white;
+  color: #7fe3f5;
+  border: none;
   transition: transform 0.2s;
   font-weight: 600;
+  font-size: large;
 }
 
 .connectButton:hover {
@@ -45,49 +70,34 @@ body {
 }
 
 .recommended {
-  padding: 32px 0 16px 0;
-}
-
-.recommended-wrapper {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 48px;
-  align-items: center;
-  min-height: 500px;
+  padding: 32px 0 0 0;
+  text-align: left;
 }
 
 .show-all-button {
-  background-color: #14f195;
-  border: 2px solid black;
+  background-color:#359eff;
   border-radius: 25px;
+  border: none;
   padding: 12px;
-  color: black;
+  color: white;
   transition: transform 0.2s;
   font-weight: 600;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+
 }
 
 .show-all-button:hover {
   cursor: pointer;
-  background-color: #7af4c1;
+  background-color: #2980d2;
   -ms-transform: scale(1.1); /* IE 9 */
   -webkit-transform: scale(1.1); /* Safari 3-8 */
   transform: scale(1.05);
 }
 
 .recommended-cards-wrapper {
-  /* border: 1px solid black; */
-  border-radius: 25px;
-  margin: 16px 16px 16px 16px;
-  background-color: #faf9f6;
-  min-height: 500px;
-  min-width: 75%;
-  height: fit-content;
-  display: flex;
-  justify-content: center;
-  width: fit-content;
-  align-self: center;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+display: flex;
+width: 100%;
+justify-content: space-between;
+margin-bottom: 32px;
 }
 
 .recommended-card-main-wrapper {
@@ -106,10 +116,12 @@ body {
 .recommended-card-main {
   border: 1px solid black;
   border-radius: 25px;
-  width: 400px;
-  height: 400px;
+  width: 240px;
+  height: 240px;
+  margin: 16px;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   background-color: white;
+  /* margin: 0 48px 0 48px; */
   transition: transform 0.2s;
 }
 
@@ -145,18 +157,19 @@ body {
 }
 
 .recommended-card-secondary {
-  border: 1px solid black;
+  border: 1px solid whitesmoke;
   border-radius: 25px;
   width: 240px;
   height: 240px;
   margin: 16px;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 5px 10px 0px rgba(237, 237, 237, 0.5); 
   background-color: white;
   /* margin: 0 48px 0 48px; */
   transition: transform 0.2s;
 }
 
 .recommended-card-secondary:hover {
+  background-color: whitesmoke;
   -ms-transform: scale(1.1); /* IE 9 */
   -webkit-transform: scale(1.1); /* Safari 3-8 */
   transform: scale(1.05);
@@ -178,52 +191,110 @@ body {
   justify-content: center;
   font-size: large;
   font-weight: 500;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recommended-card-secondary-name progress {
+  width: 90%;
+}
+
+.why-us {
+  /* background-color: #78d6eb; */
+  min-height: 500px;
+  border-radius: 30px;
+  /* margin: 0 -10% 0 -10%; */
+  /* box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5); */
+}
+
+.why-us h1 {
+  padding-top: 32px;
+  font-size: 48px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.why-icons-wrapper {
+  display: flex;
+  justify-content: space-around;
+  padding: 32px;
+  /* border: 1px solid black; */
+}
+
+.why-icon-wrapper {
+  padding: 16px;
+  text-align: left;
+  border: 1px solid lightgray;
+  border-radius: 12px;
+  margin: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 50%;
+}
+
+.why-icon-wrapper img {
+  width: 10%;
 }
 
 .cards-wrapper {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 32px;
+  padding: 32px;
 }
 
 .card {
-  width: 500px;
-  height: 500px;
-  border: 1px solid black;
-  overflow-y: scroll;
-  text-decoration: none;
+  width: 50%;
+  height: 50%;
+  border: 1px solid lightgray;
   color: black;
-  background-color: #faf9f6;
-  border-radius: 25px;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-  margin: 16px;
-  /* transition: transform .2s; */
+  border-radius: 12px;
+  margin: 8px;
+  padding: 16px;
+  overflow: hidden;
+  text-align: left;
 }
 
-/* .card:hover {
-  -ms-transform: scale(1.1);  //IE 9 
-  -webkit-transform: scale(1.1); //Safari 3-8 
-  transform: scale(1.05); 
-}  */
+.card h2 {
+  margin: 0;
+}
 
 .card-number {
-  padding: 48px;
-  font-size: 64px;
+  font-size: 48px;
 }
 
 @media only screen and (max-width: 600px) {
+
+  .hero-section {
+    margin-top: 0;
+    width: 100%;
+  }
+
+  .image {
+    border-radius: 0;
+  }
+
+  .recommended-wrapper {
+    display: flex;
+  }
+
   .recommended-cards-wrapper {
     /* border: 1px solid black; */
     border-radius: 25px;
     margin: 16px 16px 16px 16px;
-    background-color: #faf9f6;
     min-height: 500px;
     height: fit-content;
     display: flex;
     flex-direction: column;
-    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
     align-items: center;
   }
+
+  /*for tablet 
+      display: flex;
+    width: 100%;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    justify-content: space-around; */
 
   .recommended-card-main {
     border: 1px solid black;
@@ -235,17 +306,24 @@ body {
     transition: transform 0.2s;
   }
 
+  .why-icons-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .why-icon-wrapper {
+    width: 100%;
+  }
+
   .cards-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding-bottom: 32px;
     align-items: center;
   }
 
   .card {
     height: 80%;
-    width: 80%;
+    width: 100%;
   }
 
   .card-number {

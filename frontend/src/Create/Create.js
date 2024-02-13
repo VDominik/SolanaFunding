@@ -31,12 +31,16 @@ const Create = () => {
   const [amountWanted, setAmountWanted] = useState("");
   const [campaignDescription, setCampaignDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [counter, setCounter] = useState(0);
   let navigate = useNavigate();
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImageFile(file);
+
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview(previewUrl);
   };
 
   const handleCampaignNameChange = (event) => {
@@ -108,28 +112,26 @@ const Create = () => {
 
   const fetchDataFromDatabase = async () => {
     try {
-      const { data, error } = await supabase
-        .from("addressImages")
-        .select('id');
-  
+      const { data, error } = await supabase.from("addressImages").select("id");
+
       if (error) {
-        console.error('Error fetching data:', error.message);
+        console.error("Error fetching data:", error.message);
       } else {
         // Check if data is not empty and has at least one item
         if (data && data.length > 0) {
-          let lastCampaignId = data[data.length-1].id;
+          let lastCampaignId = data[data.length - 1].id;
           lastCampaignId++;
           // Set the counter to the ID of the last created campaign
           setCounter(lastCampaignId);
           return lastCampaignId; // You can return the ID if needed
         } else {
-          console.log('No data found');
+          console.log("No data found");
         }
       }
     } catch (error) {
-      console.error('Error:', error.message);
+      console.error("Error:", error.message);
     }
-  }
+  };
 
   const createCampaign = async () => {
     const counterBuffer = Buffer.alloc(4);
@@ -157,7 +159,6 @@ const Create = () => {
           systemProgram: SystemProgram.programId,
         })
         .rpc();
-
 
       const customName = campaign.toString();
       const imageUrl = await uploadImageToSupabase(customName);
@@ -213,74 +214,96 @@ const Create = () => {
   useEffect(() => {
     const onLoad = async () => {
       await checkIfWalletConnected();
-      
     };
     window.addEventListener("load", onLoad);
-    fetchDataFromDatabase()
+    fetchDataFromDatabase();
     return () => window.removeEventListener("load", onLoad);
   }, []);
 
   return (
     <>
-      <div className="heading2">
+      <div className="create-page-wrapper">
+
+
+
+        <div className="create-content-wrapper">
+
+          <div className="create-info-wrapper">
+
+            <div className="infos-wrapper">
+
+              <div className="data-passed-wrapper">
+                <div className="data-passed">
+                <div className="heading2">
         <h2>Create Your Campaign</h2>
       </div>
-
-      <div className="page-wrapper">
-        <div>
-          <div className="campaign-image-wrapper">
-            <div className="campaign-image">
-              <div className="image-upload">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="info-wrapper">
-          <div className="info-wrapper">
-            <div className="data-passed-wrapper">
-              <div className="data-passed">
-                <label>
-                  Campaign Name:
                   <input
+                    className="create-input"
                     type="text"
                     name="campaignName"
+                    placeholder="Enter Campaign Name"
                     value={campaignName}
                     onChange={handleCampaignNameChange}
                   />
-                </label>
-                <br />
-                <label>
-                  Amount Wanted:
-                  <input
-                    type="text"
-                    name="amountWanted"
-                    value={amountWanted}
-                    onChange={handleAmountWantedChange}
+                  <br />
+                  <Editor
+                    className="rteditor"
+                    onContentChange={handleContentChange}
                   />
-                </label>
-                <br />
-                <label>
-                  Campaign Description:
-                  {/* <textarea
+                  <h2 className="heading2">Add an image to represent your <br/>
+                    campaign</h2>
+
+                  <div className="create-image-upload">
+                    <div className="campaign-image-wrapper">
+                      <div className="create-campaign-image">
+                        <div className="image-upload">
+                          {!imagePreview && (
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleImageChange}
+                            />
+                          )}
+                          {imagePreview && (
+                            <img
+                              className="image-preview"
+                              src={imagePreview}
+                              alt="Preview"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="goal-wrapper">
+
+                      <p className="create-paragraph">Set a funding goal:</p>
+                      <input
+                        className="create-input"
+                        type="text"
+                        name="amountWanted"
+                        placeholder="500 SOL"
+                        value={amountWanted}
+                        onChange={handleAmountWantedChange}
+                      />
+                  </div>
+                  <br />
+                  {/* <label>
+                  <textarea
                     name="campaignDescription"
                     value={campaignDescription}
                     onChange={handleCampaignDescriptionChange}
-                  /> */}
-                </label>
-                <Editor onContentChange={handleContentChange} />
+                  />
+                </label> */}
+                </div>
               </div>
+              <div className="createButtonWrapper">
+              <button className="create-button" onClick={createCampaign}>
+                Create Campaign
+              </button>
             </div>
-          </div>
-          <div className="createButtonWrapper">
-            <button className="donate" onClick={createCampaign}>
-              Create Campaign
-            </button>
+            </div>
+
           </div>
         </div>
       </div>

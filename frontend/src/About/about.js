@@ -1,6 +1,9 @@
+import "./about.css"
 const About = () => {
   return (
     <>
+   <div className="about-page-wrapper">
+    <div className="about-page">
       <h1>About Solario</h1>
       <h2>Welcome to Solario</h2>
       <i>Bringing The Solana Community Together</i> 
@@ -40,6 +43,8 @@ const About = () => {
       Contact Us Have questions or want to get in touch with our team? We're
       here to help. Reach out to us at [contact@solariocrowdfunding.com] or use
       our [Contact Form]. Thank you for being part of the Solario community!
+      </div>
+      </div>
     </>
   );
 };
