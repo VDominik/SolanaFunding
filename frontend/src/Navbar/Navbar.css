@@ -1,29 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 .container {
   position: relative; /* Add this line to create a stacking context */
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 15px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
+  background-color: white;
   align-items: center;
   height: 100%;
-  background-color: #14F195;
-  border-radius: 50px;
-  border: 2px solid black;
   z-index: 1;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid lightgray;
 }
 
-
 .navbar {
-  height: 60px;
-  margin: 16px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 64px;
 }
 
 .logo {
-    max-height: 32px;
+  max-height: 32px;
+  margin-left: 16px;
 }
 
 .menu-icon {
@@ -31,6 +29,7 @@
 }
 
 .nav-elements {
+  margin-right: 16px;
 }
 
 .nav-elements li {
@@ -49,7 +48,7 @@
 }
 
 .nav-elements ul li:not(:last-child) {
-  margin-right: 60px;
+  margin-right: 32px;
 }
 
 .nav-elements ul a {
@@ -61,15 +60,15 @@
   padding: 4px; /* Add padding to create space for the border */
 }
 
-.nav-elements ul a.active{
-  border-bottom-color: #9945FF; /* Change only the border color */
-  color: #2f234f;
+.nav-elements ul a.active {
+  border-bottom-color: white; /* Change only the border color */
   font-weight: 500;
 }
 
 .campaign-button {
-  background-color: #9945FF;
   border: 2px solid black;
+  background-color: 
+  #359eff;
   border-radius: 50px;
   padding: 4px;
   margin: 0;
@@ -84,7 +83,7 @@
   border: 2px solid transparent;
   border: transparent;
   box-sizing: border-box;
-  color: white;
+  color: black;
   padding: 6px;
   font-weight: 400;
 }
@@ -99,16 +98,12 @@
   background-color: #9945FF;
 } */
 
-
 .search-button {
-
-
 }
 
-li .search-button a{
+li .search-button a {
   border: none;
   font-size: xx-large;
-
 }
 
 .search-button img {
@@ -130,9 +125,9 @@ li .search-button a{
 
   .nav-elements {
     position: absolute;
-    right: 0;
+    right: -16px;
     top: 60px;
-    background-color: #fef7e5;
+    background-color: white;
     width: 0px;
     height: calc(100vh - 60px);
     transition: all 0.3s ease-in;

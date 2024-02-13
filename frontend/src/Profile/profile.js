@@ -84,12 +84,13 @@ const App = () => {
   const renderConnectedContainer = () => {
     return (
       <>
+      <div className="App">
         <br />
         <div className="browse-header">
         <p>Connected with wallet: {walletAddress}</p>
 
           <h1 className="cards-header">Browse Your campaigns</h1>
-          <h2>Browse trough all of the campaigns you created on Solario</h2>
+          <p className="cards-p">Browse trough all of the campaigns you created on Solario</p>
         </div>
         <div className="card-wrapper">
           
@@ -111,7 +112,7 @@ const App = () => {
                       />
                     </div>
                     <div>
-                      <h2>{campaign.name}</h2>
+                      <p className="campaign-name">{campaign.name}</p>
                     </div>
                     <progress
                       className="progressbar"
@@ -126,8 +127,9 @@ const App = () => {
                       / {campaign.amountWanted}
                     </p>
 
-                    <p>
-                      <b>Creator: </b> {campaign.admin.toString()}
+                    <p className="campaign-creator">
+                    Creator: {campaign.admin.toString().slice(0, 3)}...
+                    {campaign.admin.toString().slice(-5)}
                     </p>
                     <br />
                   </div>
@@ -135,6 +137,7 @@ const App = () => {
               );
             }
           })}
+        </div>
         </div>
       </>
     );
@@ -171,6 +174,7 @@ const App = () => {
       ) : (
         <>{walletAddress && renderConnectedContainer()}</>
       )}
+
     </>
   );
 };

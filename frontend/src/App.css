@@ -1,5 +1,12 @@
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .App {
   text-align: center;
+  width: 80%;
 }
 
 .App-logo {
@@ -61,8 +68,10 @@
   text-align: left;
 }
 
-.cards-header {
-  /* padding-left: 32px; */
+.cards-p {
+  text-align: left;
+  color: dimgray;
+  font-size: 18px;
 }
 
 .card-wrapper {
@@ -70,7 +79,6 @@
   flex-wrap: wrap;
   padding: 8px;
   justify-content: space-evenly;
-  background-color: #faf9f6;
   min-height: 500px;
 }
 
@@ -79,18 +87,25 @@
 }
 
 .campaign-card {
-  width: 500px;
-  height: 500px;
-  border: 1px solid black;
+  width: 300px;
+  height: 300px;
   margin: 4px;
-  overflow-y: scroll;
   text-decoration: none;
+  text-align: left;
   color: black;
-  background-color: #faf9f6;
-  border-radius: 25px;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   margin: 16px;
   transition: transform 0.2s;
+}
+
+.campaign-name {
+  margin: 0;
+  padding-top: 8px;
+  font-weight: 600;
+}
+
+.campaign-creator {
+  margin: 0;
+  color: dimgray;
 }
 
 .campaign-card:hover {
@@ -101,6 +116,8 @@
 
 .card-description {
   word-wrap: break-word;
+  margin: 0;
+  color: dimgray;
 }
 
 .card-image {
@@ -112,29 +129,34 @@
   width: 100%;
   height: 100%;
   background-size: cover;
+  border-radius: 12px;
 }
 
 .progressbar {
-  width: 75%;
+  width: 100%;
 }
 
 .searchbar-wrapper {
-  display: inline-block;
+  display: flex;
+  margin-top: 16px;
+  padding-left: 48px;
+  padding-right: 48px;
 }
 
 .searchbar-input-wrapper {
   display: flex;
   padding: 8px;
-  border: 2px solid black;
   border-radius: 25px;
-  background-color: white;
-  width: fit-content;
+  background-color: whitesmoke;
+  width: 100%;
 }
 
 .searchbar-input {
   border-radius: 24px;
   border: none;
   font-size: large;
+  background-color: whitesmoke;
+  width: 100%;
 }
 
 .searchbar-input:focus-visible {

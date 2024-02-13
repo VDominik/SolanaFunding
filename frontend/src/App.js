@@ -95,11 +95,6 @@ const App = () => {
       <>
         {/* <button onClick={createCampaign}>Create a campaign</button> */}
         {/* <button onClick={getCampaigns}>Get a list of campaigns</button> */}
-        <br />
-        <div className="browse-header">
-          <h1 className="cards-header">Browse all campaigns</h1>
-          <h2>Browse trough all of the campaigns created on Solario</h2>
-        </div>
         <div className="card-wrapper">
           {campaigns.map((campaign) => {
             const progress =
@@ -125,7 +120,7 @@ const App = () => {
                     />
                   </div>
                   <div>
-                    <h2>{campaign.name}</h2>
+                    <p className="campaign-name">{campaign.name}</p>
                   </div>
                   <progress
                     className="progressbar"
@@ -133,15 +128,15 @@ const App = () => {
                     max="100"
                   ></progress>
                   <p className="card-description">
-                    <b> Raised: </b> <br />
+                    Raised: <br />
                     {(
                       campaign.amountDonated / web3.LAMPORTS_PER_SOL
                     ).toString()}{" "}
                     / {campaign.amountWanted}
                   </p>
-
-                  <p>
-                    <b>Creator: </b> {campaign.admin.toString()}
+                  <p className="campaign-creator">
+                    Creator: {campaign.admin.toString().slice(0, 3)}...
+                    {campaign.admin.toString().slice(-5)}
                   </p>
                   <br />
                 </div>
@@ -191,43 +186,66 @@ const App = () => {
 
   return (
     <div className="App">
+      <div className="browse-header">
+        <h1 className="cards-header">Browse all campaigns</h1>
+        <p className="cards-p">
+          Browse trough all of the campaigns created on Solario
+        </p>
+      </div>
       <div className="searchbar-wrapper">
         <div className="searchbar-input-wrapper">
+          🔍
           <input
             className="searchbar-input"
             type="text"
             placeholder="Search campaigns"
             onChange={handleSearch}
           />
-          🔍
         </div>
       </div>
 
       {searchTerm ? (
         // Render search results
         <div className="card-wrapper">
-          {filteredCampaigns.map((campaign) => (
-            <Link to={`/campaigns/${campaign.pubkey}`} key={campaign.pubkey}>
-              <div className="campaign-card">
-                <div className="card-image">
-                  <img
-                    src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaign.pubkey}`}
-                    alt=""
-                  />
+          {filteredCampaigns.map((campaign) => {
+            const progress =
+              (campaign.amountDonated /
+                web3.LAMPORTS_PER_SOL /
+                campaign.amountWanted) *
+              100;
+            return (
+              <Link to={`/campaigns/${campaign.pubkey}`}>
+                <div key={campaign.pubkey} className="campaign-card">
+                  <div className="card-image">
+                    <img
+                      src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaign.pubkey}`}
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <p className="campaign-name">{campaign.name}</p>
+                  </div>
+                  <progress
+                    className="progressbar"
+                    value={progress}
+                    max="100"
+                  ></progress>
+                  <p className="card-description">
+                    Raised: <br />
+                    {(
+                      campaign.amountDonated / web3.LAMPORTS_PER_SOL
+                    ).toString()}{" "}
+                    / {campaign.amountWanted}
+                  </p>
+                  <p className="campaign-creator">
+                    Creator: {campaign.admin.toString().slice(0, 3)}...
+                    {campaign.admin.toString().slice(-5)}
+                  </p>
+                  <br />
                 </div>
-                <div>
-                  <h2>{campaign.name}</h2>
-                </div>
-                <p className="card-description">{campaign.description}</p>
-                <p>
-                  <b>Creator: </b>
-                  {campaign.admin.toString()}
-                  {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}
-                </p>
-                <br />
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       ) : (
         // Render all campaigns

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-import Logo from "./text.png";
+import Logo from "../Footer/textBlack.png";
 
 const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(false);
@@ -23,9 +23,9 @@ const Navbar = () => {
         </div>
         <div className={`nav-elements  ${showNavbar && "active"}`}>
           <ul>
-            <li>
+            {/* <li>
               <NavLink to="/">Home</NavLink>
-            </li>
+            </li> */}
             {/* <li>
               <NavLink to="/blog">Blog</NavLink>
             </li> */}
@@ -44,9 +44,9 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li>
-                <div className="search-button">
-                  <NavLink to="/app">🔍</NavLink>
-                </div>
+                {/* <div className="search-button"> */}
+                  <NavLink to="/app">Search</NavLink>
+                {/* </div> */}
             </li>
           </ul>
         </div>

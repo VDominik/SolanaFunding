@@ -1,9 +1,9 @@
 .footer {
     border-top: 1px solid lightgrey;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 32px;
+    padding-bottom: 32px;
+
+    width: 80%;
+    background-color: white;
 }
 
 .footer-logo-wrapper {
