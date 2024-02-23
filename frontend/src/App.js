@@ -10,6 +10,8 @@ import {
 } from "@project-serum/anchor";
 import { useEffect, useState } from "react";
 import { Buffer } from "buffer";
+import Magnifier from "./search.png";
+
 window.Buffer = Buffer;
 
 const { Link } = require("react-router-dom"); // Import Link from react-router-dom
@@ -194,7 +196,7 @@ const App = () => {
       </div>
       <div className="searchbar-wrapper">
         <div className="searchbar-input-wrapper">
-          🔍
+        <img src={Magnifier} alt="Logo" className="logo" />
           <input
             className="searchbar-input"
             type="text"
@@ -250,7 +252,7 @@ const App = () => {
       ) : (
         // Render all campaigns
         <>
-          {!walletAddress && renderNotConnectedContainer()}
+          {!walletAddress && renderConnectedContainer()}
           {loading ? (
             <p>Loading...</p>
           ) : (

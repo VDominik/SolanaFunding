@@ -33,6 +33,7 @@ const SimplePage = () => {
     campaignName: null,
     campaignDescription: null,
     amoutDonated: null,
+    amountWanted: null,
     list_of_donors: null,
   });
   const [loading, setLoading] = useState(true);
@@ -107,6 +108,7 @@ const SimplePage = () => {
     const amoutDonated = (
       campaignAccount.amountDonated / web3.LAMPORTS_PER_SOL
     ).toFixed(2);
+    const amountWanted = campaignAccount.amountWanted;
     const list_of_donors_full = campaignAccount.listOfDonors.toString();
     const list_of_donors = list_of_donors_full.split(",");
     console.log("list_of_donors:", list_of_donors);
@@ -120,6 +122,7 @@ const SimplePage = () => {
       campaignName,
       campaignDescription,
       amoutDonated,
+      amountWanted,
       list_of_donors,
     };
   };
@@ -178,6 +181,7 @@ const SimplePage = () => {
   const renderDonateButton = () => {
     return (
       <>
+      <div className="whole-input-wrapper">
         <div className="input-wrapper">
           <input
             className="amount-input"
@@ -189,7 +193,10 @@ const SimplePage = () => {
             onChange={handleAmountChange}
             min="0"
           ></input>
+          <div className="input-text">SOL</div>
         </div>
+        </div>
+
         <div className="buttons-wrapper">
           <button className="donate" onClick={() => donate(campaignId)}>
             Click to DONATE!
@@ -209,6 +216,7 @@ const SimplePage = () => {
 
     return (
       <>
+        <div className="whole-input-wrapper">
         <div className="input-wrapper">
           <input
             className="amount-input"
@@ -220,7 +228,8 @@ const SimplePage = () => {
             onChange={handleAmountChange}
             min="0"
           ></input>
-          {{ handleMaxClick } && <button onClick={handleMaxClick}>MAX</button>}
+          {{ handleMaxClick } && <button className="max-amount-button" onClick={handleMaxClick}>MAX</button>}
+          </div>
         </div>
         <div className="buttons-wrapper">
           <button className="withdraw" onClick={() => withdraw(campaignId)}>
@@ -232,6 +241,7 @@ const SimplePage = () => {
   };
 
   const fetchDataFromDatabase = async () => {
+    setLoading(true);
     try {
       const { data, error } = await supabase
         .from(tableName)
@@ -253,20 +263,34 @@ const SimplePage = () => {
       }
     } catch (error) {
       console.error("Error:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const onLoad = async () => {
       await checkIfWalletConnected();
       if (campaignId) {
-        const { admin, campaignName, amoutDonated, list_of_donors } =
-          await getCampaignById(campaignId);
+        const {
+          admin,
+          campaignName,
+          amoutDonated,
+          amountWanted,
+          list_of_donors,
+        } = await getCampaignById(campaignId);
         console.log("Admin inside useEffect:", list_of_donors.toString());
         // console.log("Admin inside useEffect:", admin);
         setLoading(false);
         fetchDataFromDatabase();
-        setCampaignInfo({ admin, campaignName, amoutDonated, list_of_donors });
+        setCampaignInfo({
+          admin,
+          campaignName,
+          amoutDonated,
+          amountWanted,
+          list_of_donors,
+        });
         getAvailableBalance();
         // Now you can use admin, campaignName, campaignDescription as needed
       }
@@ -310,83 +334,96 @@ const SimplePage = () => {
 
       <div className="campaign-page-wrapper">
         <div className="campaign-content-wrapper">
-          <div className="breadcrumbs">
+          {/* <div className="breadcrumbs">
             <Link to={`/App`}>
               <span>&lt;&lt; Back</span>
             </Link>
-          </div>
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <>
-              {campaignInfo.admin && (
-                <>
-                  <h1 className="campaign-info-name">
-                    {campaignInfo.campaignName}
-                  </h1>
-                </>
-              )}
-            </>
-          )}
-          <div className="campaign-info">
-            <div className="campaign-image-wrapper">
-              <div className="campaign-image">
-                <img
-                  src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaignId}`}
-                  alt=""
-                />
+          </div> */}
+
+          <div className="whole-wrapper">
+            <div className="campaign-info">
+              <div className="campaign-image-wrapper">
+                <div className="campaign-image">
+                  <img
+                    src={`https://tjolslegyojdnkpvtodo.supabase.co/storage/v1/object/public//imagesForCampaigns/images/${campaignId}`}
+                    alt=""
+                  />
+                </div>
+
+                {loading ? (
+                  <p>Loading...</p>
+                ) : (
+                  <>
+                    {campaignInfo.admin && (
+                      <>
+                        <h1 className="campaign-info-name">
+                          {campaignInfo.campaignName}
+                        </h1>
+                      </>
+                    )}
+                  </>
+                )}
+
+                <div>
+                  <div className="info-wrapper">
+                    <div className="data-passed-wrapper">
+                      <div className="data-passed">
+                        {loading ? (
+                          <p style={{ minWidth: '800px' }}>Loading...</p>
+                        ) : (
+                          <>
+                            {campaignInfo.admin && (
+                              <>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: campaignDescription,
+                                  }}
+                                />
+                              </>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <p>
-                  <b>Public key:</b>
+            </div>
+            <div className="campaign-page-info">
+              <div className="campaign-page-info-hideable">
+                <p className="campaign-info-non-bold">
+                  <b>Raised:</b> {campaignInfo.amoutDonated} /{" "}
+                  {campaignInfo.amountWanted} SOL{" "}
                 </p>
-                <p> {campaignId}</p>
-                <p>
-                  <b>Amount Donated:</b>
-                </p>
-                <p> {campaignInfo.amoutDonated} SOL </p>
-                <p>
-                  <b>Last Donations:</b>
-                </p>
+                <p className="campaign-info-bold">Public key:</p>
+                <p className="campaign-info-non-bold">{campaignId}</p>
+                <p className="campaign-info-bold">Creator:</p>
+                <p className="campaign-info-non-bold">{campaignInfo.admin}</p>
+
+                <p className="campaign-info-hidden">Last Donations:</p>
                 {campaignInfo.list_of_donors
                   ? campaignInfo.list_of_donors.map((donor, index) => (
-                      <p key={index}>
+                      <p key={index} className="campaign-info-hidden">
                         {donor.slice(0, 5)}...{donor.slice(-5)}
                       </p>
                     ))
                   : null}
-                            <div className="">
-            <>
-              {walletAddress === campaignInfo.admin && renderWithdrawButton()}
-              {walletAddress !== campaignInfo.admin && renderDonateButton()}
-            </>
-          </div>
+                <div className="donate-info-web">
+                  <>
+                    {walletAddress === campaignInfo.admin &&
+                      renderWithdrawButton()}
+                    {walletAddress !== campaignInfo.admin &&
+                      renderDonateButton()}
+                  </>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-          <div className="info-wrapper">
-          <div className="data-passed-wrapper">
-            <div className="data-passed">
-              {loading ? (
-                <p>Loading...</p>
-              ) : (
-                <>
-                  {campaignInfo.admin && (
-                    <>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: campaignDescription,
-                        }}
-                      />
-                    </>
-                  )}
-                </>
-              )}
+            <div className="donate-info-phone">
+              <>
+                {walletAddress === campaignInfo.admin && renderWithdrawButton()}
+                {walletAddress !== campaignInfo.admin && renderDonateButton()}
+              </>
             </div>
-          </div>
-
-        </div>
           </div>
         </div>
       </div>

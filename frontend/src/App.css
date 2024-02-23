@@ -88,7 +88,7 @@
 
 .campaign-card {
   width: 300px;
-  height: 300px;
+  height: 350px;
   margin: 4px;
   text-decoration: none;
   text-align: left;
@@ -122,7 +122,7 @@
 
 .card-image {
   border-radius: 24px;
-  height: 50%;
+  height: 65%;
 }
 
 .card-image img {
@@ -154,9 +154,10 @@
 .searchbar-input {
   border-radius: 24px;
   border: none;
-  font-size: large;
+  font-size: x-large;
   background-color: whitesmoke;
   width: 100%;
+  margin-left: 16px;
 }
 
 .searchbar-input:focus-visible {
@@ -179,4 +180,15 @@ li a {
 
 li a:hover {
   font-weight: 500;
+}
+
+@media only screen and (max-width: 576px) { 
+  .browse-header {
+    padding-left: 0;
+  }
+
+  .searchbar-wrapper {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }

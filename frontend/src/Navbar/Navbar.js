@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import Logo from "../Footer/textBlack.png";
+import Hamburger from "./hamburger.png";
 
 const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(false);
@@ -19,7 +20,7 @@ const Navbar = () => {
           </a>
         </div>
         <div className="menu-icon" onClick={handleShowNavbar}>
-          Hamburger 
+        <img src={Hamburger} alt="Logo" className="logo" /> 
         </div>
         <div className={`nav-elements  ${showNavbar && "active"}`}>
           <ul>

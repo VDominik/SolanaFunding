@@ -1,8 +1,40 @@
 .about-page-wrapper {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    width: 80%;
 }
 
 .about-page {
-width: 80%;
+
+}
+
+.about-hero-section {
+    margin-top: 32px;
+    width: 100%;
+  }
+  
+  .about-image {
+    background-image: url("aboutus.png");
+    background-size: cover;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .about-hero-section h2 {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 30px;
+    color: white;
+    margin-top: -300px;
+    margin-bottom: 0;
+  }
+
+.about-content {
+  text-align: left;
+  width: 60%;
 }

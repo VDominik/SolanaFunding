@@ -245,11 +245,7 @@ const Create = () => {
                     value={campaignName}
                     onChange={handleCampaignNameChange}
                   />
-                  <br />
-                  <Editor
-                    className="rteditor"
-                    onContentChange={handleContentChange}
-                  />
+
                   <h2 className="heading2">Add an image to represent your <br/>
                     campaign</h2>
 
@@ -275,6 +271,12 @@ const Create = () => {
                       </div>
                     </div>
                   </div>
+
+                  <Editor
+                    className="rteditor"
+                    onContentChange={handleContentChange}
+                  />
+                  
                   <div className="goal-wrapper">
 
                       <p className="create-paragraph">Set a funding goal:</p>
