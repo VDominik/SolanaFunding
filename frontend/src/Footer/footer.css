@@ -55,10 +55,25 @@
     padding: 0 16px 0 16px;
 }
 
-@media only screen and (max-width: 600px) {
+.footer-bottom {
+    margin-top: 16px;
+}
+
+@media only screen and (max-width: 576px) {
+
+    .footer-container {
+        flex-direction: column-reverse
+    }
+    .subpages-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+    justify-content: center;
+    }
+
     .subpages-wrapper a{
         display: flex;
         flex-direction: column;
+        margin-bottom: 8px;
     }
 
 }

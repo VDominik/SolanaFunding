@@ -42,6 +42,7 @@ const Footer = () => {
           <NavLink to="/feedback">Feedback</NavLink>
         </div>
       </div>
+      <div className="footer-bottom">&copy; Solario 2024</div>
     </div>
   );
 };

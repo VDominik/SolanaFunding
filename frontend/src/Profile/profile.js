@@ -1,3 +1,4 @@
+import "./profile.css";
 import idl from "../idl.json";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { Program, AnchorProvider, web3 } from "@project-serum/anchor";
@@ -76,9 +77,11 @@ const App = () => {
   };
 
   const renderNotConnectedContainer = () => (
-    <button className="button" onClick={connectWallet}>
+    <div className="profile">
+    <button className="profile-button" onClick={connectWallet}>
       Connect to Wallet
     </button>
+    </div>
   );
 
   const renderConnectedContainer = () => {

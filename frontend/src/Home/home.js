@@ -159,13 +159,20 @@ const Home = () => {
                                 />
                               </div>
                               <div className="recommended-card-secondary-name">
+                                {campaign.name}
+                                </div>
                                 <progress
                                   className="progressbar"
                                   value={progress}
                                   max="100"
                                 ></progress>
-                                {campaign.name}
-                              </div>
+                                <div className="recommended-card-secondary-info">
+                                <p>Raised:
+                                <br />
+                                {campaign.amountDonated / web3.LAMPORTS_PER_SOL} / {campaign.amountWanted}</p>
+                                <p>Creator: {campaign.admin.toString().slice(0, 3)}...{campaign.admin.toString().slice(-5)}</p>
+                                </div>
+                              
                             </div>
                           </Link>
                         </div>
@@ -228,15 +235,15 @@ const Home = () => {
 
           <div className="cards-wrapper">
             <div className="card">
-              <h2>Total Money Donated:</h2>
+              <p>Total Money Donated:</p>
               <div className="card-number">$709,321</div>
             </div>
             <div className="card">
-              <h2>Today Money Donated:</h2>
+              <p>Today Money Donated:</p>
               <div className="card-number">$32,980</div>
             </div>
             <div className="card">
-              <h2>Total Project Funded:</h2>
+              <p>Total Project Funded:</p>
               <div className="card-number">521</div>
             </div>
           </div>

@@ -29,7 +29,7 @@ body {
 }
 
 .image {
-  background-image: url("garden.png");
+  background-image: url("garden-min.png");
   background-size: cover;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   border-radius: 25px;
@@ -69,20 +69,24 @@ body {
   transform: scale(1.05);
 }
 
+.recommended-wrapper {
+}
+
 .recommended {
   padding: 32px 0 0 0;
   text-align: left;
 }
 
 .show-all-button {
-  background-color:#359eff;
+  background-color: #359eff;
   border-radius: 25px;
   border: none;
+  width: 25%;
   padding: 12px;
   color: white;
   transition: transform 0.2s;
   font-weight: 600;
-
+  margin-top: 16px;
 }
 
 .show-all-button:hover {
@@ -94,13 +98,12 @@ body {
 }
 
 .recommended-cards-wrapper {
-display: flex;
-width: 100%;
-justify-content: space-between;
-margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
-.recommended-card-main-wrapper {
+/* .recommended-card-main-wrapper {
   display: flex;
   align-content: center;
   align-items: center;
@@ -121,13 +124,12 @@ margin-bottom: 32px;
   margin: 16px;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   background-color: white;
-  /* margin: 0 48px 0 48px; */
   transition: transform 0.2s;
 }
 
 .recommended-card-main:hover {
-  -ms-transform: scale(1.1); /* IE 9 */
-  -webkit-transform: scale(1.1); /* Safari 3-8 */
+  -ms-transform: scale(1.1); 
+  -webkit-transform: scale(1.1); 
   transform: scale(1.05);
   cursor: pointer;
 }
@@ -143,7 +145,7 @@ margin-bottom: 32px;
   justify-content: center;
   font-weight: 600;
   font-size: x-large;
-}
+} */
 
 .recommended-card-secondary-wrapper {
   display: flex;
@@ -157,19 +159,13 @@ margin-bottom: 32px;
 }
 
 .recommended-card-secondary {
-  border: 1px solid whitesmoke;
-  border-radius: 25px;
-  width: 240px;
-  height: 240px;
+  border-radius: 25px 25px 0 0;
+  width: 300px;
   margin: 16px;
-  box-shadow: 0px 5px 10px 0px rgba(237, 237, 237, 0.5); 
-  background-color: white;
-  /* margin: 0 48px 0 48px; */
   transition: transform 0.2s;
 }
 
 .recommended-card-secondary:hover {
-  background-color: whitesmoke;
   -ms-transform: scale(1.1); /* IE 9 */
   -webkit-transform: scale(1.1); /* Safari 3-8 */
   transform: scale(1.05);
@@ -181,20 +177,25 @@ margin-bottom: 32px;
 }
 
 .recommended-card-secondary-image img {
-  height: 100%;
+  height: 200px;
   width: 100%;
-  border-radius: 24px 24px 0 0;
+  border-radius: 20px 20px 20px 20px;
 }
 
 .recommended-card-secondary-name {
-  display: flex;
-  justify-content: center;
+  text-align: left;
+
+  font-weight: 600;
   font-size: large;
-  font-weight: 500;
-  flex-direction: column;
-  align-items: center;
 }
 
+.recommended-card-secondary-info {
+  text-align: left;
+  color: dimgray;
+}
+.recommended-card-secondary-info p {
+  margin: 0;
+}
 .recommended-card-secondary-name progress {
   width: 90%;
 }
@@ -230,7 +231,7 @@ margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   width: 50%;
-  height: 50%;
+
 }
 
 .why-icon-wrapper img {
@@ -255,16 +256,16 @@ margin-bottom: 32px;
   text-align: left;
 }
 
-.card h2 {
+.card p {
   margin: 0;
+  font-size: 20px;
 }
 
 .card-number {
   font-size: 48px;
 }
 
-@media only screen and (max-width: 600px) {
-
+@media only screen and (max-width: 576px) {
   .hero-section {
     margin-top: 0;
     width: 100%;
@@ -274,8 +275,14 @@ margin-bottom: 32px;
     border-radius: 0;
   }
 
+  .recommended {
+    text-align: center;
+  }
+
   .recommended-wrapper {
     display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .recommended-cards-wrapper {
@@ -306,6 +313,13 @@ margin-bottom: 32px;
     transition: transform 0.2s;
   }
 
+  .why-us h1 {
+    padding-top: 32px;
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+  }
+
   .why-icons-wrapper {
     display: flex;
     flex-direction: column;
@@ -313,6 +327,12 @@ margin-bottom: 32px;
   }
   .why-icon-wrapper {
     width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .why-icon-wrapper img {
+    width: 50px;
   }
 
   .cards-wrapper {
@@ -330,4 +350,16 @@ margin-bottom: 32px;
     display: flex;
     justify-content: center;
   }
+
+  .show-all-button {
+    width: 100%;
+  }
 }
+/* 
+@media only screen and (max-width: 790px) {
+  .recommended-cards-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+} */

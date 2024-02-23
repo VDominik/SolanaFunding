@@ -1,7 +1,9 @@
 {
     "scripts": {
         "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
-        "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
+        "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
+        "start": "HOST=0.0.0.0 react-scripts start"
+
     },
     "dependencies": {
         "@coral-xyz/anchor": "^0.29.0",
