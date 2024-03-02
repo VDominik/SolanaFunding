@@ -9,6 +9,9 @@ import { Program, AnchorProvider, web3, BN } from "@project-serum/anchor";
 import { useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import Popup from "../Popup/popup";
+import Recommended from "../Recommended/recommended";
+
+import donateIcon from "./solidarity3.png";
 
 const { Link } = require("react-router-dom"); // Import Link from react-router-dom
 
@@ -32,14 +35,18 @@ const SimplePage = () => {
     admin: null,
     campaignName: null,
     campaignDescription: null,
-    amoutDonated: null,
+    amountDonated: null,
     amountWanted: null,
     list_of_donors: null,
+    donation_amount: null,
   });
   const [loading, setLoading] = useState(true);
   const [campaignDescription, setCampaignDescription] = useState("");
   const [isConfirmPopupVisible, setConfirmPopupVisibility] = useState(false);
   const [isErrorPopupVisible, setErrorPopupVisibility] = useState(false);
+
+  let progress = 0;
+  progress = (campaignInfo.amountDonated / campaignInfo.amountWanted) * 100;
 
   const handleAmountChange = (event) => {
     const inputValue = event.target.value;
@@ -111,7 +118,8 @@ const SimplePage = () => {
     const amountWanted = campaignAccount.amountWanted;
     const list_of_donors_full = campaignAccount.listOfDonors.toString();
     const list_of_donors = list_of_donors_full.split(",");
-    console.log("list_of_donors:", list_of_donors);
+    const donation_amount = campaignAccount.donationAmount;
+    console.log("list_of_donors:", campaignAccount.donationAmount.toString());
 
     // const campaignDescription = campaignAccount.description;
 
@@ -124,6 +132,7 @@ const SimplePage = () => {
       amoutDonated,
       amountWanted,
       list_of_donors,
+      donation_amount,
     };
   };
 
@@ -181,25 +190,25 @@ const SimplePage = () => {
   const renderDonateButton = () => {
     return (
       <>
-      <div className="whole-input-wrapper">
-        <div className="input-wrapper">
-          <input
-            className="amount-input"
-            type="number"
-            name="amount"
-            placeholder="amount"
-            step={0.01}
-            value={amount}
-            onChange={handleAmountChange}
-            min="0"
-          ></input>
-          <div className="input-text">SOL</div>
-        </div>
+        <div className="whole-input-wrapper">
+          <div className="input-wrapper">
+            <input
+              className="amount-input"
+              type="number"
+              name="amount"
+              placeholder="amount"
+              step={0.01}
+              value={amount}
+              onChange={handleAmountChange}
+              min="0"
+            ></input>
+            <div className="input-text">SOL</div>
+          </div>
         </div>
 
         <div className="buttons-wrapper">
           <button className="donate" onClick={() => donate(campaignId)}>
-            Click to DONATE!
+            Donate
           </button>
         </div>
       </>
@@ -208,6 +217,7 @@ const SimplePage = () => {
 
   const handleMaxClick = async () => {
     let availableBalance = await getAvailableBalance();
+    console.log("Available balance: ", availableBalance);
     setamount(availableBalance);
   };
 
@@ -217,23 +227,27 @@ const SimplePage = () => {
     return (
       <>
         <div className="whole-input-wrapper">
-        <div className="input-wrapper">
-          <input
-            className="amount-input"
-            type="number"
-            name="amount"
-            placeholder="amount"
-            step={0.01}
-            value={amount}
-            onChange={handleAmountChange}
-            min="0"
-          ></input>
-          {{ handleMaxClick } && <button className="max-amount-button" onClick={handleMaxClick}>MAX</button>}
+          <div className="input-wrapper">
+            <input
+              className="amount-input"
+              type="number"
+              name="amount"
+              placeholder="amount"
+              step={0.01}
+              value={amount}
+              onChange={handleAmountChange}
+              min="0"
+            ></input>
+            {{ handleMaxClick } && (
+              <button className="max-amount-button" onClick={handleMaxClick}>
+                MAX
+              </button>
+            )}
           </div>
         </div>
         <div className="buttons-wrapper">
           <button className="withdraw" onClick={() => withdraw(campaignId)}>
-            Click to WITHDRAW!
+            Withdraw
           </button>
         </div>
       </>
@@ -279,6 +293,7 @@ const SimplePage = () => {
           amoutDonated,
           amountWanted,
           list_of_donors,
+          donation_amount,
         } = await getCampaignById(campaignId);
         console.log("Admin inside useEffect:", list_of_donors.toString());
         // console.log("Admin inside useEffect:", admin);
@@ -287,9 +302,10 @@ const SimplePage = () => {
         setCampaignInfo({
           admin,
           campaignName,
-          amoutDonated,
+          amountDonated: amoutDonated,
           amountWanted,
           list_of_donors,
+          donation_amount,
         });
         getAvailableBalance();
         // Now you can use admin, campaignName, campaignDescription as needed
@@ -349,27 +365,31 @@ const SimplePage = () => {
                     alt=""
                   />
                 </div>
-
                 {loading ? (
                   <p>Loading...</p>
                 ) : (
                   <>
                     {campaignInfo.admin && (
                       <>
-                        <h1 className="campaign-info-name">
+                        <h2 className="campaign-info-name">
                           {campaignInfo.campaignName}
-                        </h1>
+                        </h2>
                       </>
                     )}
                   </>
                 )}
-
+                <div className="campaign-creator-wrapper">
+                  <p className="campaign-info-bold">Creator:</p>
+                  <p className="campaign-info-non-bold">{campaignInfo.admin}</p>
+                  <p className="campaign-info-bold">Campaign Public key:</p>
+                  <p className="campaign-info-non-bold">{campaignId}</p>
+                </div>
                 <div>
                   <div className="info-wrapper">
                     <div className="data-passed-wrapper">
                       <div className="data-passed">
                         {loading ? (
-                          <p style={{ minWidth: '800px' }}>Loading...</p>
+                          <p style={{ minWidth: "800px" }}>Loading...</p>
                         ) : (
                           <>
                             {campaignInfo.admin && (
@@ -392,22 +412,11 @@ const SimplePage = () => {
             <div className="campaign-page-info">
               <div className="campaign-page-info-hideable">
                 <p className="campaign-info-non-bold">
-                  <b>Raised:</b> {campaignInfo.amoutDonated} /{" "}
-                  {campaignInfo.amountWanted} SOL{" "}
+                  <b>Raised:</b> {campaignInfo.amountDonated} /
+                  {campaignInfo.amountWanted} SOL
                 </p>
-                <p className="campaign-info-bold">Public key:</p>
-                <p className="campaign-info-non-bold">{campaignId}</p>
-                <p className="campaign-info-bold">Creator:</p>
-                <p className="campaign-info-non-bold">{campaignInfo.admin}</p>
+                <progress className="progressbar" value={progress} max="100" />
 
-                <p className="campaign-info-hidden">Last Donations:</p>
-                {campaignInfo.list_of_donors
-                  ? campaignInfo.list_of_donors.map((donor, index) => (
-                      <p key={index} className="campaign-info-hidden">
-                        {donor.slice(0, 5)}...{donor.slice(-5)}
-                      </p>
-                    ))
-                  : null}
                 <div className="donate-info-web">
                   <>
                     {walletAddress === campaignInfo.admin &&
@@ -416,6 +425,31 @@ const SimplePage = () => {
                       renderDonateButton()}
                   </>
                 </div>
+                <p className="campaign-total-donations">
+                  {campaignInfo.list_of_donors
+                    ? campaignInfo.list_of_donors.length
+                    : 0}{" "}
+                  Donations in total
+                </p>
+                {/* <p className="campaign-last-donors">Last Donations:</p> */}
+                {campaignInfo.list_of_donors
+                  ? campaignInfo.list_of_donors
+                      .slice(-5)
+                      .reverse()
+                      .map((donor, index, donorsSlice) => (
+                        <div className="campaign-last-donors-list" key={index}>
+                          <img src={donateIcon} alt="donate icon" className="donate-icon" />
+                          <div>
+                            <p className="donor-address">
+                              {donor.toString().slice(0, 3)}...{donor.toString().slice(-5)}
+                            </p>
+                            <p className="donor-name">
+                              {campaignInfo.donation_amount[campaignInfo.donation_amount.length - donorsSlice.length + index] / web3.LAMPORTS_PER_SOL} SOL
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                  : null}
               </div>
             </div>
             <div className="donate-info-phone">
@@ -426,6 +460,7 @@ const SimplePage = () => {
             </div>
           </div>
         </div>
+        <Recommended />
       </div>
     </>
   );

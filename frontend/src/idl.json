@@ -40,6 +40,10 @@
         {
           "name": "counter",
           "type": "u32"
+        },
+        {
+          "name": "duration",
+          "type": "i64"
         }
       ]
     },
@@ -131,6 +135,20 @@
             "type": {
               "vec": "publicKey"
             }
+          },
+          {
+            "name": "donationAmount",
+            "type": {
+              "vec": "u64"
+            }
+          },
+          {
+            "name": "startTime",
+            "type": "i64"
+          },
+          {
+            "name": "endTime",
+            "type": "i64"
           }
         ]
       }
