@@ -84,28 +84,24 @@ const About = () => {
           <div className="why-icon-wrapper">
             <img src={webIcon} alt=""></img>
             <div className="why-icon-easy">
-              <h2>Website</h2>
             </div>
             <p>solario.app</p>
           </div>
           <div className="why-icon-wrapper">
             <img src={discordIcon} alt=""></img>
             <div className="why-icon-cheap">
-              <h2>Discord</h2>
             </div>
             <p>discord.com/invite/solario</p>
           </div>
           <div className="why-icon-wrapper">
             <img src={xIcon} alt=""></img>
             <div className="why-icon-fast">
-              <h2>X</h2>
             </div>
             <p>@solarioapp</p>
           </div>
           <div className="why-icon-wrapper">
             <img src={mailIcon} alt=""></img>
             <div className="why-icon-easy">
-              <h2>Email</h2>
             </div>
             <p>info@solario.app</p>
           </div>

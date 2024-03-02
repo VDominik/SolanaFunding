@@ -160,19 +160,26 @@ const Home = () => {
                               </div>
                               <div className="recommended-card-secondary-name">
                                 {campaign.name}
-                                </div>
-                                <progress
-                                  className="progressbar"
-                                  value={progress}
-                                  max="100"
-                                ></progress>
-                                <div className="recommended-card-secondary-info">
-                                <p>Raised:
-                                <br />
-                                {campaign.amountDonated / web3.LAMPORTS_PER_SOL} / {campaign.amountWanted}</p>
-                                <p>Creator: {campaign.admin.toString().slice(0, 3)}...{campaign.admin.toString().slice(-5)}</p>
-                                </div>
-                              
+                              </div>
+                              <progress
+                                className="progressbar"
+                                value={progress}
+                                max="100"
+                              ></progress>
+                              <div className="recommended-card-secondary-info">
+                                <p>
+                                  Raised:
+                                  <br />
+                                  {campaign.amountDonated /
+                                    web3.LAMPORTS_PER_SOL}{" "}
+                                  / {campaign.amountWanted}
+                                </p>
+                                <p>
+                                  Creator:{" "}
+                                  {campaign.admin.toString().slice(0, 3)}...
+                                  {campaign.admin.toString().slice(-5)}
+                                </p>
+                              </div>
                             </div>
                           </Link>
                         </div>
@@ -189,7 +196,7 @@ const Home = () => {
 
           <div className="why-us">
             <div>
-              <h1>Why Choose Us?</h1>
+              <h2>Why Choose Us?</h2>
             </div>
 
             {/* <p>
@@ -207,7 +214,7 @@ const Home = () => {
               <div className="why-icon-wrapper">
                 <img src={easyIcon} alt=""></img>
                 <div className="why-icon-easy">
-                  <h2>EASY</h2>
+                  <h3 className="card-heading">EASY</h3>
                 </div>
                 <p>
                   Connect your wallet and start raising funds without hassle
@@ -216,14 +223,14 @@ const Home = () => {
               <div className="why-icon-wrapper">
                 <img src={cheapIcon} alt=""></img>
                 <div className="why-icon-cheap">
-                  <h2>CHEAP</h2>
+                  <h3 className="card-heading">CHEAP</h3>
                 </div>
                 <p> 0% withdrawal fees means more money goes to your goal</p>
               </div>
               <div className="why-icon-wrapper">
                 <img src={fastIcon} alt=""></img>
                 <div className="why-icon-fast">
-                  <h2>FAST</h2>
+                  <h3 className="card-heading">FAST</h3>
                 </div>
                 <p>
                   We utilize Solana's robust smart contracts for speefy
@@ -233,20 +240,24 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="cards-wrapper">
-            <div className="card">
-              <p>Total Money Donated:</p>
-              <div className="card-number">$709,321</div>
-            </div>
-            <div className="card">
-              <p>Today Money Donated:</p>
-              <div className="card-number">$32,980</div>
-            </div>
-            <div className="card">
-              <p>Total Project Funded:</p>
-              <div className="card-number">521</div>
+          <div className="achievements">
+            <h2>Our Achievements</h2>
+            <div className="cards-wrapper">
+              <div className="card">
+                <p>Total Money Donated:</p>
+                <div className="card-number">$709,321</div>
+              </div>
+              <div className="card">
+                <p>Today Money Donated:</p>
+                <div className="card-number">$32,980</div>
+              </div>
+              <div className="card">
+                <p>Total Project Funded:</p>
+                <div className="card-number">521</div>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
     </>

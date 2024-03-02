@@ -9,13 +9,15 @@ declare_id!("2BePaJPAPUih3FWZXR9ZfjawxkWnKQtYp2jpQn7Sxk3h");
 pub mod crowdfundingdapp {
     use super::*;
 
-    pub fn create(ctx: Context<Create>, name: String, description: String, amount_wanted: String, counter: u32) -> ProgramResult {
+    pub fn create(ctx: Context<Create>, name: String, description: String, amount_wanted: String, counter: u32, duration: i64) -> ProgramResult {
         let campaign = &mut ctx.accounts.campaign;
         campaign.name = name;
         campaign.description = description;
         campaign.amount_wanted = amount_wanted;
         campaign.amount_donated = 0;
         campaign.admin = *ctx.accounts.user.key;
+        campaign.start_time = Clock::get()?.unix_timestamp; // Set the start time to the current time
+        campaign.end_time = campaign.start_time + duration * 24 * 60 * 60;
         Ok(())
         
     }
@@ -38,9 +40,18 @@ pub mod crowdfundingdapp {
     pub fn donate(ctx: Context<Donate>, amount: u64) -> ProgramResult {
         let campaign = &mut ctx.accounts.campaign;
         let user = &mut ctx.accounts.user;
+
+            // Check if the campaign has ended
+    let current_time = Clock::get()?.unix_timestamp;
+    //30 * 24 * 60 * 60 is 30 days in seconds
+    if campaign.start_time != 0 && current_time > campaign.end_time {
+        return Err(ProgramError::Custom(0)); // Replace 0 with your own error code
+    }
+
         let developer_fee = amount / 20; // Calculate 5% of the donation
         let net_donation = amount - developer_fee; // Subtract the developer fee from the donation
         campaign.list_of_donors.push(user.key());
+        campaign.donation_amount.push(net_donation);
 
         let ix = anchor_lang::solana_program::system_instruction::transfer(
             &ctx.accounts.user.key(),
@@ -55,7 +66,6 @@ pub mod crowdfundingdapp {
             ]
         );
 
-        //My attempt at a solution
         let ixf = anchor_lang::solana_program::system_instruction::transfer(
             &ctx.accounts.user.key(),
             &ctx.accounts.developer.key(),
@@ -75,7 +85,7 @@ pub mod crowdfundingdapp {
 }
 
 #[derive(Accounts)]
-#[instruction(name: String, description: String, amount_wanted: String, counter: u32)]
+#[instruction(name: String, description: String, amount_wanted: String, counter: u32, duration: u64)]
 pub struct Create <'info> {
     
     #[account(init, payer = user, space = 9000, seeds = [user.key().as_ref(), &counter.to_le_bytes()], bump)]
@@ -116,4 +126,7 @@ pub struct Campaign {
     pub amount_donated: u64,
     pub counter: u32,
     pub list_of_donors: Vec<Pubkey>,
+    pub donation_amount: Vec<u64>,
+    pub start_time: i64, // Unix timestamp of when the campaign started
+    pub end_time: i64, // Unix timestamp of when the campaign ends
 }

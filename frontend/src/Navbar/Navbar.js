@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import Logo from "../Footer/textBlack.png";
@@ -6,6 +6,24 @@ import Hamburger from "./hamburger.png";
 
 const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        showNavbar &&
+        !event.target.closest('.menu-icon') &&
+        !event.target.closest('.nav-elements')
+      ) {
+        setShowNavbar(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showNavbar]);
 
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);

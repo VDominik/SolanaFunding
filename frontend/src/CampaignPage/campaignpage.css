@@ -5,11 +5,18 @@
 }
 
 .campaign-content-wrapper {
-  width: 80%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   height: 100%;
   background-color: white;
+}
+
+.campaign-creator-wrapper {
+  text-align: left;
+  margin-left: 16px;
+  border-bottom: 1px solid lightgrey;
+  width: 90%;
 }
 
 .whole-wrapper {
@@ -18,6 +25,11 @@
 
 .campaign-info {
   /* display: flex; */
+  width: 70%;
+}
+
+.donate-info-web {
+  display: flex;
 }
 
 .campaign-info-bold {
@@ -27,6 +39,7 @@
 }
 
 .campaign-page-info {
+  text-align: left;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -38,6 +51,25 @@
   margin-top: 16px;
 position: sticky;
 top: 16px;
+}
+
+.campaign-page-info-hideable img{
+width: 40px;
+}
+
+.campaign-last-donors-list {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.donor-address {
+  margin: 0;
+}
+
+.donor-name{
+  margin: 0;
+  font-size: 12px;
 }
 
 .campaign-image-wrapper {
@@ -61,7 +93,7 @@ top: 16px;
 .campaign-image img {
   height: 100%;
   width: 100%;
-  border-radius: 49px 4px 4px 4px;
+  border-radius: 49px 8px 8px 8px;
 }
 
 /* .campaign-image-wrapper {
@@ -89,8 +121,7 @@ input::-webkit-inner-spin-button {
 
 .whole-input-wrapper {
   display: flex;
-  width: 100%;
-  justify-content: flex-end;
+  width: 40%;
 }
 
 .input-wrapper {
@@ -101,7 +132,6 @@ input::-webkit-inner-spin-button {
   margin: 16px;
   border-radius: 40px;
   font-size: large;
-  width: 50%;
 }
 
 .input-text {
@@ -135,7 +165,7 @@ input::-webkit-inner-spin-button {
 
 .buttons-wrapper {
   display: flex;
-  justify-content: flex-end;
+  width: 60%;
 }
 
 .donate {
@@ -198,10 +228,15 @@ input::-webkit-inner-spin-button {
   padding: 4px;
 }
 
+
 @media only screen and (max-width: 576px) {
   .info-wrapper {
     width: 100%;
     min-width: 0;
+  }
+
+  .campaign-info {
+    width: 100%;
   }
 
   .campaign-page-wrapper {
@@ -209,11 +244,19 @@ input::-webkit-inner-spin-button {
     width: 100%;
   }
 
+  .campaign-page-info-hideable { 
+    width: 100%;
+  }
+
   .campaign-content-wrapper {
     width: 100%;
   }
-  
-  .campaign-info-hidden {
+
+  .campaign-last-donors {
+    display: none;
+  }
+
+  .campaign-last-donors-list {
     display: none;
   }
 

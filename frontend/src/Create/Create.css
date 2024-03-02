@@ -114,3 +114,29 @@ width: 100%;
   width: 100%;
   text-align: center;
 }
+
+.create-campaign-length {
+  width: 100%;
+}
+
+.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.create-select {
+display: flex;
+}
+
+.create-select button{
+  padding: 16px 16px 16px 16px;
+  border: none;
+  border-radius: 25px;
+  margin: 8px;
+}
+
+.create-select button:hover {
+  background-color: #5c7087;
+  color: white;
+  cursor: pointer;
+}

@@ -29,11 +29,12 @@ body {
 }
 
 .image {
-  background-image: url("garden-min.png");
-  background-size: cover;
+  background-image: url("garden-min3.png");
+  background-size:contain;
+  background-repeat: round;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   border-radius: 25px;
-  min-height: 500px;
+  min-height: 650px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,7 +45,7 @@ body {
   font-family: "Courier New", Courier, monospace;
   font-size: 30px;
   color: white;
-  padding-top: 128px;
+  padding-top: 100px;
   margin-bottom: 0;
 }
 
@@ -63,7 +64,8 @@ body {
 
 .connectButton:hover {
   cursor: pointer;
-  background-color: #b47ff5;
+  color: white;
+  background-color: #359eff;
   -ms-transform: scale(1.1); /* IE 9 */
   -webkit-transform: scale(1.1); /* Safari 3-8 */
   transform: scale(1.05);
@@ -77,6 +79,11 @@ body {
   text-align: left;
 }
 
+.recommended h2 {
+  font-size: 28px;
+  margin-left: 16px;
+}
+
 .show-all-button {
   background-color: #359eff;
   border-radius: 25px;
@@ -87,6 +94,7 @@ body {
   transition: transform 0.2s;
   font-weight: 600;
   margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .show-all-button:hover {
@@ -101,6 +109,7 @@ body {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+
 }
 
 /* .recommended-card-main-wrapper {
@@ -202,16 +211,21 @@ body {
 
 .why-us {
   /* background-color: #78d6eb; */
-  min-height: 500px;
+  min-height: fit-content;
   border-radius: 30px;
   /* margin: 0 -10% 0 -10%; */
   /* box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5); */
 }
 
-.why-us h1 {
-  padding-top: 32px;
-  font-size: 48px;
-  font-weight: 600;
+.why-us h2 {
+  margin-left: 16px;
+  font-size: 28px;
+  text-align: left;
+}
+
+.why-us h3 {
+  font-size: 28px;
+  margin-bottom: 16px;
   text-align: left;
 }
 
@@ -235,7 +249,13 @@ body {
 }
 
 .why-icon-wrapper img {
-  width: 10%;
+  width: 50px;
+}
+
+.achievements h2 {
+    margin-left: 16px;
+    font-size: 28px;
+    text-align: left;
 }
 
 .cards-wrapper {
@@ -273,6 +293,17 @@ body {
 
   .image {
     border-radius: 0;
+    min-height: 500px;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .hero-section h2 {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 30px;
+    color: white;
+    padding-top: 20px;
+    margin-bottom: 0;
   }
 
   .recommended {

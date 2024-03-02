@@ -18,6 +18,7 @@ export default function RTEditor({ onContentChange, campaignDescription }) {
         initialValue="<h2>Set a Description for your campaign</h2>"
         init={{
           height: 500,
+          width: '100%',
           menubar: false,
           plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',

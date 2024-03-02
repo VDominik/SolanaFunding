@@ -33,6 +33,8 @@ const Create = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [counter, setCounter] = useState(0);
+  const [selectedButton, setSelectedButton] = useState(null);
+
   let navigate = useNavigate();
 
   const handleImageChange = (event) => {
@@ -151,7 +153,8 @@ const Create = () => {
           utils.bytes.utf8.encode(campaignName),
           utils.bytes.utf8.encode(""),
           utils.bytes.utf8.encode(amountWanted),
-          counter
+          counter,
+          selectedButton
         )
         .accounts({
           campaign,
@@ -211,6 +214,13 @@ const Create = () => {
     console.log(campaignDescription);
   };
 
+  function handleClick(value) {
+    setSelectedButton(value);
+    console.log(value);
+
+    // Do something with the value
+  }
+
   useEffect(() => {
     const onLoad = async () => {
       await checkIfWalletConnected();
@@ -223,20 +233,14 @@ const Create = () => {
   return (
     <>
       <div className="create-page-wrapper">
-
-
-
         <div className="create-content-wrapper">
-
           <div className="create-info-wrapper">
-
             <div className="infos-wrapper">
-
               <div className="data-passed-wrapper">
                 <div className="data-passed">
-                <div className="heading2">
-        <h2>Create Your Campaign</h2>
-      </div>
+                  <div className="heading2">
+                    <h2>Create Your Campaign</h2>
+                  </div>
                   <input
                     className="create-input"
                     type="text"
@@ -246,8 +250,10 @@ const Create = () => {
                     onChange={handleCampaignNameChange}
                   />
 
-                  <h2 className="heading2">Add an image to represent your <br/>
-                    campaign</h2>
+                  <h2 className="heading2">
+                    Add an image to represent your <br />
+                    campaign
+                  </h2>
 
                   <div className="create-image-upload">
                     <div className="campaign-image-wrapper">
@@ -276,36 +282,63 @@ const Create = () => {
                     className="rteditor"
                     onContentChange={handleContentChange}
                   />
-                  
-                  <div className="goal-wrapper">
 
-                      <p className="create-paragraph">Set a funding goal:</p>
-                      <input
-                        className="create-input"
-                        type="text"
-                        name="amountWanted"
-                        placeholder="500 SOL"
-                        value={amountWanted}
-                        onChange={handleAmountWantedChange}
-                      />
+                  <div className="goal-wrapper">
+                    <p className="create-paragraph">Set a funding goal:</p>
+                    <input
+                      className="create-input"
+                      type="text"
+                      name="amountWanted"
+                      placeholder="500 SOL"
+                      value={amountWanted}
+                      onChange={handleAmountWantedChange}
+                    />
                   </div>
                   <br />
-                  {/* <label>
-                  <textarea
-                    name="campaignDescription"
-                    value={campaignDescription}
-                    onChange={handleCampaignDescriptionChange}
-                  />
-                </label> */}
+                  {/* Pick the length of a campaign */}
+                  <div className="create-campaign-length">
+                  <p className="create-paragraph">Set the length of campaign:</p>
+                  </div>
+
+                  <div className="create-select">
+                    
+                    <button
+                      value="7"
+                      onClick={() => handleClick(7)}
+                      className={selectedButton === 7 ? "selected" : ""}
+                    >
+                      7 days
+                    </button>
+                    <button
+                      value="14"
+                      onClick={() => handleClick(14)}
+                      className={selectedButton === 14 ? "selected" : ""}
+                    >
+                      14 days
+                    </button>
+                    <button
+                      value="30"
+                      onClick={() => handleClick(30)}
+                      className={selectedButton === 30 ? "selected" : ""}
+                    >
+                      30 days
+                    </button>
+                    <button
+                      value="60"
+                      onClick={() => handleClick(60)}
+                      className={selectedButton === 60 ? "selected" : ""}
+                    >
+                      60 days
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className="createButtonWrapper">
-              <button className="create-button" onClick={createCampaign}>
-                Create Campaign
-              </button>
+                <button className="create-button" onClick={createCampaign}>
+                  Create Campaign
+                </button>
+              </div>
             </div>
-            </div>
-
           </div>
         </div>
       </div>
