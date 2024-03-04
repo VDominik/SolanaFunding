@@ -248,6 +248,11 @@ body {
 
 }
 
+.why-icon-wrapper a {
+  text-decoration: none;
+  color: black;
+}
+
 .why-icon-wrapper img {
   width: 50px;
 }
