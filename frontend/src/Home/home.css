@@ -285,7 +285,7 @@ body {
   font-size: 48px;
 }
 
-@media only screen and (max-width: 576px) {
+@media only screen and (max-width: 600px) {
   .hero-section {
     margin-top: 0;
     width: 100%;
@@ -394,3 +394,11 @@ body {
     flex-wrap: wrap;
   }
 } */
+
+@media only screen and (min-width: 600px) {
+  .image {
+    min-height: 500px;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}

@@ -12,6 +12,9 @@ import Popup from "../Popup/popup";
 import Recommended from "../Recommended/recommended";
 
 import donateIcon from "./solidarity3.png";
+import fbIcon from "./facebook.png";
+import twitterIcon from "./twitter.png";
+import linkIcon from "./link.png";
 
 const { Link } = require("react-router-dom"); // Import Link from react-router-dom
 
@@ -44,6 +47,13 @@ const SimplePage = () => {
   const [campaignDescription, setCampaignDescription] = useState("");
   const [isConfirmPopupVisible, setConfirmPopupVisibility] = useState(false);
   const [isErrorPopupVisible, setErrorPopupVisibility] = useState(false);
+  const [copySuccess, setCopySuccess] = useState("");
+  const campaignUrl = window.location.href; // Get the current URL
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(campaignUrl);
+    setCopySuccess("Copied!");
+  };
 
   let progress = 0;
   progress = (campaignInfo.amountDonated / campaignInfo.amountWanted) * 100;
@@ -95,13 +105,17 @@ const SimplePage = () => {
 
   let getAvailableBalance = async () => {
     const provider = getProvider();
-    const balance = await provider.connection.getBalance(
-      new PublicKey(campaignId)
-    );
+    const balance = await provider.connection.getBalance(new PublicKey(campaignId));
     const balanceInSol = balance / web3.LAMPORTS_PER_SOL;
-    const availableBalance = Math.floor(balanceInSol * 10) / 10; // Rounds down to the nearest 0.1 SOL
-    console.log(`The balance of ${campaignId} is ${availableBalance} SOL`);
-    return availableBalance;
+
+  // Set a buffer amount
+  const bufferInSol = 0.07; // Set this to the value you want to keep as a buffer
+
+  // Subtract the buffer from the total balance
+  const availableBalance = balanceInSol - bufferInSol;
+
+  console.log(`The balance of ${campaignId} is ${availableBalance} SOL`);
+  return availableBalance;
   };
 
   const getCampaignById = async (campaignId) => {
@@ -336,6 +350,8 @@ const SimplePage = () => {
     setErrorPopupVisibility(false);
   };
 
+  const tweetText = `Check out this campaign: ${campaignInfo.campaignName} ${window.location.href}`;
+
   return (
     <>
       {isConfirmPopupVisible && (
@@ -425,6 +441,48 @@ const SimplePage = () => {
                       renderDonateButton()}
                   </>
                 </div>
+                <div className="share-block">
+                  <div className="share-block-button">
+                    <a
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                        tweetText
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={twitterIcon}
+                        alt="link icon"
+                        className="link-icon"
+                      />
+                      <p>Twitter</p>
+                    </a>
+                  </div>
+                  <div className="share-block-button">
+                    <img
+                      src={linkIcon}
+                      alt="link icon"
+                      className="link-icon"
+                      onClick={copyToClipboard}
+                    />
+                    <p>Copy Link</p>
+                    {copySuccess && (
+                      <div style={{ color: "green" }}>{copySuccess}</div>
+                    )}
+                  </div>
+                  <div className="share-block-button">
+                    <a
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                        campaignUrl
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img src={fbIcon} alt="link icon" className="link-icon" />
+                      <p>Facebook</p>
+                    </a>
+                  </div>
+                </div>
                 <p className="campaign-total-donations">
                   {campaignInfo.list_of_donors
                     ? campaignInfo.list_of_donors.length
@@ -438,13 +496,23 @@ const SimplePage = () => {
                       .reverse()
                       .map((donor, index, donorsSlice) => (
                         <div className="campaign-last-donors-list" key={index}>
-                          <img src={donateIcon} alt="donate icon" className="donate-icon" />
+                          <img
+                            src={donateIcon}
+                            alt="donate icon"
+                            className="donate-icon"
+                          />
                           <div>
                             <p className="donor-address">
-                              {donor.toString().slice(0, 3)}...{donor.toString().slice(-5)}
+                              {donor.toString().slice(0, 3)}...
+                              {donor.toString().slice(-5)}
                             </p>
                             <p className="donor-name">
-                              {campaignInfo.donation_amount[campaignInfo.donation_amount.length - donorsSlice.length + index] / web3.LAMPORTS_PER_SOL} SOL
+                              {campaignInfo.donation_amount[
+                                campaignInfo.donation_amount.length -
+                                  donorsSlice.length +
+                                  index
+                              ] / web3.LAMPORTS_PER_SOL}{" "}
+                              SOL
                             </p>
                           </div>
                         </div>

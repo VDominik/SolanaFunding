@@ -11,7 +11,7 @@ import Footer from "./Footer/footer.js";
 import reportWebVitals from "./reportWebVitals";
 import About from "./About/about.js";
 import Profile from "./Profile/profile.js"
-
+import Feedback from "./Feedback/feedback.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -25,6 +25,7 @@ root.render(
       <Route path="/campaigns/:campaignId" element={<CampaignPage />} />
       <Route path="/about" element={<About />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/feedback" element={<Feedback />} />
       </Routes>
       <Footer />
     </Router>

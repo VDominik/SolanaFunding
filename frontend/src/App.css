@@ -182,7 +182,7 @@ li a:hover {
   font-weight: 500;
 }
 
-@media only screen and (max-width: 576px) { 
+@media only screen and (max-width: 600px) { 
   .browse-header {
     padding-left: 0;
   }
