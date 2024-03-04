@@ -139,6 +139,7 @@ const Create = () => {
     const counterBuffer = Buffer.alloc(4);
     counterBuffer.writeUint32LE(counter);
     console.log(counter);
+    const timeNumber = new BN(selectedButton);
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
@@ -154,7 +155,7 @@ const Create = () => {
           utils.bytes.utf8.encode(""),
           utils.bytes.utf8.encode(amountWanted),
           counter,
-          selectedButton
+          timeNumber
         )
         .accounts({
           campaign,
@@ -285,7 +286,9 @@ const Create = () => {
 
                   <div className="goal-wrapper">
                     <p className="create-paragraph">Set a funding goal:</p>
-                    <input
+
+                  </div>
+                  <input
                       className="create-input"
                       type="text"
                       name="amountWanted"
@@ -293,8 +296,7 @@ const Create = () => {
                       value={amountWanted}
                       onChange={handleAmountWantedChange}
                     />
-                  </div>
-                  <br />
+
                   {/* Pick the length of a campaign */}
                   <div className="create-campaign-length">
                   <p className="create-paragraph">Set the length of campaign:</p>

@@ -67,14 +67,15 @@ const About = () => {
           Our future plans are to implement a feature where the owner can withdraw the funds only after the campaign is completed. This would be more suitable for campaigns that are for building a product or a service.
          
           <h3>List of Donors</h3>
+          We believe in transparency. Each campaign displays a list of donors, allowing everyone to see who has contributed to making dreams a reality.
          
+         <h3>Fees</h3>
+         Solario charges a 5% donor fee to support the maintenance and growth of our platform. However, we believe in empowering creators, which is why we charge 0% creator and withdrawal fees. This means creators can access the funds they need without any deductions.
           <br />
+          <h3>Follow Us</h3>
+          Join the conversation on social media. Follow us on [Facebook], [Twitter], and [Instagram] to stay updated with the latest news, campaigns, and success stories within the Solario community.
           <br />
-          Follow us on [Facebook], [Twitter], and [Instagram] to become part of
-          the conversation.
-          <br />
-          Want to get in touch with our team? 
-          < br />
+          <h3>Want to get in touch with our team? </h3>
           We're here to help. Reach out to us at [contact@solario.app] or
           use our <a href="/feedback">Contact Form</a>. Thank you for being part of the Solario
           community!
@@ -91,7 +92,7 @@ const About = () => {
             <img src={discordIcon} alt=""></img>
             <div className="why-icon-cheap">
             </div>
-            <p>discord.com/invite/solario</p>
+            <p><a href="https://www.discord.gg/cZCjqhdy8x">discord link</a></p>
           </div>
           <div className="why-icon-wrapper">
             <img src={xIcon} alt=""></img>
