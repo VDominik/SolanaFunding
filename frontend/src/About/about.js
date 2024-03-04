@@ -92,7 +92,7 @@ const About = () => {
             <img src={discordIcon} alt=""></img>
             <div className="why-icon-cheap">
             </div>
-            <p><a href="https://www.discord.gg/cZCjqhdy8x">discord link</a></p>
+            <p><a href="https://www.discord.gg/cZCjqhdy8x">discord.gg/cZCjqhdy8x</a></p>
           </div>
           <div className="why-icon-wrapper">
             <img src={xIcon} alt=""></img>
