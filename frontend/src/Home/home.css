@@ -28,7 +28,7 @@ body {
 }
 
 .image {
-  background-image: url("garden-min3.png");
+  background-image: url("garden-min4.png");
   background-size:contain;
   background-repeat: round;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
@@ -309,8 +309,6 @@ body {
     color: white;
     padding-top: 20px;
     margin-bottom: 0;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: lightslategray;
   }
 
   .wrapper {
