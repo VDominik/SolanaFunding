@@ -325,6 +325,8 @@ body {
 
   .recommended h2 {
     font-size: 26px;
+    margin-left: 0;
+    margin-bottom: 0;
   }
 
   .recommended-wrapper {
@@ -414,7 +416,6 @@ body {
 
 @media only screen and (min-width: 600px) {
   .image {
-    min-height: 500px;
     background-size: cover;
     background-repeat: no-repeat;
   }
