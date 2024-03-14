@@ -1,11 +1,13 @@
-import { useState,useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import Logo from "../Footer/textBlack.png";
 import Hamburger from "./hamburger.png";
 
 const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -25,9 +27,14 @@ const Navbar = () => {
     };
   }, [showNavbar]);
 
+  useEffect(() => {
+    setShowNavbar(false);
+  }, [location]);
+
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
   };
+
 
   return (
     <nav className="navbar">
