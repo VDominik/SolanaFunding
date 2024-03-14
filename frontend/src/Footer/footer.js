@@ -29,15 +29,15 @@ const Footer = () => {
         <div className="subpages-wrapper">
           <NavLink to="/">Home</NavLink>
 
-          <NavLink to="/blog">Blog</NavLink>
+          {/* <NavLink to="/blog">Blog</NavLink> */}
 
           <NavLink to="/app">Projects</NavLink>
 
           <NavLink to="/about">About</NavLink>
 
-          <NavLink to="/faq">FAQ</NavLink>
+          {/* <NavLink to="/faq">FAQ</NavLink> */}
 
-          <NavLink to="/creatorterms">Terms for Creators</NavLink>
+          {/* <NavLink to="/creatorterms">Terms for Creators</NavLink> */}
 
           <NavLink to="/feedback">Feedback</NavLink>
         </div>
