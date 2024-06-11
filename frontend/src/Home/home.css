@@ -71,6 +71,7 @@ body {
 }
 
 .recommended-wrapper {
+  margin-bottom: 128px;
 }
 
 .recommended {
@@ -108,7 +109,7 @@ body {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-
+  margin-bottom: 128px;
 }
 
 /* .recommended-card-main-wrapper {
@@ -192,7 +193,8 @@ body {
 
 .recommended-card-secondary-name {
   text-align: left;
-
+  height: 25px;
+  overflow: hidden;
   font-weight: 600;
   font-size: large;
 }
@@ -231,7 +233,8 @@ body {
 .why-icons-wrapper {
   display: flex;
   justify-content: space-around;
-  padding: 32px;
+  padding: 32px 16px 0 16px;
+  margin-bottom: 128px;
   /* border: 1px solid black; */
 }
 
