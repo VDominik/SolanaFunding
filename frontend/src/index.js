@@ -12,6 +12,8 @@ import reportWebVitals from "./reportWebVitals";
 import About from "./About/about.js";
 import Profile from "./Profile/profile.js"
 import Feedback from "./Feedback/feedback.js";
+import SignUp from "./SignUp/signup.js";
+import Waitlist from "./Waitlist/waitlist.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -19,13 +21,15 @@ root.render(
     <Router>
       <Navbar />
       <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<SignUp />} />
       <Route path="/app" element={<App />} />
       <Route path="/create" element={<Create />} />
       <Route path="/campaigns/:campaignId" element={<CampaignPage />} />
       <Route path="/about" element={<About />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/feedback" element={<Feedback />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/waitlist" element={<Waitlist />} />
       </Routes>
       <Footer />
     </Router>

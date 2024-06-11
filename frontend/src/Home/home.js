@@ -209,7 +209,7 @@ const Home = () => {
             means that all transactions are fast and cheap. We are also
             integrated with Phantom wallet which makes it easy for users to
             create and fund campaigns.
-          </p> */}
+            </p> */}
             <div className="why-icons-wrapper">
               <div className="why-icon-wrapper">
                 <img src={easyIcon} alt=""></img>
@@ -233,7 +233,7 @@ const Home = () => {
                   <h3 className="card-heading">FAST</h3>
                 </div>
                 <p>
-                  We utilize Solana's robust smart contracts for speefy
+                  We utilize Solana's robust smart contracts for speedy
                   transactions
                 </p>
               </div>

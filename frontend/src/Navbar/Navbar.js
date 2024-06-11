@@ -56,22 +56,22 @@ const Navbar = () => {
               <NavLink to="/blog">Blog</NavLink>
             </li> */}
             <li>
-              <NavLink to="/app">Projects</NavLink>
+              {/* <NavLink to="/app">Projects</NavLink> */} {/* Comented out because of the signup page */}
             </li>
             <li>
               <NavLink to="/about">About</NavLink>
             </li>
             <li>
-              <NavLink to="/profile">Profile</NavLink>
+              {/* <NavLink to="/profile">Profile</NavLink> */} {/* Comented out because of the signup page */}
             </li>
             <li className="campaign-button">
-              <NavLink className={"create"} to="/create">
-                Create a Campaign
+              <NavLink className={"create"} to="/waitlist">
+                Sign Up Now
               </NavLink>
             </li>
             <li>
                 {/* <div className="search-button"> */}
-                  <NavLink to="/app">Search</NavLink>
+                  {/* <NavLink to="/app">Search</NavLink> */} {/* Comented out because of the signup page */}
                 {/* </div> */}
             </li>
           </ul>

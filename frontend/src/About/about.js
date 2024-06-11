@@ -19,11 +19,7 @@ const About = () => {
           <i>Bringing The Solana Community Together</i>
           <br />
           <br />
-          At Solario, we believe in the power of community and the ability of
-          individuals to create meaningful impact. Our platform is a space where
-          dreams are nurtured, and causes find their champions. Whether you're
-          an aspiring entrepreneur, a creative artist, or someone passionate
-          about making a difference, Solario is your launchpad to success.
+          At Solario, we harness the power of community to create meaningful impact. Our platform is a hub where dreams are nurtured and causes find their champions. Whether you're an aspiring entrepreneur, a creative artist, or passionate about making a difference, Solario is your launchpad to success.
 
           {/* Our Mission Empowering Dreams, Building Futures Our mission is to empower
           individuals and communities by providing a platform where innovative
@@ -54,31 +50,34 @@ const About = () => {
           community highlights. <br /> */}
 
           <h2>How to use Solario</h2>
-          Solario offers several key benefits that make it an ideal platform for creators and backers alike. Here's how you can get started:
+          Solario offers unique benefits for both creators and backers. Here’s how to get started:
 
           <h3>Set up your Campaign</h3>
-          With Solario you can easily set up a campaign just by clicking "Create a campaing" button. You can set up your campaign in a matter of minutes and start raising funds for your project.
+          Easily launch your campaign by clicking the "Create a Campaign" button. In just minutes, you can start raising funds for your project.
 
           <h3>Contribute to a Campaign</h3>
-          Discover exciting projects and contribute to the ones you believe in. Simply open the Campaign, enter the amount you want to donate and click the "Donate" button.
+          Discover exciting projects and contribute to those you believe in. Simply open a campaign, enter your donation amount, and click the "Donate" button.
+
+          <h3>Accessing Donations</h3>
+          Donated funds are available to campaign owners immediately. In the future, we plan to implement a feature where funds are only withdrawable after campaign completion, ideal for product or service development campaigns.
+         
+          <h3>Transparency with Donors</h3>
+          We value transparency. Each campaign displays a list of donors, allowing everyone to see who has contributed to making dreams a reality.
+
+          <h3>Fees</h3>
+          Solario charges a 5% donor fee to support platform maintenance and growth. We empower creators by charging 0% creator and withdrawal fees, ensuring they receive the full amount raised.          <br />
           
-          <h3>Funds from the Donations</h3>
-          Funds that are donated to the campaign are available to the owner righr after the donation is made. The owner can withdraw the funds at any time.
-          Our future plans are to implement a feature where the owner can withdraw the funds only after the campaign is completed. This would be more suitable for campaigns that are for building a product or a service.
-         
-          <h3>List of Donors</h3>
-          We believe in transparency. Each campaign displays a list of donors, allowing everyone to see who has contributed to making dreams a reality.
-         
-         <h3>Fees</h3>
-         Solario charges a 5% donor fee to support the maintenance and growth of our platform. However, we believe in empowering creators, which is why we charge 0% creator and withdrawal fees. This means creators can access the funds they need without any deductions.
-          <br />
           <h3>Follow Us</h3>
-          Join the conversation on social media. Follow us on [Facebook], [Twitter], and [Instagram] to stay updated with the latest news, campaigns, and success stories within the Solario community.
+          Join the conversation on social media. Follow us on [Facebook], [Twitter], and [Instagram] to stay updated with the latest news, campaigns, and success stories from the Solario community.
           <br />
-          <h3>Want to get in touch with our team? </h3>
-          We're here to help. Reach out to us at [contact@solario.app] or
-          use our <a href="/feedback">Contact Form</a>. Thank you for being part of the Solario
-          community!
+
+          <h3>Contact Us</h3>
+          We're here to help. Reach out at [contact@solario.app] or
+          use our <a href="/feedback">Contact Form</a>.
+          <br />
+          <br />
+          <br /> 
+          Thank you for being part of the Solario community!
           </div>
         </div>
         <div className="why-icons-wrapper">
